@@ -70,7 +70,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
 
 
         {/* Bottom Part: Glass Card with Info */}
-        <div className="bg-white/75 backdrop-blur-2xl rounded-t-[32px] sm:rounded-t-[40px] px-6 py-8 pb-12 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] border-t border-white/30 flex flex-col items-center text-center">
+        <div className="bg-white backdrop-blur-2xl rounded-t-[32px] sm:rounded-t-[40px] px-6 py-8 pb-12 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] border-t border-white/30 flex flex-col items-center text-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
