@@ -138,14 +138,14 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   ];
 
   return (
-    <div className="w-full h-screen bg-[#0d0e15] text-white font-sans overflow-hidden flex flex-col relative select-none">
+    <div className="w-full h-screen bg-brand-bg text-text-primary font-sans overflow-hidden flex flex-col relative select-none">
       
       {/* Ambient glows */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#13141c] via-[#0d0e15] to-[#0a0a10]" />
-        <div className="absolute top-[-15%] left-[-20%] w-[90%] h-[70%] rounded-full bg-[#34117E]/[0.20] blur-[140px]" />
-        <div className="absolute top-[35%] right-[-25%] w-[70%] h-[60%] rounded-full bg-[#5b3ad9]/[0.12] blur-[120px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(52,17,126,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(52,17,126,0.05)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-brand-bg to-brand-bg" />
+        <div className="absolute top-[-15%] left-[-20%] w-[90%] h-[70%] rounded-full bg-brand-purple-100/60 blur-[140px]" />
+        <div className="absolute top-[35%] right-[-25%] w-[70%] h-[60%] rounded-full bg-brand-purple-100/40 blur-[120px]" />
+        <div className="absolute inset-0 brand-dot-grid opacity-60" />
       </div>
       
       {/* HEADER */}
@@ -153,7 +153,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         {/* Back Button */}
         <button 
           onClick={handleBack}
-          className="p-2.5 bg-white/[0.04] hover:bg-white/[0.10] text-white/80 hover:text-white rounded-full transition-all cursor-pointer shrink-0 border border-white/[0.08] backdrop-blur-md"
+          className="p-2.5 bg-white/80 hover:bg-white text-text-primary rounded-full transition-all cursor-pointer shrink-0 border border-brand-border shadow-sm-layered backdrop-blur-md"
           aria-label="Voltar"
         >
           <ArrowLeft size={18} />
@@ -165,13 +165,13 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
             <div 
               key={stepIdx} 
               className={`h-1.5 flex-grow rounded-full transition-all duration-300 ${
-                stepIdx <= currentStep ? 'bg-[#958CE8]' : 'bg-white/[0.08]'
+                stepIdx <= currentStep ? 'bg-brand-purple-500' : 'bg-brand-border'
               }`}
             />
           ))}
         </div>
         {/* Step Indicator */}
-        <span className="text-xs font-medium text-white/50 shrink-0 tabular-nums">
+        <span className="text-xs font-medium text-text-secondary shrink-0 tabular-nums">
           {currentStep + 1} de 5
         </span>
       </div>
@@ -184,17 +184,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         
         {/* --- ETAPA 1 --- */}
         <section className="w-full h-screen flex-shrink-0 flex flex-col justify-center items-center px-5">
-          <div className="w-full max-w-md bg-[#15141c]/70 backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col">
+          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-[#34117E]/20 border border-[#958CE8]/20 flex items-center justify-center">
-                <Target size={22} className="text-[#958CE8]" />
+              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
+                <Target size={22} className="text-brand-purple-500" />
               </div>
 
               <div>
-                <h2 className="text-[28px] font-bold text-white tracking-tight leading-[1.1]">
-                  Para que você <br />vai usar o <span className="text-[#958CE8]">Nakor?</span>
+                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
+                  Para que você <br />vai usar o <span className="text-brand-purple-500">Nakor?</span>
                 </h2>
-                <p className="text-[13px] text-white/50 mt-2 font-medium">
+                <p className="text-[13px] text-text-secondary mt-2 font-medium">
                   Selecione uma opção
                 </p>
               </div>
@@ -209,26 +209,26 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                       whileTap={{ scale: 0.98 }}
                       className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
                         isSelected 
-                          ? 'bg-[#34117E]/15 border-[#958CE8]/40 shadow-[0_0_24px_rgba(52,17,126,0.18)]' 
-                          : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.12]'
+                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
+                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
                         <div className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${
-                          isSelected ? 'bg-[#34117E] text-white' : 'bg-[#34117E]/15 text-[#958CE8]'
+                          isSelected ? 'bg-brand-purple-500 text-white' : 'bg-brand-purple-50 text-brand-purple-500'
                         }`}>
                           {opt.icon}
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-white">{opt.label}</p>
-                          <p className="text-[12px] text-white/45 mt-0.5 leading-snug">{opt.desc}</p>
+                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
+                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
                         </div>
                       </div>
 
                       <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
                         isSelected 
-                          ? 'bg-[#958CE8] border-[#958CE8] text-white' 
-                          : 'border-white/15 bg-transparent'
+                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
+                          : 'border-brand-border bg-transparent'
                       }`}>
                         {isSelected && <Check size={12} strokeWidth={3} />}
                       </div>
@@ -242,17 +242,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         {/* --- ETAPA 2 --- */}
         <section className="w-full h-screen flex-shrink-0 flex flex-col justify-center items-center px-5">
-          <div className="w-full max-w-md bg-[#15141c]/70 backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col">
+          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-[#34117E]/20 border border-[#958CE8]/20 flex items-center justify-center">
-                <Brain size={22} className="text-[#958CE8]" />
+              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
+                <Brain size={22} className="text-brand-purple-500" />
               </div>
 
               <div>
-                <h2 className="text-[28px] font-bold text-white tracking-tight leading-[1.1]">
-                  Qual é o seu <br />maior <span className="text-[#958CE8]">desafio</span> hoje?
+                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
+                  Qual é o seu <br />maior <span className="text-brand-purple-500">desafio</span> hoje?
                 </h2>
-                <p className="text-[13px] text-white/50 mt-2 font-medium">
+                <p className="text-[13px] text-text-secondary mt-2 font-medium">
                   Selecione uma opção
                 </p>
               </div>
@@ -267,26 +267,26 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                       whileTap={{ scale: 0.98 }}
                       className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
                         isSelected 
-                          ? 'bg-[#34117E]/15 border-[#958CE8]/40 shadow-[0_0_24px_rgba(52,17,126,0.18)]' 
-                          : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.12]'
+                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
+                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
                         <div className={`w-11 h-11 rounded-full flex items-center justify-center text-[18px] transition-colors ${
-                          isSelected ? 'bg-[#34117E]' : 'bg-[#34117E]/15'
+                          isSelected ? 'bg-brand-purple-500' : 'bg-brand-purple-50'
                         }`}>
                           {opt.emoji}
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-white">{opt.label}</p>
-                          <p className="text-[12px] text-white/45 mt-0.5 leading-snug">{opt.desc}</p>
+                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
+                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
                         </div>
                       </div>
 
                       <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
                         isSelected 
-                          ? 'bg-[#958CE8] border-[#958CE8] text-white' 
-                          : 'border-white/15 bg-transparent'
+                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
+                          : 'border-brand-border bg-transparent'
                       }`}>
                         {isSelected && <Check size={12} strokeWidth={3} />}
                       </div>
@@ -300,17 +300,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         {/* --- ETAPA 3 --- */}
         <section className="w-full h-screen flex-shrink-0 flex flex-col justify-center items-center px-5">
-          <div className="w-full max-w-md bg-[#15141c]/70 backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col">
+          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-[#34117E]/20 border border-[#958CE8]/20 flex items-center justify-center">
-                <Flame size={22} className="text-[#958CE8]" />
+              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
+                <Flame size={22} className="text-brand-purple-500" />
               </div>
 
               <div>
-                <h2 className="text-[28px] font-bold text-white tracking-tight leading-[1.1]">
-                  Quantas horas por <br />semana quer <span className="text-[#958CE8]">focar?</span>
+                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
+                  Quantas horas por <br />semana quer <span className="text-brand-purple-500">focar?</span>
                 </h2>
-                <p className="text-[13px] text-white/50 mt-2 font-medium">
+                <p className="text-[13px] text-text-secondary mt-2 font-medium">
                   Você pode ajustar isso depois
                 </p>
               </div>
@@ -325,26 +325,26 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                       whileTap={{ scale: 0.98 }}
                       className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
                         isSelected 
-                          ? 'bg-[#34117E]/15 border-[#958CE8]/40 shadow-[0_0_24px_rgba(52,17,126,0.18)]' 
-                          : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.12]'
+                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
+                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
                         <div className={`w-11 h-11 rounded-full flex items-center justify-center font-display font-bold text-[15px] transition-colors ${
-                          isSelected ? 'bg-[#34117E] text-white' : 'bg-[#34117E]/15 text-[#958CE8]'
+                          isSelected ? 'bg-brand-purple-500 text-white' : 'bg-brand-purple-50 text-brand-purple-500'
                         }`}>
                           {opt.id}
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-white">{opt.label}</p>
-                          <p className="text-[12px] text-white/45 mt-0.5 leading-snug">{opt.desc}</p>
+                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
+                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
                         </div>
                       </div>
 
                       <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
                         isSelected 
-                          ? 'bg-[#958CE8] border-[#958CE8] text-white' 
-                          : 'border-white/15 bg-transparent'
+                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
+                          : 'border-brand-border bg-transparent'
                       }`}>
                         {isSelected && <Check size={12} strokeWidth={3} />}
                       </div>
@@ -358,17 +358,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         {/* --- ETAPA 4 --- */}
         <section className="w-full h-screen flex-shrink-0 flex flex-col justify-center items-center px-5">
-          <div className="w-full max-w-md bg-[#15141c]/70 backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col">
+          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-[#34117E]/20 border border-[#958CE8]/20 flex items-center justify-center">
-                <Sun size={22} className="text-[#958CE8]" />
+              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
+                <Sun size={22} className="text-brand-purple-500" />
               </div>
 
               <div>
-                <h2 className="text-[28px] font-bold text-white tracking-tight leading-[1.1]">
-                  Quando você <br />costuma ser <span className="text-[#958CE8]">produtivo?</span>
+                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
+                  Quando você <br />costuma ser <span className="text-brand-purple-500">produtivo?</span>
                 </h2>
-                <p className="text-[13px] text-white/50 mt-2 font-medium">
+                <p className="text-[13px] text-text-secondary mt-2 font-medium">
                   Selecione uma opção
                 </p>
               </div>
@@ -383,26 +383,26 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                       whileTap={{ scale: 0.98 }}
                       className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
                         isSelected 
-                          ? 'bg-[#34117E]/15 border-[#958CE8]/40 shadow-[0_0_24px_rgba(52,17,126,0.18)]' 
-                          : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.12]'
+                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
+                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
                         <div className={`w-11 h-11 rounded-full flex items-center justify-center text-[18px] transition-colors ${
-                          isSelected ? 'bg-[#34117E]' : 'bg-[#34117E]/15'
+                          isSelected ? 'bg-brand-purple-500' : 'bg-brand-purple-50'
                         }`}>
                           {opt.emoji}
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-white">{opt.label}</p>
-                          <p className="text-[12px] text-white/45 mt-0.5 leading-snug">{opt.desc}</p>
+                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
+                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
                         </div>
                       </div>
 
                       <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
                         isSelected 
-                          ? 'bg-[#958CE8] border-[#958CE8] text-white' 
-                          : 'border-white/15 bg-transparent'
+                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
+                          : 'border-brand-border bg-transparent'
                       }`}>
                         {isSelected && <Check size={12} strokeWidth={3} />}
                       </div>
@@ -416,50 +416,50 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         {/* --- ETAPA 5: DRUM PICKER --- */}
         <section className="w-full h-screen flex-shrink-0 flex flex-col justify-center items-center px-5">
-          <div className="w-full max-w-md bg-[#15141c]/70 backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col h-full max-h-[520px] justify-between">
+          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col h-full max-h-[520px] justify-between">
             <div className="space-y-5">
-              <div className="w-12 h-12 rounded-full bg-[#34117E]/20 border border-[#958CE8]/20 flex items-center justify-center">
-                <Clock size={22} className="text-[#958CE8]" />
+              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
+                <Clock size={22} className="text-brand-purple-500" />
               </div>
 
               <div>
-                <h2 className="text-[28px] font-bold text-white tracking-tight leading-[1.1]">
-                  Que horas quer <br />receber o <span className="text-[#958CE8]">lembrete?</span>
+                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
+                  Que horas quer <br />receber o <span className="text-brand-purple-500">lembrete?</span>
                 </h2>
-                <p className="text-[13px] text-white/50 mt-2 font-medium leading-normal">
+                <p className="text-[13px] text-text-secondary mt-2 font-medium leading-normal">
                   O Nakor vai te chamar pro foco todo dia nesse horário
                 </p>
               </div>
 
-              <div className="bg-white/[0.03] border border-white/[0.06] rounded-[24px] p-4 flex items-center justify-center relative overflow-hidden select-none h-40">
-                <div className="absolute inset-x-4 top-[35%] bottom-[35%] border-y border-[#34117E]/25 bg-[#34117E]/[0.08] pointer-events-none rounded-lg" />
+              <div className="bg-brand-bg border border-brand-border rounded-[24px] p-4 flex items-center justify-center relative overflow-hidden select-none h-40">
+                <div className="absolute inset-x-4 top-[35%] bottom-[35%] border-y border-brand-purple-100 bg-brand-purple-50/50 pointer-events-none rounded-lg" />
                 
                 <div 
                   onWheel={handleHourWheel}
                   className="flex flex-col items-center w-24 relative z-10 py-1 cursor-ns-resize"
                 >
-                  <button onClick={decrementHour} className="text-white/25 hover:text-[#958CE8] transition-colors p-0.5 shrink-0">
+                  <button onClick={decrementHour} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
                     <ChevronUp size={14} />
                   </button>
 
                   <div className="flex flex-col items-center -space-y-1 my-0.5">
-                    <span className="text-xs font-bold text-white/25">
+                    <span className="text-xs font-bold text-text-placeholder">
                       {((hour - 1 + 24) % 24).toString().padStart(2, '0')}
                     </span>
-                    <span className="text-4xl font-display font-extrabold text-white leading-tight">
+                    <span className="text-4xl font-display font-extrabold text-text-primary leading-tight">
                       {hour.toString().padStart(2, '0')}
                     </span>
-                    <span className="text-xs font-bold text-white/25">
+                    <span className="text-xs font-bold text-text-placeholder">
                       {((hour + 1) % 24).toString().padStart(2, '0')}
                     </span>
                   </div>
 
-                  <button onClick={incrementHour} className="text-white/25 hover:text-[#958CE8] transition-colors p-0.5 shrink-0">
+                  <button onClick={incrementHour} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
                     <ChevronDown size={14} />
                   </button>
                 </div>
 
-                <span className="text-4xl font-display font-extrabold text-[#958CE8] mx-3 animate-pulse select-none">
+                <span className="text-4xl font-display font-extrabold text-brand-purple-500 mx-3 animate-pulse select-none">
                   :
                 </span>
 
@@ -467,33 +467,33 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   onWheel={handleMinuteWheel}
                   className="flex flex-col items-center w-24 relative z-10 py-1 cursor-ns-resize"
                 >
-                  <button onClick={decrementMinute} className="text-white/25 hover:text-[#958CE8] transition-colors p-0.5 shrink-0">
+                  <button onClick={decrementMinute} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
                     <ChevronUp size={14} />
                   </button>
 
                   <div className="flex flex-col items-center -space-y-1 my-0.5">
-                    <span className="text-xs font-bold text-white/25">
+                    <span className="text-xs font-bold text-text-placeholder">
                       {((minute - 5 + 60) % 60).toString().padStart(2, '0')}
                     </span>
-                    <span className="text-4xl font-display font-extrabold text-white leading-tight">
+                    <span className="text-4xl font-display font-extrabold text-text-primary leading-tight">
                       {minute.toString().padStart(2, '0')}
                     </span>
-                    <span className="text-xs font-bold text-white/25">
+                    <span className="text-xs font-bold text-text-placeholder">
                       {((minute + 5) % 60).toString().padStart(2, '0')}
                     </span>
                   </div>
 
-                  <button onClick={incrementMinute} className="text-white/25 hover:text-[#958CE8] transition-colors p-0.5 shrink-0">
+                  <button onClick={incrementMinute} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
                     <ChevronDown size={14} />
                   </button>
                 </div>
                 
-                <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-[#15141c]/95 to-transparent pointer-events-none" />
-                <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#15141c]/95 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-brand-card/95 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-brand-card/95 to-transparent pointer-events-none" />
               </div>
 
               <div className="text-center">
-                <p className="text-[11px] font-medium text-white/40">
+                <p className="text-[11px] font-medium text-text-secondary">
                   você pode mudar isso quando quiser
                 </p>
               </div>
@@ -501,7 +501,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
             <button
               onClick={handleComplete}
-              className="w-full bg-[#34117E] hover:bg-[#3d1496] hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(52,17,126,0.35)] cursor-pointer"
+              className="w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
             >
               Começar agora
             </button>
