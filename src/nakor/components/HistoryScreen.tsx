@@ -144,7 +144,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
     const maxHours = Math.max(...days.map(d => d.hours), 0);
 
     // Best day of this week
-    let bestDayObj = null;
+    let bestDayObj: any = null;
     let maxDayHours = 0;
     days.forEach(d => {
       if (d.hours > maxDayHours) {
@@ -169,7 +169,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
 
   // Heatmap Data (Last 30 Days)
   const heatmapData = useMemo(() => {
-    const days = [];
+    const days: { date: Date; hours: number }[] = [];
     const today = new Date();
     today.setHours(23, 59, 59, 999);
     
