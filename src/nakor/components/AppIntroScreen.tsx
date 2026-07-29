@@ -29,55 +29,13 @@ const slides = [
 export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const [uploadedImages, setUploadedImages] = useState<{name: string, url: string}[]>([]);
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    console.log("Files selected:", files);
-    if (!files) return;
-    
-    const newImages = Array.from(files).map(f => ({ name: f.name, url: URL.createObjectURL(f) }));
-    setUploadedImages(prev => [...prev, ...newImages]);
-    
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = e.target?.result as string;
-        await fetch('/api/upload-mockup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ filename: file.name, base64 })
-        });
-        console.log('Uploaded ' + file.name);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const moveImage = (index: number, direction: 'up' | 'down') => {
-    const newImages = [...uploadedImages];
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= newImages.length) return;
-    
-    // Swap
-    const temp = newImages[index];
-    newImages[index] = newImages[targetIndex];
-    newImages[targetIndex] = temp;
-    setUploadedImages(newImages);
-  };
-
-  const removeImage = (index: number) => {
-    setUploadedImages(prev => prev.filter((_, i) => i !== index));
-  };
-
-
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 4000);
     return () => clearInterval(timer);
   }, []);
+
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-[#0D0F14] font-sans overflow-hidden md:flex-row">
