@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Play, Flame, CheckSquare, ShoppingBag, User, Plus, Info, Lock, Pencil, Trophy, ShieldCheck, Home, ArrowUp, ArrowDown, Trash2, Upload } from 'lucide-react';
+import { Play, Trophy, ShieldCheck } from 'lucide-react';
+
 
 interface AppIntroScreenProps {
   onStart: () => void;
