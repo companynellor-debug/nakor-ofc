@@ -69,8 +69,8 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
         </div>
 
 
-        {/* Bottom Part: Dark Card with Info */}
-        <div className="bg-[#000000] rounded-t-[32px] sm:rounded-t-[40px] px-6 py-8 pb-12 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.3)] flex flex-col items-center text-center">
+        {/* Bottom Part: Glass Card with Info */}
+        <div className="bg-white/75 backdrop-blur-2xl rounded-t-[32px] sm:rounded-t-[40px] px-6 py-8 pb-12 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] border-t border-white/30 flex flex-col items-center text-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -80,10 +80,10 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
               transition={{ duration: 0.3 }}
               className="mb-8 w-full max-w-sm"
             >
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-3">
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-black mb-3">
                 {slides[currentSlide].title}
               </h2>
-              <p className="text-sm text-neutral-400 leading-relaxed font-sans px-4">
+              <p className="text-sm text-neutral-700 leading-relaxed font-sans px-4">
                 {slides[currentSlide].description}
               </p>
             </motion.div>
@@ -95,7 +95,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
               <div 
                 key={idx} 
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  currentSlide === idx ? 'w-6 bg-[#34117E]' : 'w-1.5 bg-neutral-800'
+                  currentSlide === idx ? 'w-6 bg-[#34117E]' : 'w-1.5 bg-neutral-300'
                 }`}
               />
             ))}
@@ -112,15 +112,15 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           {/* Secondary Link */}
           <button 
             onClick={onLogin}
-            className="text-xs text-neutral-500 hover:text-neutral-300 font-bold transition-colors"
+            className="text-xs text-neutral-600 hover:text-neutral-900 font-bold transition-colors"
           >
-            Já tem uma conta? <span className="text-white">Fazer login</span>
+            Já tem uma conta? <span className="text-[#34117E]">Fazer login</span>
           </button>
 
           {/* Footer links */}
-          <div className="flex gap-4 mt-8 text-[10px] font-semibold text-neutral-600 uppercase tracking-wider">
-            <span className="cursor-pointer hover:text-neutral-400 transition-colors">Termos de Uso</span>
-            <span className="cursor-pointer hover:text-neutral-400 transition-colors">Privacidade</span>
+          <div className="flex gap-4 mt-8 text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">
+            <span className="cursor-pointer hover:text-neutral-800 transition-colors">Termos de Uso</span>
+            <span className="cursor-pointer hover:text-neutral-800 transition-colors">Privacidade</span>
           </div>
         </div>
       </div>
