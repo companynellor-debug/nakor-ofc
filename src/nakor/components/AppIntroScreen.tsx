@@ -44,12 +44,12 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
     <div className="min-h-screen w-full flex flex-col bg-[#0D0F14] font-sans overflow-hidden">
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        <div className="flex-1 relative flex items-center justify-center pt-12 pb-10 px-4 overflow-hidden">
+        <div className="flex-1 relative flex items-center justify-center pt-6 pb-8 px-4 overflow-hidden">
           {/* Glow effects */}
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#34117E]/40 blur-[120px] mix-blend-overlay" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#ACD1FD]/20 blur-[100px] mix-blend-overlay" />
 
-          <div className="relative z-10 w-full max-w-[320px] h-full max-h-[540px] flex items-center justify-center">
+          <div className="relative z-10 w-full max-w-[360px] h-full max-h-[640px] flex items-center justify-center">
             <AnimatePresence mode="wait">
               <motion.img
                 key={currentSlide}
