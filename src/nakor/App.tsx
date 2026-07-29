@@ -41,7 +41,7 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [view, setView] = useState<'landing' | 'onboarding' | 'auth' | 'home' | 'new_activity' | 'tasks' | 'history' | 'profile' | 'foco' | 'diario-depois' | 'resultado' | 'conquistas' | 'loja'>('landing');
+  const [view, setView] = useState<string>('landing');
   const [loadingTab, setLoadingTab] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
