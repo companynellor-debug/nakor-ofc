@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Trophy, ShieldCheck } from 'lucide-react';
+import intro1 from '../../assets/intro-1.png.asset.json';
+import intro2 from '../../assets/intro-2.png.asset.json';
+import intro3 from '../../assets/intro-3.png.asset.json';
 
 
 interface AppIntroScreenProps {
@@ -12,19 +14,20 @@ const slides = [
   {
     title: "Desbloqueie seu Foco",
     description: "Concentre-se no que realmente importa e atinja seus objetivos diários com eficiência.",
-    icon: <Play size={24} className="text-[#34117E] fill-[#34117E]" />
+    image: intro1.url
   },
   {
     title: "Planejamento Rápido",
     description: "Crie atividades e estabeleça metas claras para manter o ritmo ao longo do dia.",
-    icon: <ShieldCheck size={24} className="text-[#34117E]" />
+    image: intro2.url
   },
   {
     title: "Acompanhe seu Progresso",
     description: "Receba feedbacks por IA e visualize seu desempenho para manter a consistência.",
-    icon: <Trophy size={24} className="text-[#34117E]" />
+    image: intro3.url
   }
 ];
+
 
 export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
