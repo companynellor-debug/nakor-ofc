@@ -1,0 +1,434 @@
+import { DesktopSidebar } from './DesktopSidebar';
+
+import React, { useState, useMemo, useEffect } from 'react';
+import { 
+  Bell, 
+  Clock, 
+  Palette, 
+  User, 
+  HelpCircle, 
+  ChevronRight, 
+  Flame,
+  AlertCircle,
+  Trophy,
+  Camera, Moon, Sun
+} from 'lucide-react';
+
+interface ProfileScreenProps {
+  onboardingData?: any;
+  onNavigate?: (view: any) => void;
+  onLogout?: () => void;
+  theme?: 'light' | 'dark';
+  onToggleTheme?: () => void;
+}
+
+export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onToggleTheme }: ProfileScreenProps) {
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem('nakor_avatar');
+    if (savedAvatar) {
+      setAvatarUrl(savedAvatar);
+    }
+  }, []);
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 150;
+          const MAX_HEIGHT = 150;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          const base64String = canvas.toDataURL('image/jpeg', 0.8);
+          setAvatarUrl(base64String);
+          try {
+            localStorage.setItem('nakor_avatar', base64String);
+            window.dispatchEvent(new Event('avatarChanged'));
+            setToastMessage("Avatar atualizado com sucesso!");
+            setTimeout(() => setToastMessage(null), 2000);
+          } catch (error) {
+            setToastMessage("Erro: Imagem muito grande.");
+            setTimeout(() => setToastMessage(null), 2000);
+          }
+        };
+        img.src = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Retrieve user data
+  const userName = useMemo(() => {
+    return localStorage.getItem('nakor_user') || onboardingData?.name || 'Alex Andrade';
+  }, [onboardingData]);
+
+  const userEmail = useMemo(() => {
+    return localStorage.getItem('nakor_user_email') || 'alex@email.com';
+  }, []);
+
+  // Initials computation
+  const initials = useMemo(() => {
+    const parts = userName.trim().split(/\s+/);
+    if (parts.length === 0 || !parts[0]) return 'U';
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }, [userName]);
+
+  // Load history
+  const history = useMemo(() => {
+    const raw = localStorage.getItem('nakor_historico');
+    if (raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return [];
+  }, []);
+
+  // Streak calculation (same as HomeScreen)
+  const streak = useMemo(() => {
+    if (history.length === 0) return 0;
+    
+    const sorted = [...history].sort((a, b) => b.timestamp - a.timestamp);
+    const uniqueDays = new Set<string>();
+    sorted.forEach(item => {
+      const d = new Date(item.timestamp);
+      uniqueDays.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+    });
+    
+    const dayList = Array.from(uniqueDays).map(dStr => new Date(dStr));
+    if (dayList.length === 0) return 0;
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    
+    const firstActiveDay = dayList[0];
+    firstActiveDay.setHours(0, 0, 0, 0);
+    
+    if (firstActiveDay < yesterday) {
+      return 0;
+    }
+    
+    let currentStreak = 1;
+    let currentDay = firstActiveDay;
+    
+    for (let i = 1; i < dayList.length; i++) {
+      const prevDay = new Date(currentDay);
+      prevDay.setDate(currentDay.getDate() - 1);
+      prevDay.setHours(0, 0, 0, 0);
+      
+      const checkDay = dayList[i];
+      checkDay.setHours(0, 0, 0, 0);
+      
+      if (checkDay.getTime() === prevDay.getTime()) {
+        currentStreak++;
+        currentDay = checkDay;
+      } else {
+        break;
+      }
+    }
+    
+    return currentStreak;
+  }, [history]);
+
+  // Total hours
+  const totalHours = useMemo(() => {
+    const totalSecs = history.reduce((acc: number, item: any) => acc + (item.duracao_real || 0), 0);
+    return Math.floor(totalSecs / 3600);
+  }, [history]);
+
+  // General average score
+  const averageScore = useMemo(() => {
+    if (history.length === 0) return '0.0';
+    const sum = history.reduce((acc: number, item: any) => acc + (item.nota || 0), 0);
+    return (sum / history.length).toFixed(1);
+  }, [history]);
+
+  // Weekly Goal Y (from onboarding)
+  const goalHours = useMemo(() => {
+    const savedOnboarding = onboardingData || JSON.parse(localStorage.getItem('nakor_onboarding') || '{}');
+    const hoursStr = savedOnboarding?.focusHours || '15h';
+    return parseInt(hoursStr.replace(/\D/g, ''), 10) || 15;
+  }, [onboardingData]);
+
+  // Current week total hours
+  const weeklyHours = useMemo(() => {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const weekItems = history.filter((item: any) => new Date(item.timestamp) >= startOfWeek);
+    const totalSecs = weekItems.reduce((acc: number, item: any) => acc + (item.duracao_real || 0), 0);
+    return parseFloat((totalSecs / 3600).toFixed(1));
+  }, [history]);
+
+  const remainingHours = useMemo(() => {
+    return Math.max(0, Math.ceil(goalHours - weeklyHours));
+  }, [goalHours, weeklyHours]);
+
+  const weeklyProgressPercent = useMemo(() => {
+    return Math.min(100, Math.round((weeklyHours / goalHours) * 100));
+  }, [weeklyHours, goalHours]);
+
+  // Show "Em breve" toast
+  const handleItemClick = (name: string) => {
+    setToastMessage(`Em breve: ${name}`);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 2000);
+  };
+
+  const handleSair = () => {
+    localStorage.removeItem('nakor_user_email');
+    localStorage.removeItem('nakor_user');
+    localStorage.removeItem('nakor_tarefas');
+    // Call props or reset view
+    if (onLogout) {
+      onLogout();
+    } else {
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div className="w-full min-h-screen bg-[#F5F5F7] dark:bg-[#0D0F14] text-[#21222D] dark:text-[#F8F9FA] font-sans flex flex-col md:flex-row relative">
+      <DesktopSidebar currentView="profile" onNavigate={onNavigate} userName={userName} userEmail={userEmail} />
+      
+      <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 relative overflow-y-auto">
+        <div className="w-full max-w-[390px] md:max-w-[1000px] md:p-10 px-6 pt-10 md:pt-12 flex flex-col items-center">
+
+        {/* Header */}
+        <div className="w-full text-center md:text-left mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">Perfil</h1>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium mt-1">Gerencie seu progresso e conta</p>
+        </div>
+
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start pb-10">
+          
+          {/* Column 1: User Profile & Stats */}
+          <div className="w-full flex flex-col space-y-6">
+            
+            {/* User Info Card */}
+            <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] p-6 border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex items-center gap-5">
+              <div className="relative group w-16 h-16 rounded-full shrink-0">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                />
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover shadow-[0_0_15px_rgba(79,70,229,0.2)]" />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-[#4F46E5] to-[#8B5CF6] flex items-center justify-center text-white text-xl font-bold shadow-[0_0_15px_rgba(79,70,229,0.3)]">
+                    {initials}
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  <Camera size={20} className="text-white" />
+                </div>
+              </div>
+              <div className="flex flex-col flex-1 min-w-0">
+                <h2 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] truncate">{userName}</h2>
+                <p className="text-neutral-500 dark:text-neutral-400 text-xs truncate mb-2">{userEmail}</p>
+                <div className="self-start inline-flex items-center gap-1 bg-[#F3F4F6] px-2.5 py-1 rounded-lg border border-[#E5E7EB]">
+                  <Flame size={12} className="text-[#4F46E5] fill-[#4F46E5]/20" />
+                  <span className="text-[10px] font-bold text-[#4F46E5] uppercase tracking-wider">{streak} dias seguidos</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-3 w-full">
+              <div className="bg-white dark:bg-[#151622] rounded-[20px] p-4 text-center border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex flex-col justify-center items-center">
+                <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA]">{totalHours}h</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">Total</span>
+              </div>
+              <div className="bg-white dark:bg-[#151622] rounded-[20px] p-4 text-center border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex flex-col justify-center items-center">
+                <span className="text-xl font-bold text-[#4F46E5]">{averageScore}</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">Média</span>
+              </div>
+              <div className="bg-white dark:bg-[#151622] rounded-[20px] p-4 text-center border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex flex-col justify-center items-center">
+                <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA]">{streak}</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">Dias</span>
+              </div>
+            </div>
+
+            {/* Meta Semanal Card */}
+            <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] p-6 border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm">
+              <div className="flex justify-between items-end mb-4">
+                <h3 className="font-bold text-sm text-[#21222D] dark:text-[#F8F9FA]">Meta semanal</h3>
+                <span className="text-[#4F46E5] font-mono text-[11px] font-bold bg-[#4F46E5]/10 px-2.5 py-1 rounded-md">{weeklyHours}h / {goalHours}h</span>
+              </div>
+ 
+              <div className="w-full h-2 bg-[#F3F4F6] rounded-full mb-3 overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] rounded-full transition-all duration-500" 
+                  style={{ width: `${weeklyProgressPercent}%` }}
+                />
+              </div>
+ 
+              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-medium block">
+                {remainingHours > 0 
+                  ? `Faltam ${remainingHours}h para fechar a semana` 
+                  : 'Parabéns! Meta semanal atingida 🎉'}
+              </span>
+            </div>
+
+          </div>
+ 
+          {/* Column 2: Settings */}
+          <div className="w-full space-y-6">
+            
+            <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 overflow-hidden divide-y divide-[#F3F4F6] shadow-sm">
+              <button 
+                onClick={() => onNavigate && onNavigate('history')}
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
+                    <Clock size={16} className="text-[#4F46E5]" />
+                  </div>
+                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Histórico</span>
+                </div>
+                <ChevronRight size={16} className="text-[#D1D5DB]" />
+              </button>
+              
+              <button 
+                onClick={() => onNavigate && onNavigate('conquistas')}
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
+                    <Trophy size={16} className="text-[#4F46E5]" />
+                  </div>
+                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Conquistas</span>
+                </div>
+                <ChevronRight size={16} className="text-[#D1D5DB]" />
+              </button>
+
+              <button 
+                onClick={() => onNavigate && onNavigate('notifications')}
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
+                    <Bell size={16} />
+                  </div>
+                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Notificações</span>
+                </div>
+                <ChevronRight size={16} className="text-[#D1D5DB]" />
+              </button>
+
+              <button 
+                onClick={() => onNavigate && onNavigate('focus_time')}
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
+                    <Clock size={16} />
+                  </div>
+                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Hora do Foco</span>
+                </div>
+                <ChevronRight size={16} className="text-[#D1D5DB]" />
+              </button>
+
+              <button 
+                onClick={() => onNavigate && onNavigate('card_colors')}
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] dark:hover:bg-white/5 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] dark:bg-white/5 flex items-center justify-center">
+                    <Palette size={16} />
+                  </div>
+                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Cores dos cards</span>
+                </div>
+                <ChevronRight size={16} className="text-[#D1D5DB] dark:text-neutral-600" />
+              </button>
+
+              {onToggleTheme && (
+                <button 
+                  onClick={onToggleTheme}
+                  className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] dark:hover:bg-white/5 transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                    <div className="w-8 h-8 rounded-full bg-[#F3F4F6] dark:bg-white/5 flex items-center justify-center">
+                      {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+                    </div>
+                    <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Tema: {theme === 'light' ? 'Claro' : 'Escuro'}</span>
+                  </div>
+                  <ChevronRight size={16} className="text-[#D1D5DB] dark:text-neutral-600" />
+                </button>
+              )}
+
+              <button 
+                onClick={() => handleItemClick('Ajuda')}
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
+                    <HelpCircle size={16} />
+                  </div>
+                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Ajuda</span>
+                </div>
+                <ChevronRight size={16} className="text-[#D1D5DB]" />
+              </button>
+            </div>
+
+            {/* Logout Button */}
+            <div className="w-full">
+              <button 
+                onClick={handleSair}
+                className="w-full p-4 rounded-[24px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 text-neutral-500 dark:text-neutral-400 hover:text-red-500 text-[13px] font-bold transition-colors cursor-pointer shadow-sm text-center"
+              >
+                Sair da conta
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Toast Notification */}
+      </div>
+
+      {toastMessage && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-[#21222D] border border-white/10 text-white text-xs font-bold px-4 py-3 rounded-full shadow-2xl flex items-center gap-2 animate-bounce">
+          <AlertCircle size={14} className="text-[#8B5CF6]" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+    </div>
+  );
+}
