@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Trophy, ShieldCheck } from 'lucide-react';
+import intro1 from '../../assets/intro-1.png.asset.json';
+import intro2 from '../../assets/intro-2.png.asset.json';
+import intro3 from '../../assets/intro-3.png.asset.json';
 
 
 interface AppIntroScreenProps {
@@ -12,19 +14,20 @@ const slides = [
   {
     title: "Desbloqueie seu Foco",
     description: "Concentre-se no que realmente importa e atinja seus objetivos diários com eficiência.",
-    icon: <Play size={24} className="text-[#34117E] fill-[#34117E]" />
+    image: intro1.url
   },
   {
     title: "Planejamento Rápido",
     description: "Crie atividades e estabeleça metas claras para manter o ritmo ao longo do dia.",
-    icon: <ShieldCheck size={24} className="text-[#34117E]" />
+    image: intro2.url
   },
   {
     title: "Acompanhe seu Progresso",
     description: "Receba feedbacks por IA e visualize seu desempenho para manter a consistência.",
-    icon: <Trophy size={24} className="text-[#34117E]" />
+    image: intro3.url
   }
 ];
+
 
 export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,25 +49,21 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#34117E]/40 blur-[120px] mix-blend-overlay" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#ACD1FD]/20 blur-[100px] mix-blend-overlay" />
 
-          <div className="w-[260px] h-[540px] rounded-[36px] relative z-10 shrink-0 overflow-hidden flex items-center justify-center bg-black shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-neutral-800/80">
+          <div className="relative z-10 w-full max-w-[320px] h-full max-h-[540px] flex items-center justify-center">
             <AnimatePresence mode="wait">
-              <motion.div
+              <motion.img
                 key={currentSlide}
+                src={slides[currentSlide].image}
+                alt={slides[currentSlide].title}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="w-full h-full flex flex-col items-center justify-center gap-4 px-8 text-center bg-gradient-to-b from-[#1a1030] to-black"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-white/95 flex items-center justify-center shadow-lg">
-                  {slides[currentSlide].icon}
-                </div>
-                <p className="text-white font-display font-bold text-lg leading-snug">
-                  {slides[currentSlide].title}
-                </p>
-              </motion.div>
+                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              />
             </AnimatePresence>
           </div>
+
         </div>
 
 
