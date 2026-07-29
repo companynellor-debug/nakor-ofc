@@ -48,6 +48,8 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           {/* Glow effects */}
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#34117E]/40 blur-[120px] mix-blend-overlay" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#ACD1FD]/20 blur-[100px] mix-blend-overlay" />
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[95%] h-[75%] rounded-full bg-[#4C1D95]/70 blur-[90px] pointer-events-none" />
+          <div className="absolute top-[12%] left-1/2 -translate-x-1/2 w-[80%] h-[55%] rounded-full bg-[#7C3AED]/40 blur-[60px] pointer-events-none" />
 
           <div className="relative z-10 w-full max-w-[360px] h-full max-h-[640px] flex items-center justify-center">
             <AnimatePresence mode="wait">
