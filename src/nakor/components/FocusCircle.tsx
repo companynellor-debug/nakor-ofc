@@ -122,9 +122,10 @@ export function FocusCircle({
                   x2="100%"
                   y2="100%"
                 >
-                  <stop offset="0%" stopColor="#4F46E5" />
-                  <stop offset="100%" stopColor="#8B5CF6" />
+                  <stop offset="0%" stopColor={isMobile ? '#34117E' : '#4F46E5'} />
+                  <stop offset="100%" stopColor={isMobile ? '#4F46E5' : '#8B5CF6'} />
                 </linearGradient>
+
               </defs>
 
               {/* Full inner ring for complete state */}
