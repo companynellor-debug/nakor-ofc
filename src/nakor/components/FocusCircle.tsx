@@ -41,21 +41,34 @@ export function FocusCircle({
       {/* State-based ambient glow */}
       <div
         className={`absolute inset-0 rounded-full blur-[60px] pointer-events-none transition-all duration-700 ${
-          isComplete ? 'bg-[#34117E]/20' : 'bg-[#34117E]/5'
+          isComplete
+            ? 'bg-[#34117E]/25'
+            : isMobile
+              ? 'bg-[#34117E]/15'
+              : 'bg-[#34117E]/5'
         }`}
       />
 
       {/* Layered concentric rings */}
       <div
         className={`absolute inset-[-10%] rounded-full border pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'border-[#34117E]/25' : 'border-[#34117E]/10'
+          isComplete
+            ? 'border-[#34117E]/30'
+            : isMobile
+              ? 'border-[#34117E]/25'
+              : 'border-[#34117E]/10'
         }`}
       />
       <div
         className={`absolute inset-[-20%] rounded-full border pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'border-[#34117E]/15' : 'border-[#34117E]/5'
+          isComplete
+            ? 'border-[#34117E]/20'
+            : isMobile
+              ? 'border-[#34117E]/15'
+              : 'border-[#34117E]/5'
         }`}
       />
+
 
       {/* Main decorative ring */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
