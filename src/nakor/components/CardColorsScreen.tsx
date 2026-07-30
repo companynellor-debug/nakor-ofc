@@ -525,7 +525,7 @@ useEffect(() => {
                         {/* Selected indicator overlay icon */}
                         {isSelected && (
                           <div className="absolute inset-0 bg-[#34117E]/10 flex items-center justify-center z-20">
-                            <div className="w-6 h-6 rounded-full bg-white dark:bg-[#151622] flex items-center justify-center shadow-md border border-[#34117E]/10">
+                            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md border border-[#34117E]/10">
                               <Check size={12} className="text-[#34117E]" strokeWidth={3.5} />
                             </div>
                           </div>
@@ -620,7 +620,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, textoAntes: !prev.textoAntes}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.textoAntes ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.textoAntes ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.textoAntes ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
@@ -633,7 +633,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, textoDepois: !prev.textoDepois}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.textoDepois ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.textoDepois ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.textoDepois ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
@@ -646,7 +646,7 @@ useEffect(() => {
                   <span className="text-neutral-400 text-xs font-semibold">Sua pontuação da sessão</span>
                 </div>
                 <div className="w-12 h-6 rounded-full bg-[#958CE8] relative">
-                  <div className="w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 translate-x-7" />
+                  <div className="w-4 h-4 rounded-full bg-white absolute top-1 translate-x-7" />
                 </div>
               </div>
 
@@ -659,7 +659,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, fraseIA: !prev.fraseIA}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.fraseIA ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.fraseIA ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.fraseIA ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
@@ -672,7 +672,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, streak: !prev.streak}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.streak ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.streak ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.streak ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
@@ -685,7 +685,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, selo: !prev.selo}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.selo ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.selo ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.selo ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
@@ -698,7 +698,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, horario: !prev.horario}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.horario ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.horario ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.horario ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
@@ -711,7 +711,7 @@ useEffect(() => {
                   onClick={() => setConteudo(prev => ({...prev, duracao: !prev.duracao}))}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.duracao ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white dark:bg-[#151622] absolute top-1 transition-transform ${conteudo.duracao ? 'translate-x-7' : 'translate-x-1'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.duracao ? 'translate-x-7' : 'translate-x-1'}`} />
                 </button>
               </div>
 
