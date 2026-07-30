@@ -521,20 +521,24 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             <DailyProgressBar tasks={tasks} onNavigate={onNavigate} activeDays={weeklyStats.activeDays} />
 
             {/* Desktop Hero Chronometer Card */}
-            <div className="w-full flex flex-col items-center mb-12 relative overflow-visible">
-               
-               <h3 className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">Tempo de foco hoje</h3>
-               
-               <FocusCircle
-                  todaySeconds={todaySeconds}
-                  displayHours={displayHours}
-                  displayMinutes={displayMinutes}
-                  avgToday={avgToday}
-                  progressPercent={progressPercent}
-                  size={280}
-                  variant="desktop"
-                />
+            <div className="w-full flex flex-col items-center mb-10 relative overflow-hidden rounded-[32px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-md-layered py-10 px-8">
+               <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[#34117E]/[0.07] blur-[80px]" />
+
+               <h3 className="relative text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">Tempo de foco hoje</h3>
+
+               <div className="relative z-10">
+                 <FocusCircle
+                    todaySeconds={todaySeconds}
+                    displayHours={displayHours}
+                    displayMinutes={displayMinutes}
+                    avgToday={avgToday}
+                    progressPercent={progressPercent}
+                    size={280}
+                    variant="desktop"
+                  />
+               </div>
             </div>
+
 
             {/* Recent Activities (Desktop) */}
             <div className="w-full bg-transparent">
