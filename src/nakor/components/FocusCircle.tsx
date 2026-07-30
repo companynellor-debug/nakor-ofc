@@ -41,20 +41,25 @@ export function FocusCircle({
   const labelSize = isMobile ? 'text-[10px]' : 'text-[11px]';
   const ctaSize = isMobile ? 'text-[11px]' : 'text-xs';
 
-  const accentColor = isComplete ? '#34117E' : '#8B5CF6';
-  const gradientFrom = isComplete ? '#34117E' : '#8B5CF6';
-  const gradientTo = isComplete ? '#4F46E5' : '#4F46E5';
-  const textColor = isEmpty ? 'text-[#34117E]' : 'text-[#21222D] dark:text-[#F8F9FA]';
+  // Dark mode gets brighter purples so the ring stays readable on #0D0F14
+  const accentVars = isComplete
+    ? '[--fc-from:#4F46E5] [--fc-to:#8B5CF6] dark:[--fc-from:#A78BFA] dark:[--fc-to:#818CF8] [--fc-accent:#4F46E5] dark:[--fc-accent:#A78BFA]'
+    : '[--fc-from:#8B5CF6] [--fc-to:#4F46E5] dark:[--fc-from:#C4B5FD] dark:[--fc-to:#818CF8] [--fc-accent:#8B5CF6] dark:[--fc-accent:#C4B5FD]';
+  const textColor = isEmpty
+    ? 'text-[#34117E] dark:text-[#C4B5FD]'
+    : 'text-[#21222D] dark:text-[#F8F9FA]';
 
   return (
     <div
-      className="relative flex items-center justify-center"
+      className={`relative flex items-center justify-center ${accentVars}`}
       style={{ width: size, height: size }}
     >
       {/* Ambient glow */}
       <div
         className={`absolute inset-0 rounded-full pointer-events-none transition-all duration-700 ${
-          isComplete ? 'bg-[#34117E]/15' : 'bg-[#34117E]/10'
+          isComplete
+            ? 'bg-[#34117E]/15 dark:bg-[#8B5CF6]/25'
+            : 'bg-[#34117E]/10 dark:bg-[#8B5CF6]/20'
         }`}
         style={{ filter: 'blur(60px)' }}
       />
@@ -62,20 +67,25 @@ export function FocusCircle({
       {/* Outer decorative ring */}
       <div
         className={`absolute inset-0 rounded-full border pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'border-[#34117E]/20' : 'border-[#E0DDF5]/70'
+          isComplete
+            ? 'border-[#34117E]/20 dark:border-[#A78BFA]/30'
+            : 'border-[#E0DDF5]/70 dark:border-white/[0.08]'
         }`}
       />
 
       {/* Main solid track ring */}
       <div
         className={`absolute ${ringSize} rounded-full pointer-events-none transition-all duration-700 ${
-          isComplete ? 'border-[#34117E]/15' : 'border-[#F1F1F7]'
+          isComplete
+            ? 'border-[#34117E]/15 dark:border-[#A78BFA]/20'
+            : 'border-[#F1F1F7] dark:border-white/[0.06]'
         }`}
         style={{
           borderWidth: ringThickness,
           boxShadow: 'inset 0 2px 4px rgba(52, 17, 126, 0.04)',
         }}
       />
+
 
       {/* SVG progress ring */}
       <svg
