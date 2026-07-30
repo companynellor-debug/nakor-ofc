@@ -523,11 +523,11 @@ export default function App() {
                         className="flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] active:scale-95 transition-transform h-full pt-1"
                       >
                         {isLoading ? (
-                          <Loader2 size={22} className="text-[#34117E] animate-spin mb-1" />
+                          <Loader2 size={22} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin mb-1" />
                         ) : (
-                          <Icon size={22} className={`${isActive ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-[#9CA3AF] dark:text-neutral-500'} transition-colors duration-150`} strokeWidth={isActive ? 2.5 : 2} />
+                          <Icon size={22} className={`${isActive ? 'text-[#21222D] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#9CA3AF] dark:text-[#A2A5B9]'} transition-colors duration-150`} strokeWidth={isActive ? 2.5 : 2} />
                         )}
-                        <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-neutral-500 font-medium'} transition-colors duration-150`}>{tab.label}</span>
+                        <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-[#A2A5B9] font-medium'} transition-colors duration-150`}>{tab.label}</span>
                       </button>
                     );
                   })}
