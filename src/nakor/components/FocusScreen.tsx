@@ -227,14 +227,14 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
                 <button 
                   onClick={(e) => { e.stopPropagation(); setCurrentSubtaskIndex(prev => Math.max(0, prev - 1)); }}
                   disabled={currentSubtaskIndex === 0}
-                  className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#34117E] disabled:opacity-30 cursor-pointer font-bold"
+                  className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#34117E] dark:text-[#C4B5FD] disabled:opacity-30 cursor-pointer font-bold"
                 >
                   Anterior
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); setCurrentSubtaskIndex(prev => Math.min(activity.subtarefas.length - 1, prev + 1)); }}
                   disabled={currentSubtaskIndex === activity.subtarefas.length - 1}
-                  className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#34117E] disabled:opacity-30 cursor-pointer font-bold"
+                  className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#34117E] dark:text-[#C4B5FD] disabled:opacity-30 cursor-pointer font-bold"
                 >
                   Próxima
                 </button>

@@ -526,7 +526,7 @@ useEffect(() => {
                         {isSelected && (
                           <div className="absolute inset-0 bg-[#34117E]/10 flex items-center justify-center z-20">
                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md border border-[#34117E]/10">
-                              <Check size={12} className="text-[#34117E]" strokeWidth={3.5} />
+                              <Check size={12} className="text-[#34117E] dark:text-[#C4B5FD]" strokeWidth={3.5} />
                             </div>
                           </div>
                         )}

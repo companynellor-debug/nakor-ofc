@@ -76,7 +76,7 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
         <div className="w-full flex items-center justify-between mb-8">
           <button 
             onClick={() => onNavigate('home')}
-            className="text-[#21222D] dark:text-[#F8F9FA] hover:text-[#34117E] transition-colors cursor-pointer"
+            className="text-[#21222D] dark:text-[#F8F9FA] hover:text-[#34117E] dark:text-[#C4B5FD] transition-colors cursor-pointer"
           >
             <ArrowLeft size={24} />
           </button>

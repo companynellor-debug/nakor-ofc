@@ -141,7 +141,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
                       onChange={handleTimeChange}
                       className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                     />
-                    <span className="text-[#34117E] font-bold text-[15px]">{reminderTime}</span>
+                    <span className="text-[#34117E] dark:text-[#C4B5FD] font-bold text-[15px]">{reminderTime}</span>
                   </div>
                 </div>
               </>

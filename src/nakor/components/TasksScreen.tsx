@@ -29,7 +29,7 @@ interface TasksScreenProps {
 }
 
 // Custom Premium Hexagon Coin Icon matching the design exactly
-const CoinIcon = ({ className = "w-5 h-5 text-[#34117E]" }) => (
+const CoinIcon = ({ className = "w-5 h-5 text-[#34117E] dark:text-[#C4B5FD]" }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
     <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5" className="fill-transparent" />
     <polygon points="12 6 17 9.5 17 14.5 12 18 7 14.5 7 9.5" className="fill-current" />
@@ -324,7 +324,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
             onClick={() => setActiveMainTab('tarefas')}
             className={`flex-1 py-2.5 text-center font-bold text-sm tracking-tight transition-all rounded-full cursor-pointer ${
               activeMainTab === 'tarefas' 
-                ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
+                ? 'bg-white dark:bg-[#151622] text-[#34117E] dark:text-[#C4B5FD] shadow-sm-layered' 
                 : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
             }`}
           >
@@ -334,7 +334,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
             onClick={() => setActiveMainTab('desafios')}
             className={`flex-1 py-2.5 text-center font-bold text-sm tracking-tight transition-all rounded-full cursor-pointer ${
               activeMainTab === 'desafios' 
-                ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
+                ? 'bg-white dark:bg-[#151622] text-[#34117E] dark:text-[#C4B5FD] shadow-sm-layered' 
                 : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
             }`}
           >
@@ -486,7 +486,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
 
                 {/* Card dica inteligente */}
                 <div className="w-full bg-white dark:bg-[#151622] rounded-[20px] p-5 border-l-4 border-l-[#34117E] flex items-start gap-3 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
-                  <Star className="text-[#34117E] fill-none shrink-0 mt-0.5" size={20} strokeWidth={2} />
+                  <Star className="text-[#34117E] dark:text-[#C4B5FD] fill-none shrink-0 mt-0.5" size={20} strokeWidth={2} />
                   <p className="text-[#21222D] dark:text-[#F8F9FA] text-sm font-semibold leading-relaxed">
                     {productiveTip}
                   </p>
@@ -507,7 +507,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 onClick={() => setActiveSubTab('diarios')}
                 className={`flex-1 py-2 text-center font-bold text-xs transition-all rounded-full cursor-pointer ${
                   activeSubTab === 'diarios' 
-                    ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
+                    ? 'bg-white dark:bg-[#151622] text-[#34117E] dark:text-[#C4B5FD] shadow-sm-layered' 
                     : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
                 }`}
               >
@@ -517,7 +517,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 onClick={() => setActiveSubTab('semanais')}
                 className={`flex-1 py-2 text-center font-bold text-xs transition-all rounded-full cursor-pointer ${
                   activeSubTab === 'semanais' 
-                    ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
+                    ? 'bg-white dark:bg-[#151622] text-[#34117E] dark:text-[#C4B5FD] shadow-sm-layered' 
                     : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
                 }`}
               >
@@ -534,11 +534,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <div className="w-full bg-[#21222D] rounded-[28px] p-7 shadow-lg-layered flex flex-col relative overflow-hidden text-left text-white border border-white/[0.04]">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
-                           <Target size={22} className="text-[#34117E]" />
+                           <Target size={22} className="text-[#34117E] dark:text-[#C4B5FD]" />
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/15 text-[#34117E] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#34117E]/30">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/15 text-[#34117E] dark:text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#34117E]/30">
                             DESAFIO DIÁRIO
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
@@ -556,7 +556,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <div className="flex justify-end">
                           <span className="text-xs font-bold text-white/60">
-                            <span className="text-[#34117E]">{todayFocusMinutes}</span> / 60 min
+                            <span className="text-[#34117E] dark:text-[#C4B5FD]">{todayFocusMinutes}</span> / 60 min
                           </span>
                         </div>
                       </div>
@@ -579,11 +579,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <div className="w-full bg-white dark:bg-[#151622] rounded-[20px] p-5 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered flex items-center justify-between text-left">
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         <div className="w-12 h-12 rounded-full border border-[#34117E]/30 bg-[#34117E]/5 flex items-center justify-center shrink-0">
-                          <Check size={22} className="text-[#34117E]" strokeWidth={3} />
+                          <Check size={22} className="text-[#34117E] dark:text-[#C4B5FD]" strokeWidth={3} />
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/10 text-[#34117E] text-[9px] font-extrabold uppercase tracking-wider mb-1.5">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/10 text-[#34117E] dark:text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5">
                             DESAFIO DIÁRIO
                           </span>
                           <h3 className="text-sm font-bold text-neutral-400 line-through leading-tight tracking-tight">
@@ -593,8 +593,8 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       </div>
                       
                       <div className="flex items-center gap-1.5 bg-[#34117E]/10 px-3 py-1.5 rounded-xl border border-[#34117E]/20 shrink-0">
-                        <CoinIcon className="w-4 h-4 text-[#34117E]" />
-                        <span className="text-sm font-extrabold text-[#34117E]">+60</span>
+                        <CoinIcon className="w-4 h-4 text-[#34117E] dark:text-[#C4B5FD]" />
+                        <span className="text-sm font-extrabold text-[#34117E] dark:text-[#C4B5FD]">+60</span>
                       </div>
                     </div>
 
@@ -627,11 +627,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <div className="w-full bg-[#21222D] rounded-[28px] p-7 shadow-lg-layered flex flex-col relative overflow-hidden text-left text-white border border-white/[0.04]">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
-                          <Target size={22} className="text-[#34117E]" />
+                          <Target size={22} className="text-[#34117E] dark:text-[#C4B5FD]" />
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/15 text-[#34117E] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#34117E]/30">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/15 text-[#34117E] dark:text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#34117E]/30">
                             DESAFIO SEMANAL
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
@@ -649,7 +649,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <div className="flex justify-end">
                           <span className="text-xs font-bold text-white/60">
-                            <span className="text-[#34117E]">{weeklyFocusHours.toFixed(1)}h</span> / 10h
+                            <span className="text-[#34117E] dark:text-[#C4B5FD]">{weeklyFocusHours.toFixed(1)}h</span> / 10h
                           </span>
                         </div>
                       </div>
@@ -752,7 +752,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider">
                       Recompensas Ativas
                     </p>
-                    <p className="text-2xl font-extrabold text-[#34117E] tracking-tight mt-1.5">
+                    <p className="text-2xl font-extrabold text-[#34117E] dark:text-[#C4B5FD] tracking-tight mt-1.5">
                       +680 coins
                     </p>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium leading-relaxed mt-2.5 max-w-[200px] mx-auto">
@@ -763,7 +763,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
 
                 {/* Info Card */}
                 <div className="w-full bg-[#34117E]/10 rounded-[20px] p-5 border border-[#34117E]/20 flex flex-col text-left shadow-sm-layered">
-                  <span className="text-xs text-[#34117E] font-bold uppercase tracking-widest mb-2 block">DICA DE SUCESSO</span>
+                  <span className="text-xs text-[#34117E] dark:text-[#C4B5FD] font-bold uppercase tracking-widest mb-2 block">DICA DE SUCESSO</span>
                   <p className="text-[#21222D]/80 dark:text-[#F8F9FA]/80 text-xs font-semibold leading-relaxed">
                     Sua meta semanal de foco pode ser atingida com apenas duas sessões de 45 minutos por dia. Mantenha a consistência!
                   </p>

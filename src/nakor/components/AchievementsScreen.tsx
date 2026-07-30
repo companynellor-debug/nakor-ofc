@@ -360,7 +360,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
             <div className="flex flex-col">
               <span className="text-xs text-[#21222D] dark:text-[#F8F9FA] font-bold tracking-tight mb-2.5 block text-center">
                 {nextSeal ? (
-                  <>Faltam <span className="text-[#34117E]">{nextSeal.id === 'consistente' ? `${Math.max(0, 7 - streak)} dias de streak` : nextSeal.id === 'estreante' ? '1 atividade' : `${Math.max(0, (nextSeal.id === 'focado' ? 25 : nextSeal.id === 'dedicado' ? 100 : nextSeal.id === 'elite' ? 250 : 500) - totalHours)}h`}</span> para {nextSeal.name}</>
+                  <>Faltam <span className="text-[#34117E] dark:text-[#C4B5FD]">{nextSeal.id === 'consistente' ? `${Math.max(0, 7 - streak)} dias de streak` : nextSeal.id === 'estreante' ? '1 atividade' : `${Math.max(0, (nextSeal.id === 'focado' ? 25 : nextSeal.id === 'dedicado' ? 100 : nextSeal.id === 'elite' ? 250 : 500) - totalHours)}h`}</span> para {nextSeal.name}</>
                 ) : (
                   'Todos os selos desbloqueados!'
                 )}
@@ -375,7 +375,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
               </div>
 
               {nextSeal && (
-                <span className="text-[11px] text-[#34117E] font-mono font-extrabold text-center block tracking-wide">
+                <span className="text-[11px] text-[#34117E] dark:text-[#C4B5FD] font-mono font-extrabold text-center block tracking-wide">
                   {progressFraction}
                 </span>
               )}
@@ -413,7 +413,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
 
                 {/* Badge Image or "?" placeholder */}
                 {isLenda && !isUnlocked ? (
-                  <div className="w-20 h-20 bg-neutral-100 border-2 border-dashed border-[#34117E]/30 rounded-[16px] flex items-center justify-center text-3xl font-black text-[#34117E] mb-3 select-none">
+                  <div className="w-20 h-20 bg-neutral-100 border-2 border-dashed border-[#34117E]/30 rounded-[16px] flex items-center justify-center text-3xl font-black text-[#34117E] dark:text-[#C4B5FD] mb-3 select-none">
                     ?
                   </div>
                 ) : (
@@ -442,7 +442,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
                 {/* Unlock Status Text */}
                 <div className="mt-auto">
                   {isUnlocked ? (
-                    <span className="text-[10px] font-extrabold text-[#34117E] uppercase tracking-wider flex items-center gap-1">
+                    <span className="text-[10px] font-extrabold text-[#34117E] dark:text-[#C4B5FD] uppercase tracking-wider flex items-center gap-1">
                       Conquistado
                     </span>
                   ) : (

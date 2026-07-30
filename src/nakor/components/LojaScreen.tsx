@@ -249,7 +249,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
           {/* HEADER */}
           <div id="loja-header" className="w-full flex flex-col mb-10">
             <div className="mb-6">
-              <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">RECOMPENSAS</span>
+              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">RECOMPENSAS</span>
               <h1 className="text-3xl font-semibold tracking-tight text-[#21222D] dark:text-[#F8F9FA] font-sans">Trocas</h1>
               <p className="text-neutral-500 dark:text-neutral-400 text-xs mt-0.5 font-medium">Sua dedicação diária vale prêmios exclusivos</p>
             </div>
@@ -258,7 +258,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
             <div className="w-full bg-gradient-to-br from-[#111827] to-[#1E1B4B] rounded-[20px] p-5 shadow-lg relative overflow-hidden">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[#9CA3AF] dark:text-neutral-500 text-[10px] font-mono tracking-[2px] uppercase mb-1">
+                  <div className="text-[#9CA3AF] dark:text-neutral-400 text-[10px] font-mono tracking-[2px] uppercase mb-1">
                     Seu Saldo
                   </div>
                   <div className="flex items-baseline gap-2">
@@ -288,7 +288,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
               <div className="mt-4">
                 {nextProduct ? (
                   <>
-                    <div className="text-[#9CA3AF] dark:text-neutral-500 text-[11px] mb-2 font-medium">
+                    <div className="text-[#9CA3AF] dark:text-neutral-400 text-[11px] mb-2 font-medium">
                       Faltam {nextProduct.price - coins} coins para {nextProduct.name}
                     </div>
                     <div className="w-full h-[6px] bg-[#374151] rounded-[3px] overflow-hidden">
@@ -341,7 +341,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   {renderProductVisual(featuredProduct, false)}
                 </div>
                 <div className="flex-1 p-4 flex flex-col justify-center">
-                  <span className="text-[9px] text-[#9CA3AF] dark:text-neutral-500 font-mono tracking-[1px] uppercase block mb-1">
+                  <span className="text-[9px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase block mb-1">
                     {featuredProduct.category}
                   </span>
                   <h3 className="text-[15px] font-bold text-[#21222D] dark:text-[#F8F9FA] leading-snug line-clamp-2 mb-3">
@@ -394,7 +394,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
 
                   {/* Product Information Card Area */}
                   <div className="p-3 flex flex-col flex-1 bg-transparent">
-                    <span className="text-[9px] text-[#9CA3AF] dark:text-neutral-500 font-mono tracking-[1px] uppercase block mb-1">
+                    <span className="text-[9px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase block mb-1">
                       {product.category}
                     </span>
                     <h3 className="text-[13px] font-bold text-[#21222D] dark:text-[#F8F9FA] leading-snug line-clamp-2">{product.name}</h3>
@@ -402,7 +402,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                     <div className="mt-auto pt-3">
                       {(product.locked || product.soon) ? (
                         <div className="inline-block mt-1">
-                          <span className="text-[10px] text-[#9CA3AF] dark:text-neutral-500 font-mono tracking-[1px] uppercase">EM BREVE</span>
+                          <span className="text-[10px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase">EM BREVE</span>
                         </div>
                       ) : (
                         <div className="flex flex-col items-start gap-0.5">
@@ -415,7 +415,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                             </span>
                           </div>
                           {!canAfford && (
-                            <span className="text-[#9CA3AF] dark:text-neutral-500 text-[10px] pl-1 font-mono">
+                            <span className="text-[#9CA3AF] dark:text-neutral-400 text-[10px] pl-1 font-mono">
                               faltam {product.price - coins}
                             </span>
                           )}
@@ -429,8 +429,8 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
             
             {/* EM BREVE CARD */}
             <div className="bg-[#F9FAFB] rounded-[16px] overflow-hidden border-[1.5px] border-dashed border-[#D1D5DB] flex flex-col items-center justify-center p-4 min-h-[220px]">
-              <span className="text-[32px] text-[#9CA3AF] dark:text-neutral-500 font-mono mb-2">?</span>
-              <span className="text-[11px] text-[#9CA3AF] dark:text-neutral-500 text-center font-bold font-sans">novos prêmios em breve</span>
+              <span className="text-[32px] text-[#9CA3AF] dark:text-neutral-400 font-mono mb-2">?</span>
+              <span className="text-[11px] text-[#9CA3AF] dark:text-neutral-400 text-center font-bold font-sans">novos prêmios em breve</span>
               <span className="text-[9px] text-[#D1D5DB] text-center mt-1">parcerias e cupons semanais</span>
             </div>
           </div>
@@ -469,7 +469,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
 
                 {/* Badge de categoria */}
                 <div className="flex justify-start shrink-0 mb-3">
-                  <span className="bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 text-[#34117E] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 font-mono font-medium text-[9px] tracking-widest rounded-full px-3 py-1 uppercase">
+                  <span className="bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 text-[#34117E] dark:text-[#C4B5FD] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 font-mono font-medium text-[9px] tracking-widest rounded-full px-3 py-1 uppercase">
                     {selectedProduct.category}
                   </span>
                 </div>
@@ -502,7 +502,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   {/* Custo do Resgate */}
                   <div className="flex justify-between items-center border-t border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 pt-3.5">
                     <span className="text-neutral-600 text-xs font-medium">Custo do Resgate</span>
-                    <span className="text-[#34117E] font-bold text-sm font-mono">
+                    <span className="text-[#34117E] dark:text-[#C4B5FD] font-bold text-sm font-mono">
                       {selectedProduct.price} COINS
                     </span>
                   </div>

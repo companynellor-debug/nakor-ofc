@@ -62,7 +62,7 @@ function DailyProgressBar({
         
         {totalTasks > 0 ? (
           <div className="text-right shrink-0">
-            <span className="font-mono font-extrabold text-sm text-[#34117E] tracking-tight">
+            <span className="font-mono font-extrabold text-sm text-[#34117E] dark:text-[#C4B5FD] tracking-tight">
               {percent}%
             </span>
           </div>
@@ -293,10 +293,10 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
 
   const getCategoryIcon = (nome: string) => {
     const n = nome.toLowerCase();
-    if (n.includes('estudo') || n.includes('matemática')) return <Book size={18} strokeWidth={1.5} className="text-[#34117E]" />;
-    if (n.includes('treino') || n.includes('academia') || n.includes('exerc')) return <Dumbbell size={18} strokeWidth={1.5} className="text-[#34117E]" />;
-    if (n.includes('projeto') || n.includes('trabalho') || n.includes('code')) return <Briefcase size={18} strokeWidth={1.5} className="text-[#34117E]" />;
-    return <Activity size={18} strokeWidth={1.5} className="text-[#34117E]" />;
+    if (n.includes('estudo') || n.includes('matemática')) return <Book size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('treino') || n.includes('academia') || n.includes('exerc')) return <Dumbbell size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('projeto') || n.includes('trabalho') || n.includes('code')) return <Briefcase size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    return <Activity size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
   };
 
   const activitiesList = useMemo(() => {
@@ -358,13 +358,13 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Header */}
           <div className="flex justify-between items-start mb-10">
             <div>
-              <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">Início / Nakor</span>
+              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">Início / Nakor</span>
               <h1 className="text-2xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">{greeting}, {userName}</h1>
               <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
             </div>
             <div className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm-layered shrink-0 ${streak >= 1 ? 'bg-gradient-to-r from-[#F59E0B] to-[#F97316]' : 'bg-[#F3F4F6]'}`}>
-              <Flame size={14} strokeWidth={2} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'} />
-              <span className={`font-mono font-bold text-xs ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'}`}>{streak}d</span>
+              <Flame size={14} strokeWidth={2} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'} />
+              <span className={`font-mono font-bold text-xs ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'}`}>{streak}d</span>
             </div>
           </div>
 
@@ -432,7 +432,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <h3 className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
               <button 
                 onClick={() => onNavigate?.('history')}
-                className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
               >
                 Ver todas <ChevronRight size={12} strokeWidth={2} />
               </button>
@@ -462,7 +462,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     <div className="flex items-center gap-3">
                       <span className="text-neutral-500 dark:text-neutral-400 font-mono text-xs">{act.dateTimeStr.split(',')[0]}</span>
                       <div className="h-6 px-2.5 rounded-full bg-[#34117E]/10 border border-[#34117E]/25 flex items-center justify-center">
-                        <span className="text-[#34117E] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
+                        <span className="text-[#34117E] dark:text-[#C4B5FD] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
                       </div>
                     </div>
                   </div>
@@ -496,7 +496,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* Header */}
             <div className="flex justify-between items-start mb-12">
               <div>
-                <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
+                <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
                 <h1 className="text-3xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">
                   {greeting}, <span className="text-[#21222D]/80 dark:text-[#F8F9FA]/80">{userName}</span>
                 </h1>
@@ -511,8 +511,8 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   <Settings size={16} strokeWidth={2} />
                 </button>
                 <div className={`flex items-center gap-1.5 px-4 h-10 rounded-full shadow-sm-layered shrink-0 ${streak >= 1 ? 'bg-gradient-to-r from-[#F59E0B] to-[#F97316]' : 'bg-[#F3F4F6]'}`}>
-                  <Flame size={15} strokeWidth={2.5} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'} />
-                  <span className={`font-mono font-bold text-sm ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'}`}>{streak}d</span>
+                  <Flame size={15} strokeWidth={2.5} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'} />
+                  <span className={`font-mono font-bold text-sm ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'}`}>{streak}d</span>
                 </div>
               </div>
             </div>
@@ -546,7 +546,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
                 <button 
                   onClick={() => onNavigate?.('history')} 
-                  className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                  className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
                 >
                   Ver todas <ChevronRight size={12} strokeWidth={2} />
                 </button>
@@ -576,7 +576,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                       <div className="flex items-center gap-3">
                         <span className="text-neutral-500 dark:text-neutral-400 font-mono text-xs">{act.duration}</span>
                         <div className="h-6 px-2.5 rounded-full bg-[#34117E]/10 border border-[#34117E]/25 flex items-center justify-center">
-                          <span className="text-[#34117E] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
+                          <span className="text-[#34117E] dark:text-[#C4B5FD] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
                         </div>
                       </div>
                     </div>
