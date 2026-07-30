@@ -688,7 +688,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       <div className="space-y-2 mb-1">
                         <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+                            className="h-full bg-white rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]"
                             style={{ width: `${Math.min((streak / 7) * 100, 100)}%` }}
                           />
                         </div>

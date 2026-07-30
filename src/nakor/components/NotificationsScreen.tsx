@@ -121,7 +121,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
                 className={`w-[46px] h-[26px] rounded-full p-1 transition-colors duration-300 ease-in-out shrink-0 relative cursor-pointer ${dailyReminder ? 'bg-[#34117E]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
               >
                 <motion.div 
-                  className="w-[18px] h-[18px] bg-white dark:bg-[#151622] rounded-full shadow-sm"
+                  className="w-[18px] h-[18px] bg-white rounded-full shadow-sm"
                   animate={{ x: dailyReminder ? 20 : 0 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
@@ -160,7 +160,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
                 className={`w-[46px] h-[26px] rounded-full p-1 transition-colors duration-300 ease-in-out shrink-0 relative cursor-pointer ${inactivityAlert ? 'bg-[#34117E]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
               >
                 <motion.div 
-                  className="w-[18px] h-[18px] bg-white dark:bg-[#151622] rounded-full shadow-sm"
+                  className="w-[18px] h-[18px] bg-white rounded-full shadow-sm"
                   animate={{ x: inactivityAlert ? 20 : 0 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
@@ -180,7 +180,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
                 className={`w-[46px] h-[26px] rounded-full p-1 transition-colors duration-300 ease-in-out shrink-0 relative cursor-pointer ${achievements ? 'bg-[#34117E]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
               >
                 <motion.div 
-                  className="w-[18px] h-[18px] bg-white dark:bg-[#151622] rounded-full shadow-sm"
+                  className="w-[18px] h-[18px] bg-white rounded-full shadow-sm"
                   animate={{ x: achievements ? 20 : 0 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
