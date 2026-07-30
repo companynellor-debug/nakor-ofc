@@ -162,9 +162,8 @@ export function FocusCircle({
                 cy="50"
                 r={radius - 4}
                 fill="none"
-                className="stroke-[#34117E] dark:stroke-[#A78BFA]"
+                className="stroke-[#34117E] dark:stroke-[#A78BFA] opacity-25"
                 strokeWidth="1"
-                className="opacity-25"
               />
             )}
 
