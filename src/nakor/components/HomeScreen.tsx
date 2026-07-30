@@ -358,7 +358,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Header */}
           <div className="flex justify-between items-start mb-10">
             <div>
-              <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">Início / Nakor</span>
+              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">Início / Nakor</span>
               <h1 className="text-2xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">{greeting}, {userName}</h1>
               <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
             </div>
@@ -496,7 +496,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* Header */}
             <div className="flex justify-between items-start mb-12">
               <div>
-                <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
+                <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
                 <h1 className="text-3xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">
                   {greeting}, <span className="text-[#21222D]/80 dark:text-[#F8F9FA]/80">{userName}</span>
                 </h1>
