@@ -59,7 +59,6 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
               )}
               <Icon size={17} strokeWidth={isActive ? 2.2 : 1.9} className={`shrink-0 ${isActive ? 'text-[#CFC9FF] drop-shadow-[0_0_10px_rgba(185,178,255,0.6)]' : 'text-white/70 group-hover:text-white'}`} />
               <span className="text-[13px] font-semibold tracking-tight">{tab.label}</span>
-              <span className="text-[13px] font-semibold tracking-tight">{tab.label}</span>
             </button>
           );
         })}
