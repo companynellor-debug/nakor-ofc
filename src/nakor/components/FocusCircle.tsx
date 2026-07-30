@@ -86,7 +86,13 @@ export function FocusCircle({
             strokeWidth="0.5"
             strokeDasharray="1 4"
             className={`transition-opacity duration-700 ${
-              isEmpty ? 'opacity-20' : isComplete ? 'opacity-0' : 'opacity-10'
+              isEmpty
+                ? isMobile
+                  ? 'opacity-40'
+                  : 'opacity-20'
+                : isComplete
+                  ? 'opacity-0'
+                  : 'opacity-10'
             }`}
           />
 
@@ -98,12 +104,13 @@ export function FocusCircle({
               r={radius}
               fill="none"
               stroke="#34117E"
-              strokeWidth="3"
+              strokeWidth={isMobile ? 4 : 3}
               strokeLinecap="round"
-              strokeDasharray="2 90"
+              strokeDasharray={isMobile ? '4 88' : '2 90'}
               className="animate-spin"
               style={{ animationDuration: '8s' }}
             />
+
           ) : (
             /* Progress arc for filled / complete state */
             <>
