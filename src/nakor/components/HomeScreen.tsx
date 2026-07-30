@@ -334,11 +334,9 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
     return [];
   }, [history]);
 
-  // SVG parameters for chronometer
-  const radius = 110;
-  const strokeDasharray = radius * 2 * Math.PI;
+  // Progress percentage for the focus circle (8h daily goal)
   const progressPercent = Math.min((todaySeconds / (8 * 3600)), 1);
-  const strokeDashoffset = strokeDasharray * (1 - progressPercent);
+
 
   return (
     <div className="w-full min-h-screen bg-[#F5F5F7] dark:bg-[#0D0F14] text-[#21222D] dark:text-[#F8F9FA] font-sans flex flex-col md:flex-row relative z-20">
