@@ -363,8 +363,8 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
             </div>
             <div className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm-layered shrink-0 ${streak >= 1 ? 'bg-gradient-to-r from-[#F59E0B] to-[#F97316]' : 'bg-[#F3F4F6]'}`}>
-              <Flame size={14} strokeWidth={2} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'} />
-              <span className={`font-mono font-bold text-xs ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'}`}>{streak}d</span>
+              <Flame size={14} strokeWidth={2} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'} />
+              <span className={`font-mono font-bold text-xs ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'}`}>{streak}d</span>
             </div>
           </div>
 
@@ -511,8 +511,8 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   <Settings size={16} strokeWidth={2} />
                 </button>
                 <div className={`flex items-center gap-1.5 px-4 h-10 rounded-full shadow-sm-layered shrink-0 ${streak >= 1 ? 'bg-gradient-to-r from-[#F59E0B] to-[#F97316]' : 'bg-[#F3F4F6]'}`}>
-                  <Flame size={15} strokeWidth={2.5} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'} />
-                  <span className={`font-mono font-bold text-sm ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-500'}`}>{streak}d</span>
+                  <Flame size={15} strokeWidth={2.5} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'} />
+                  <span className={`font-mono font-bold text-sm ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'}`}>{streak}d</span>
                 </div>
               </div>
             </div>

@@ -510,7 +510,7 @@ export default function App() {
                                 <Play size={26} className="text-white fill-white ml-1" />
                               )}
                             </div>
-                            <span className="text-[10px] mt-2 font-semibold text-[#9CA3AF] dark:text-neutral-500 opacity-0">Iniciar</span>
+                            <span className="text-[10px] mt-2 font-semibold text-[#9CA3AF] dark:text-neutral-400 opacity-0">Iniciar</span>
                           </button>
                         </div>
                       );
