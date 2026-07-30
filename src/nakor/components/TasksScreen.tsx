@@ -325,7 +325,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
             className={`flex-1 py-2.5 text-center font-bold text-sm tracking-tight transition-all rounded-full cursor-pointer ${
               activeMainTab === 'tarefas' 
                 ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA]'
+                : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
             }`}
           >
             Tarefas
@@ -335,7 +335,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
             className={`flex-1 py-2.5 text-center font-bold text-sm tracking-tight transition-all rounded-full cursor-pointer ${
               activeMainTab === 'desafios' 
                 ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA]'
+                : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
             }`}
           >
             Desafios
@@ -414,7 +414,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
 
                         {/* Seta › */}
-                        <ChevronRight size={18} className="text-[#21222D] dark:text-[#F8F9FA]/40 shrink-0 ml-2" />
+                        <ChevronRight size={18} className="text-[#21222D]/40 dark:text-[#F8F9FA]/40 shrink-0 ml-2" />
                       </div>
                     ))
                   )}
@@ -508,7 +508,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 className={`flex-1 py-2 text-center font-bold text-xs transition-all rounded-full cursor-pointer ${
                   activeSubTab === 'diarios' 
                     ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
-                    : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA]'
+                    : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
                 }`}
               >
                 Diários
@@ -518,7 +518,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 className={`flex-1 py-2 text-center font-bold text-xs transition-all rounded-full cursor-pointer ${
                   activeSubTab === 'semanais' 
                     ? 'bg-white dark:bg-[#151622] text-[#34117E] shadow-sm-layered' 
-                    : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA]'
+                    : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
                 }`}
               >
                 Semanais
@@ -764,7 +764,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 {/* Info Card */}
                 <div className="w-full bg-[#34117E]/10 rounded-[20px] p-5 border border-[#34117E]/20 flex flex-col text-left shadow-sm-layered">
                   <span className="text-xs text-[#34117E] font-bold uppercase tracking-widest mb-2 block">DICA DE SUCESSO</span>
-                  <p className="text-[#21222D] dark:text-[#F8F9FA]/80 text-xs font-semibold leading-relaxed">
+                  <p className="text-[#21222D]/80 dark:text-[#F8F9FA]/80 text-xs font-semibold leading-relaxed">
                     Sua meta semanal de foco pode ser atingida com apenas duas sessões de 45 minutos por dia. Mantenha a consistência!
                   </p>
                 </div>
@@ -793,7 +793,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
               <h2 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">Nova tarefa</h2>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] hover:bg-[#DBDBE5]/60 dark:bg-[#2A2B3D]/60 transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-[#DBDBE5]/60 dark:bg-[#2A2B3D]/60 transition-colors cursor-pointer"
               >
                 <X size={16} />
               </button>

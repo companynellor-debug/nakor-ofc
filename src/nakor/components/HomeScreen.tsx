@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 function StatCard({ icon, value, label, bgColor, textColor, iconColor }: { icon: React.ReactNode; value: string; label: string; bgColor?: string; textColor?: string; iconColor?: string }) {
   return (
     <div className={`rounded-[20px] p-5 flex flex-col items-start transition-all shadow-sm-layered ${bgColor || 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'} hover:brightness-[0.98] border border-black/[0.02] dark:border-white/10`}>
-      <div className={`mb-3.5 ${iconColor || 'text-[#21222D] dark:text-[#F8F9FA]/60'}`}>
+      <div className={`mb-3.5 ${iconColor || 'text-[#21222D]/60 dark:text-[#F8F9FA]/60'}`}>
         {icon}
       </div>
       <span className={`font-mono font-bold text-sm leading-none tracking-tight mb-1 ${textColor || 'text-[#21222D] dark:text-[#F8F9FA]'}`}>{value}</span>
@@ -429,10 +429,10 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Recent Activities */}
           <div className="mb-10">
             <div className="flex justify-between items-baseline mb-4">
-              <h3 className="text-[#21222D] dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
+              <h3 className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
               <button 
                 onClick={() => onNavigate?.('history')}
-                className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
               >
                 Ver todas <ChevronRight size={12} strokeWidth={2} />
               </button>
@@ -451,7 +451,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     className="w-full bg-white dark:bg-[#151622] p-5 rounded-[20px] flex items-center justify-between border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:border-[#34117E]/40 shadow-md-layered transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D] dark:text-[#F8F9FA]/80">
+                      <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D]/80 dark:text-[#F8F9FA]/80">
                         {getCategoryIcon(act.name)}
                       </div>
                       <div>
@@ -497,7 +497,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <div>
                 <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
                 <h1 className="text-3xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">
-                  {greeting}, <span className="text-[#21222D] dark:text-[#F8F9FA]/80">{userName}</span>
+                  {greeting}, <span className="text-[#21222D]/80 dark:text-[#F8F9FA]/80">{userName}</span>
                 </h1>
                 <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
               </div>
@@ -538,10 +538,10 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* Recent Activities (Desktop) */}
             <div className="w-full bg-transparent">
               <div className="flex justify-between items-baseline mb-6">
-                <h3 className="text-xs font-bold tracking-wider text-[#21222D] dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
+                <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
                 <button 
                   onClick={() => onNavigate?.('history')} 
-                  className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                  className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
                 >
                   Ver todas <ChevronRight size={12} strokeWidth={2} />
                 </button>
@@ -560,7 +560,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                       className="w-full bg-white dark:bg-[#151622] p-5 rounded-[20px] flex items-center justify-between border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:border-[#34117E]/40 hover:shadow-md-layered cursor-pointer transition-all shadow-sm-layered"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D] dark:text-[#F8F9FA]/80">
+                        <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D]/80 dark:text-[#F8F9FA]/80">
                           {getCategoryIcon(act.name)}
                         </div>
                         <div>
@@ -625,7 +625,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
 
             {/* Estatísticas (Desktop) */}
             <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
-              <h3 className="text-xs font-bold tracking-wider text-[#21222D] dark:text-[#F8F9FA]/70 uppercase mb-5">Estatísticas</h3>
+              <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase mb-5">Estatísticas</h3>
               <div className="grid grid-cols-2 gap-4.5">
                 <StatCard 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
@@ -633,7 +633,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Hoje" 
                   bgColor="bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
                 <StatCard 
                   icon={<Flame size={16} strokeWidth={2.5} />} 
@@ -641,7 +641,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Sequência" 
                   bgColor="bg-[#ACD1FD]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
                 <StatCard 
                   icon={<Activity size={16} strokeWidth={2.5} />} 
@@ -649,7 +649,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Média" 
                   bgColor="bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
                 <StatCard 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
@@ -657,7 +657,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Tempo Total" 
                   bgColor="bg-[#ACD1FD]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
               </div>
             </div>

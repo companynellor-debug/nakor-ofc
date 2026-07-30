@@ -295,7 +295,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
           <div className="flex flex-col">
             <button 
               onClick={() => onNavigate('profile')}
-              className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] text-xs font-bold uppercase tracking-wider mb-2 cursor-pointer transition-colors"
+              className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] text-xs font-bold uppercase tracking-wider mb-2 cursor-pointer transition-colors"
             >
               <ChevronLeft size={16} />
               Voltar

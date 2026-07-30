@@ -140,7 +140,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
           <button 
             onClick={decrementHours}
             type="button"
-            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] hover:bg-neutral-50 mb-1 cursor-pointer transition-all active:scale-90 shadow-sm"
+            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-neutral-50 mb-1 cursor-pointer transition-all active:scale-90 shadow-sm"
           >
             <ChevronUp size={16} />
           </button>
@@ -170,7 +170,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
                     className={`h-12 flex items-center justify-center snap-center cursor-pointer transition-all duration-200 select-none ${
                       isSelected 
                         ? 'text-[#34117E] font-black text-2xl scale-110 drop-shadow-[0_0_10px_rgba(52,17,126,0.3)]' 
-                        : 'text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] font-bold text-base'
+                        : 'text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] font-bold text-base'
                     }`}
                   >
                     {String(h).padStart(2, '0')}
@@ -184,7 +184,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
           <button 
             onClick={incrementHours}
             type="button"
-            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] hover:bg-neutral-50 mt-1 cursor-pointer transition-all active:scale-90 shadow-sm"
+            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-neutral-50 mt-1 cursor-pointer transition-all active:scale-90 shadow-sm"
           >
             <ChevronDown size={16} />
           </button>
@@ -201,7 +201,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
           <button 
             onClick={decrementMinutes}
             type="button"
-            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] hover:bg-neutral-50 mb-1 cursor-pointer transition-all active:scale-90 shadow-sm"
+            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-neutral-50 mb-1 cursor-pointer transition-all active:scale-90 shadow-sm"
           >
             <ChevronUp size={16} />
           </button>
@@ -231,7 +231,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
                     className={`h-12 flex items-center justify-center snap-center cursor-pointer transition-all duration-200 select-none ${
                       isSelected 
                         ? 'text-[#34117E] font-black text-2xl scale-110 drop-shadow-[0_0_10px_rgba(52,17,126,0.3)]' 
-                        : 'text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] font-bold text-base'
+                        : 'text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] font-bold text-base'
                     }`}
                   >
                     {String(m).padStart(2, '0')}
@@ -245,7 +245,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
           <button 
             onClick={incrementMinutes}
             type="button"
-            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] hover:bg-neutral-50 mt-1 cursor-pointer transition-all active:scale-90 shadow-sm"
+            className="w-8 h-8 rounded-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-neutral-50 mt-1 cursor-pointer transition-all active:scale-90 shadow-sm"
           >
             <ChevronDown size={16} />
           </button>
@@ -323,7 +323,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
 
         {/* Duration */}
         <div className="w-full mb-8">
-          <label className="text-[#21222D] dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block pl-1">DURAÇÃO</label>
+          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block pl-1">DURAÇÃO</label>
           <div className="flex flex-wrap gap-2">
             {[25, 45, 60, 90].map((d) => (
               <button
@@ -332,7 +332,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
                 className={`flex-1 min-w-[60px] py-3 rounded-full text-sm font-bold transition-all cursor-pointer ${
                   duration === d && !isCustomTime
                     ? 'bg-[#34117E] text-white shadow-md' 
-                    : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D] dark:text-[#F8F9FA]/80 hover:bg-neutral-50 shadow-sm'
+                    : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D]/80 dark:text-[#F8F9FA]/80 hover:bg-neutral-50 shadow-sm'
                 }`}
               >
                 {d}min
@@ -343,7 +343,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
               className={`flex-[2] min-w-[120px] py-3 rounded-full text-sm font-bold transition-all cursor-pointer ${
                 isCustomTime
                   ? 'bg-[#34117E] text-white shadow-md' 
-                  : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D] dark:text-[#F8F9FA]/80 hover:bg-neutral-50 shadow-sm'
+                  : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D]/80 dark:text-[#F8F9FA]/80 hover:bg-neutral-50 shadow-sm'
               }`}
             >
               Personalizado
@@ -377,14 +377,14 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
           <div className="space-y-0">
             {subtasks.map((task, idx) => (
               <div key={idx} className="flex items-center gap-3 border-b border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 py-3 first:pt-0">
-                <Circle size={20} className="text-[#21222D] dark:text-[#F8F9FA]/40 shrink-0" />
+                <Circle size={20} className="text-[#21222D]/40 dark:text-[#F8F9FA]/40 shrink-0" />
                 <span className="text-[#21222D] dark:text-[#F8F9FA] text-sm font-medium">{task}</span>
               </div>
             ))}
 
             {isAddingSubtask && subtasks.length < 5 && (
               <div className="flex items-center gap-3 py-3 border-b border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 last:border-0">
-                <Circle size={20} className="text-[#21222D] dark:text-[#F8F9FA]/40 shrink-0" />
+                <Circle size={20} className="text-[#21222D]/40 dark:text-[#F8F9FA]/40 shrink-0" />
                 <input 
                   autoFocus
                   type="text"
@@ -413,7 +413,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
 
         {/* Notes (Antes) */}
         <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 p-5 shadow-sm">
-          <label className="text-[#21222D] dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block">ANTES</label>
+          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block">ANTES</label>
           <div className="relative">
             <textarea
               value={beforeText}
