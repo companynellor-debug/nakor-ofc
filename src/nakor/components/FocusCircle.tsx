@@ -21,202 +21,251 @@ export function FocusCircle({
   variant = 'mobile',
 }: FocusCircleProps) {
   const isMobile = variant === 'mobile';
-  const radius = 46;
-  const strokeDasharray = radius * 2 * Math.PI;
-  const strokeDashoffset = strokeDasharray * (1 - progressPercent);
-
   const isEmpty = todaySeconds === 0;
   const isComplete = progressPercent >= 1;
 
+  const radius = 46;
+  const strokeDasharray = radius * 2 * Math.PI;
+  const strokeDashoffset = strokeDasharray * (1 - progressPercent);
   const headAngle = progressPercent * 2 * Math.PI - Math.PI / 2;
   const headX = 50 + radius * Math.cos(headAngle);
   const headY = 50 + radius * Math.sin(headAngle);
 
+  const ringSize = isMobile ? 'inset-[5%]' : 'inset-[8%]';
+  const ringThickness = isMobile ? 6 : 5;
+  const trackThickness = isMobile ? 0.5 : 0.5;
+  const headRadius = isMobile ? 5 : 4.5;
+  const orbSize = isMobile ? 16 : 14;
+  const textSize = isMobile ? 'text-5xl' : 'text-[52px]';
+  const unitSize = isMobile ? 'text-2xl' : 'text-[32px]';
+  const labelSize = isMobile ? 'text-[10px]' : 'text-[11px]';
+  const ctaSize = isMobile ? 'text-[11px]' : 'text-xs';
+
+  const accentColor = isComplete ? '#34117E' : '#8B5CF6';
+  const gradientFrom = isComplete ? '#34117E' : '#8B5CF6';
+  const gradientTo = isComplete ? '#4F46E5' : '#4F46E5';
+  const textColor = isEmpty ? 'text-[#34117E]' : 'text-[#21222D] dark:text-[#F8F9FA]';
 
   return (
     <div
       className="relative flex items-center justify-center"
       style={{ width: size, height: size }}
     >
-      {/* State-based ambient glow */}
+      {/* Ambient glow */}
       <div
-        className={`absolute inset-0 rounded-full blur-[60px] pointer-events-none transition-all duration-700 ${
-          isComplete
-            ? 'bg-[#34117E]/25'
-            : isMobile
-              ? 'bg-[#34117E]/15'
-              : 'bg-[#34117E]/5'
+        className={`absolute inset-0 rounded-full pointer-events-none transition-all duration-700 ${
+          isComplete ? 'bg-[#34117E]/15' : 'bg-[#34117E]/10'
+        }`}
+        style={{ filter: 'blur(60px)' }}
+      />
+
+      {/* Outer decorative ring */}
+      <div
+        className={`absolute inset-0 rounded-full border pointer-events-none transition-colors duration-700 ${
+          isComplete ? 'border-[#34117E]/20' : 'border-[#E0DDF5]/70'
         }`}
       />
 
-      {/* Layered concentric rings */}
+      {/* Main solid track ring */}
       <div
-        className={`absolute inset-[-10%] rounded-full border pointer-events-none transition-colors duration-700 ${
-          isComplete
-            ? 'border-[#34117E]/30'
-            : isMobile
-              ? 'border-[#34117E]/25'
-              : 'border-[#34117E]/10'
+        className={`absolute ${ringSize} rounded-full pointer-events-none transition-all duration-700 ${
+          isComplete ? 'border-[#34117E]/15' : 'border-[#F1F1F7]'
         }`}
-      />
-      <div
-        className={`absolute inset-[-20%] rounded-full border pointer-events-none transition-colors duration-700 ${
-          isComplete
-            ? 'border-[#34117E]/20'
-            : isMobile
-              ? 'border-[#34117E]/15'
-              : 'border-[#34117E]/5'
-        }`}
+        style={{
+          borderWidth: ringThickness,
+          boxShadow: 'inset 0 2px 4px rgba(52, 17, 126, 0.04)',
+        }}
       />
 
+      {/* SVG progress ring */}
+      <svg
+        className={`absolute ${ringSize} w-[90%] h-[90%] -rotate-90 overflow-visible pointer-events-none`}
+        viewBox="0 0 100 100"
+      >
+        <defs>
+          <linearGradient
+            id={`timerProgressGrad-${variant}`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor={gradientFrom} />
+            <stop offset="100%" stopColor={gradientTo} />
+          </linearGradient>
+        </defs>
 
-      {/* Main decorative ring */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <svg
-          className="w-full h-full -rotate-90 overflow-visible"
-          viewBox="0 0 100 100"
-        >
-          {/* Background track */}
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="none"
-            stroke="#34117E"
-            strokeWidth="0.5"
-            strokeDasharray="1 4"
-            className={`transition-opacity duration-700 ${
-              isEmpty
-                ? isMobile
-                  ? 'opacity-40'
-                  : 'opacity-20'
-                : isComplete
-                  ? 'opacity-0'
-                  : 'opacity-10'
-            }`}
-          />
+        {/* Dotted background track */}
+        <circle
+          cx="50"
+          cy="50"
+          r={radius}
+          fill="none"
+          stroke="#E0DDF5"
+          strokeWidth={trackThickness}
+          strokeDasharray="1 6"
+          strokeLinecap="round"
+          className={`transition-opacity duration-700 ${
+            isEmpty ? 'opacity-60' : isComplete ? 'opacity-0' : 'opacity-40'
+          }`}
+        />
 
-          {isEmpty ? (
-            /* Animated accent segment for empty state */
+        {isEmpty ? (
+          /* Hero glowing segment for empty state */
+          <>
             <circle
               cx="50"
               cy="50"
               r={radius}
               fill="none"
-              stroke="#34117E"
-              strokeWidth={isMobile ? 4 : 3}
+              stroke={`url(#timerProgressGrad-${variant})`}
+              strokeWidth={isMobile ? 6 : 5}
               strokeLinecap="round"
-              strokeDasharray={isMobile ? '4 88' : '2 90'}
-              className="animate-spin"
-              style={{ animationDuration: '8s' }}
+              strokeDasharray={isMobile ? '18 270' : '16 272'}
+              className="drop-shadow-[0_0_12px_rgba(79,70,229,0.35)]"
+              style={{
+                transformOrigin: 'center',
+                animation: 'spin 8s linear infinite',
+              }}
             />
-
-          ) : (
-            /* Progress arc for filled / complete state */
-            <>
-              <defs>
-                <linearGradient
-                  id={`timerProgressGrad-${variant}`}
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor={isMobile ? '#34117E' : '#4F46E5'} />
-                  <stop offset="100%" stopColor={isMobile ? '#4F46E5' : '#8B5CF6'} />
-                </linearGradient>
-
-              </defs>
-
-              {/* Full inner ring for complete state */}
-              {isComplete && (
-                <circle
-                  cx="50"
-                  cy="50"
-                  r={radius - 3}
-                  fill="none"
-                  stroke="#34117E"
-                  strokeWidth="1"
-                  className="opacity-30"
-                />
-              )}
-
-              {/* Main progress arc */}
+            <circle
+              cx="50"
+              cy="50"
+              r={radius}
+              fill="none"
+              stroke={`url(#timerProgressGrad-${variant})`}
+              strokeWidth={isMobile ? 2 : 1.5}
+              strokeLinecap="round"
+              strokeDasharray={isMobile ? '4 284' : '3 286'}
+              className="opacity-30"
+              style={{
+                transformOrigin: 'center',
+                animation: 'spin 12s linear infinite reverse',
+              }}
+            />
+          </>
+        ) : (
+          <>
+            {/* Complete state inner ring */}
+            {isComplete && (
               <circle
                 cx="50"
                 cy="50"
-                r={radius}
-                stroke={`url(#timerProgressGrad-${variant})`}
-                strokeWidth={isComplete ? 4 : 3}
+                r={radius - 4}
                 fill="none"
-                strokeLinecap="round"
-                strokeDasharray={strokeDasharray}
-                strokeDashoffset={strokeDashoffset}
-                className="transition-all duration-700 ease-out"
+                stroke="#34117E"
+                strokeWidth="1"
+                className="opacity-25"
               />
+            )}
 
-              {/* Progress head dot */}
-              {!isComplete && (
+            {/* Main progress arc */}
+            <circle
+              cx="50"
+              cy="50"
+              r={radius}
+              stroke={`url(#timerProgressGrad-${variant})`}
+              strokeWidth={isComplete ? 6 : isMobile ? 5 : 4}
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray={strokeDasharray}
+              strokeDashoffset={strokeDashoffset}
+              className="transition-all duration-700 ease-out drop-shadow-[0_0_10px_rgba(79,70,229,0.25)]"
+            />
+
+            {/* Progress head orb */}
+            {!isComplete && (
+              <g>
                 <circle
                   cx={headX}
                   cy={headY}
-                  r={isMobile ? '4' : '3.5'}
-                  className={`fill-white stroke-[1px] ${
-                    isMobile ? 'stroke-[#34117E]' : 'stroke-[#4F46E5]'
-                  }`}
+                  r={headRadius + 2}
+                  className="fill-white drop-shadow-md"
                 />
-              )}
-            </>
-          )}
-        </svg>
+                <circle
+                  cx={headX}
+                  cy={headY}
+                  r={headRadius}
+                  fill={accentColor}
+                />
+              </g>
+            )}
+          </>
+        )}
+      </svg>
+
+      {/* Orbital indicator orb */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          transform: isEmpty
+            ? 'rotate(15deg)'
+            : `rotate(${progressPercent * 360}deg)`,
+          transition: 'transform 700ms ease-out',
+        }}
+      >
+        <div
+          className="absolute left-1/2 -translate-x-1/2 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-700"
+          style={{
+            width: orbSize,
+            height: orbSize,
+            top: isMobile ? -6 : -4,
+            border: '1px solid rgba(79, 70, 229, 0.25)',
+          }}
+        >
+          <div
+            className="rounded-full transition-colors duration-700"
+            style={{
+              width: orbSize / 2.5,
+              height: orbSize / 2.5,
+              backgroundColor: accentColor,
+            }}
+          />
+        </div>
       </div>
 
-      {/* Complete-state glow ring */}
+      {/* Complete state outer glow ring */}
       {isComplete && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className={`absolute rounded-full border-2 pointer-events-none ${
-            isMobile ? 'inset-[-12%] border-[#34117E]/50' : 'inset-[-8%] border-[#4F46E5]/40'
-          }`}
+          className="absolute inset-[-10%] rounded-full border-2 border-[#34117E]/30 pointer-events-none"
         />
       )}
 
-
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6">
+        <span
+          className={`${labelSize} font-bold tracking-[0.2em] uppercase mb-2 transition-colors duration-700 ${
+            isEmpty ? 'text-[#34117E]/40' : 'text-neutral-400 dark:text-neutral-500'
+          }`}
+        >
+          Tempo Focado Hoje
+        </span>
+
         <div className="flex items-baseline space-x-2 mb-1">
-          <span
-            className={`text-5xl font-bold tracking-tight transition-colors duration-700 ${
-              isEmpty ? 'text-[#34117E]' : 'text-[#21222D] dark:text-[#F8F9FA]'
-            }`}
-          >
+          <span className={`${textSize} font-bold tracking-tighter transition-colors duration-700 ${textColor}`}>
             {displayHours}
-            <span className="text-2xl font-semibold opacity-60 ml-0.5">h</span>
+            <span className={`${unitSize} font-semibold opacity-60 ml-0.5`}>h</span>
           </span>
-          <span
-            className={`text-5xl font-bold tracking-tight transition-colors duration-700 ${
-              isEmpty ? 'text-[#34117E]' : 'text-[#21222D] dark:text-[#F8F9FA]'
-            }`}
-          >
+          <span className={`${textSize} font-bold tracking-tighter transition-colors duration-700 ${textColor}`}>
             {displayMinutes}
-            <span className="text-2xl font-semibold opacity-60 ml-0.5">m</span>
+            <span className={`${unitSize} font-semibold opacity-60 ml-0.5`}>m</span>
           </span>
         </div>
 
         {isEmpty ? (
           <div className="mt-4 flex flex-col items-center gap-2">
-            <p className="text-[#34117E]/70 text-sm font-medium uppercase tracking-[0.15em]">
-              comece sua primeira sessão
+            <p className={`${ctaSize} font-semibold tracking-wider text-[#8B5CF6] uppercase text-center max-w-[140px] leading-relaxed`}>
+              Comece sua primeira sessão
             </p>
-            {/* Pulsing indicator bar */}
-            <div className="mt-6 w-14 h-1.5 bg-[#34117E]/15 rounded-full overflow-hidden">
+            <div className="mt-4 w-12 h-1.5 bg-[#34117E]/10 rounded-full overflow-hidden">
               <div className="h-full bg-[#34117E] w-1/3 rounded-full animate-pulse" />
             </div>
           </div>
         ) : isComplete ? (
           <div className="mt-4 flex flex-col items-center gap-2">
-            <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/20 border border-[#34117E]/40 text-[#34117E] px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/15 border border-[#34117E]/30 text-[#34117E] px-3 py-1.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] animate-pulse" />
               Meta de hoje alcançada
             </div>
@@ -226,7 +275,7 @@ export function FocusCircle({
             </p>
           </div>
         ) : (
-          <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/15 border border-[#34117E]/25 px-3 py-1 rounded-full text-neutral-600">
+          <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/10 border border-[#34117E]/20 px-3 py-1 rounded-full text-neutral-600">
             <span className="w-1.5 h-1.5 rounded-full bg-[#34117E]" />
             Nota média:{' '}
             <strong className="text-[#34117E] font-mono">{avgToday}</strong>
@@ -234,19 +283,19 @@ export function FocusCircle({
         )}
       </div>
 
-      {/* Ornamental floating accents */}
+      {/* Floating accent dots */}
       <div
-        className={`absolute top-4 left-4 w-2 h-2 rounded-full pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'bg-[#34117E]/50' : 'bg-[#34117E]/40'
+        className={`absolute top-[25%] left-[8%] w-2.5 h-2.5 rounded-full pointer-events-none transition-colors duration-700 ${
+          isComplete ? 'bg-[#34117E]/40' : 'bg-[#8B5CF6]/40'
         }`}
+        style={{ filter: 'blur(1px)' }}
       />
       <div
-        className={`absolute bottom-10 right-8 w-1.5 h-1.5 rounded-full pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'bg-[#34117E]/40' : 'bg-[#34117E]/30'
+        className={`absolute bottom-[18%] right-[15%] w-2 h-2 rounded-full pointer-events-none transition-colors duration-700 ${
+          isComplete ? 'bg-[#34117E]/50' : 'bg-[#4F46E5]/60'
         }`}
+        style={{ filter: 'blur(1px)' }}
       />
-
     </div>
   );
 }
-
