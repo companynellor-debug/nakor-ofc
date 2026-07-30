@@ -111,11 +111,10 @@ export function FocusCircle({
           cy="50"
           r={radius}
           fill="none"
-          className="stroke-[#E0DDF5] dark:stroke-[#4C4470]"
           strokeWidth={trackThickness}
           strokeDasharray="1 6"
           strokeLinecap="round"
-          className={`transition-opacity duration-700 ${
+          className={`stroke-[#E0DDF5] dark:stroke-[#4C4470] transition-opacity duration-700 ${
             isEmpty ? 'opacity-60' : isComplete ? 'opacity-0' : 'opacity-40'
           }`}
         />
