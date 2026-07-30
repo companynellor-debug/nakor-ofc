@@ -401,7 +401,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
               >
                 {/* Overlay lock condition if blocked */}
                 {!isUnlocked && (
-                  <div className="absolute inset-0 bg-white dark:bg-[#151622]/75 backdrop-blur-[1px] z-20 flex flex-col items-center justify-center p-2 opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-white/75 backdrop-blur-[1px] z-20 flex flex-col items-center justify-center p-2 opacity-100 transition-opacity">
                     <div className="w-10 h-10 bg-white dark:bg-[#151622] rounded-full border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 flex items-center justify-center mb-1.5 shadow-sm-layered">
                       <Lock size={15} className="text-neutral-500 dark:text-neutral-400" />
                     </div>

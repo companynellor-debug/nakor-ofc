@@ -393,7 +393,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
             </div>
             
-            <div className="w-full h-1.5 bg-white dark:bg-[#151622]/25 rounded-full mb-6 overflow-hidden">
+            <div className="w-full h-1.5 bg-white/25 rounded-full mb-6 overflow-hidden">
               <div 
                 className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
                 style={{ width: `${Math.min((weeklyStats.totalHours / goalHours) * 100, 100)}%` }} 
@@ -410,7 +410,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                       className={`w-2 h-2 rounded-full transition-all duration-300 ${
                         active 
                           ? 'bg-white dark:bg-[#151622]' 
-                          : 'bg-white dark:bg-[#151622]/30'
+                          : 'bg-white/30'
                       } ${
                         isTodayDay
                           ? 'ring-2 ring-white ring-offset-2 ring-offset-[#34117E]' 
@@ -592,7 +592,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
               </div>
               
-              <div className="w-full h-1.5 bg-white dark:bg-[#151622]/25 rounded-full mb-6 overflow-hidden">
+              <div className="w-full h-1.5 bg-white/25 rounded-full mb-6 overflow-hidden">
                 <div 
                   className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
                   style={{ width: `${Math.min((weeklyStats.totalHours / goalHours) * 100, 100)}%` }} 
@@ -607,7 +607,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     <div key={day} className="flex flex-col items-center gap-2">
                       <div 
                         className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          active ? 'bg-white dark:bg-[#151622]' : 'bg-white dark:bg-[#151622]/30'
+                          active ? 'bg-white' : 'bg-white/30'
                         } ${
                           isTodayDay
                             ? 'ring-2 ring-white ring-offset-2 ring-offset-[#34117E]' 

@@ -671,12 +671,12 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     {/* Card 2: Streak */}
                     <div className="w-full bg-[#34117E] rounded-[28px] p-7 shadow-lg-layered flex flex-col text-left text-white">
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-white dark:bg-[#151622]/10 flex items-center justify-center shrink-0 border border-white/20 text-center">
+                        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20 text-center">
                           <span className="text-xl">🔥</span>
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-white dark:bg-[#151622]/10 text-white/80 text-[9px] font-bold uppercase tracking-wider mb-1.5">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/10 text-white/80 text-[9px] font-bold uppercase tracking-wider mb-1.5">
                             DESAFIO SEMANAL
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
@@ -686,7 +686,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       </div>
 
                       <div className="space-y-2 mb-1">
-                        <div className="w-full h-2 bg-white dark:bg-[#151622]/20 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
                           <div 
                             className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]"
                             style={{ width: `${Math.min((streak / 7) * 100, 100)}%` }}
@@ -696,7 +696,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                           <span className="text-xs font-bold text-white/70">
                             <span className="text-white">{Math.min(streak, 7)}</span> / 7 dias
                           </span>
-                          <div className="flex items-center gap-1.5 bg-white dark:bg-[#151622]/10 px-3 py-1 rounded-xl border border-white/20">
+                          <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-xl border border-white/20">
                             <CoinIcon className="w-3.5 h-3.5 text-white" />
                             <span className="text-xs font-extrabold text-white">+300 coins</span>
                           </div>

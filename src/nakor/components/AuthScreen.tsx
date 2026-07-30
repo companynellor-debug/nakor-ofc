@@ -433,7 +433,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
             <div className="bg-white dark:bg-[#151622]/[0.04] backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg-layered max-w-md">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-mono tracking-wider text-[#E4DAFF] uppercase">Sessão Ativa</span>
-                <span className="text-[10px] font-mono text-[#F3EEFF] bg-white dark:bg-[#151622]/10 px-2.5 py-0.5 rounded-full font-bold">Modo Foco</span>
+                <span className="text-[10px] font-mono text-[#F3EEFF] bg-white/10 px-2.5 py-0.5 rounded-full font-bold">Modo Foco</span>
               </div>
               <h4 className="text-base font-semibold text-white tracking-tight mb-1">Revisão de Redação do ENEM</h4>
               <p className="text-xs text-neutral-300 font-sans mb-4">Duração planejada: 45 min — Sem distrações</p>
@@ -442,7 +442,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                 <div className="text-3xl font-display font-bold tracking-tight text-white">
                   24:59
                 </div>
-                <div className="w-24 h-1.5 bg-white dark:bg-[#151622]/10 rounded-full overflow-hidden">
+                <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
                   <div className="w-7/12 h-full bg-[#E4DAFF]" />
                 </div>
               </div>

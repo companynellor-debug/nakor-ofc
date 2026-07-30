@@ -46,8 +46,8 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
               onClick={() => onNavigate?.(tab.id)}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-150 cursor-pointer border select-none outline-none ${
                 isActive 
-                  ? 'bg-white dark:bg-[#151622]/10 text-white border-white/20 font-bold shadow-sm' 
-                  : 'text-[#DBDBE5]/55 hover:bg-white dark:bg-[#151622]/5 hover:text-white border-transparent'
+                  ? 'bg-white/10 text-white border-white/20 font-bold shadow-sm' 
+                  : 'text-[#DBDBE5]/55 hover:bg-white/5 hover:text-white border-transparent'
               }`}
             >
               <Icon size={16} strokeWidth={isActive ? 2.2 : 1.5} className="shrink-0" />
@@ -58,7 +58,7 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
       </nav>
       
       <div className="mt-auto pt-6 border-t border-[#DBDBE5]/10 dark:border-[#2A2B3D]/10 px-2 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-white dark:bg-[#151622]/10 border border-white/20 flex items-center justify-center text-white font-medium text-xs shrink-0 uppercase overflow-hidden relative">
+        <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white font-medium text-xs shrink-0 uppercase overflow-hidden relative">
           {avatarUrl ? (
             <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
           ) : (
