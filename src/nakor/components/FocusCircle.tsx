@@ -20,6 +20,7 @@ export function FocusCircle({
   size = 256,
   variant = 'mobile',
 }: FocusCircleProps) {
+  const isMobile = variant === 'mobile';
   const radius = 46;
   const strokeDasharray = radius * 2 * Math.PI;
   const strokeDashoffset = strokeDasharray * (1 - progressPercent);
@@ -30,6 +31,7 @@ export function FocusCircle({
   const headAngle = progressPercent * 2 * Math.PI - Math.PI / 2;
   const headX = 50 + radius * Math.cos(headAngle);
   const headY = 50 + radius * Math.sin(headAngle);
+
 
   return (
     <div
