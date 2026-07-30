@@ -395,7 +395,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             
             <div className="w-full h-1.5 bg-white/25 rounded-full mb-6 overflow-hidden">
               <div 
-                className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
+                className="h-full bg-white rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
                 style={{ width: `${Math.min((weeklyStats.totalHours / goalHours) * 100, 100)}%` }} 
               />
             </div>
@@ -409,7 +409,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     <div 
                       className={`w-2 h-2 rounded-full transition-all duration-300 ${
                         active 
-                          ? 'bg-white dark:bg-[#151622]' 
+                          ? 'bg-white' 
                           : 'bg-white/30'
                       } ${
                         isTodayDay
@@ -599,7 +599,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               
               <div className="w-full h-1.5 bg-white/25 rounded-full mb-6 overflow-hidden">
                 <div 
-                  className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
+                  className="h-full bg-white rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
                   style={{ width: `${Math.min((weeklyStats.totalHours / goalHours) * 100, 100)}%` }} 
                 />
               </div>
@@ -644,7 +644,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   icon={<Flame size={16} strokeWidth={2.5} />} 
                   value={`${streak}`} 
                   label="Sequência" 
-                  bgColor="bg-[#ACD1FD]" 
+                  bgColor="bg-[#ACD1FD] dark:bg-[#2B2A48]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
                   iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
@@ -660,7 +660,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
                   value={`${displayTotalHistoryHours}h`} 
                   label="Tempo Total" 
-                  bgColor="bg-[#ACD1FD]" 
+                  bgColor="bg-[#ACD1FD] dark:bg-[#2B2A48]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
                   iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />

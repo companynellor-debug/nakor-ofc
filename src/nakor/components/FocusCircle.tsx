@@ -100,8 +100,8 @@ export function FocusCircle({
             x2="100%"
             y2="100%"
           >
-            <stop offset="0%" stopColor={gradientFrom} />
-            <stop offset="100%" stopColor={gradientTo} />
+            <stop offset="0%" stopColor="var(--fc-from)" />
+            <stop offset="100%" stopColor="var(--fc-to)" />
           </linearGradient>
         </defs>
 
@@ -111,7 +111,7 @@ export function FocusCircle({
           cy="50"
           r={radius}
           fill="none"
-          stroke="#E0DDF5"
+          className="stroke-[#E0DDF5] dark:stroke-[#4C4470]"
           strokeWidth={trackThickness}
           strokeDasharray="1 6"
           strokeLinecap="round"
@@ -163,7 +163,7 @@ export function FocusCircle({
                 cy="50"
                 r={radius - 4}
                 fill="none"
-                stroke="#34117E"
+                className="stroke-[#34117E] dark:stroke-[#A78BFA]"
                 strokeWidth="1"
                 className="opacity-25"
               />
@@ -190,13 +190,13 @@ export function FocusCircle({
                   cx={headX}
                   cy={headY}
                   r={headRadius + 2}
-                  className="fill-white drop-shadow-md"
+                  className="fill-white dark:fill-[#1B1C29] drop-shadow-md"
                 />
                 <circle
                   cx={headX}
                   cy={headY}
                   r={headRadius}
-                  fill={accentColor}
+                  fill="var(--fc-accent)"
                 />
               </g>
             )}
@@ -215,7 +215,7 @@ export function FocusCircle({
         }}
       >
         <div
-          className="absolute left-1/2 -translate-x-1/2 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-700"
+          className="absolute left-1/2 -translate-x-1/2 rounded-full bg-white dark:bg-[#1B1C29] shadow-lg flex items-center justify-center transition-all duration-700"
           style={{
             width: orbSize,
             height: orbSize,
@@ -228,7 +228,7 @@ export function FocusCircle({
             style={{
               width: orbSize / 2.5,
               height: orbSize / 2.5,
-              backgroundColor: accentColor,
+              backgroundColor: "var(--fc-accent)",
             }}
           />
         </div>
@@ -239,7 +239,7 @@ export function FocusCircle({
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="absolute inset-[-10%] rounded-full border-2 border-[#34117E]/30 pointer-events-none"
+          className="absolute inset-[-10%] rounded-full border-2 border-[#34117E]/30 dark:border-[#A78BFA]/45 pointer-events-none"
         />
       )}
 
@@ -247,7 +247,7 @@ export function FocusCircle({
       <div className="relative z-10 flex flex-col items-center text-center px-6">
         <span
           className={`${labelSize} font-bold tracking-[0.2em] uppercase mb-2 transition-colors duration-700 ${
-            isEmpty ? 'text-[#34117E]/40' : 'text-neutral-400 dark:text-neutral-500'
+            isEmpty ? 'text-[#34117E]/40 dark:text-[#C4B5FD]/60' : 'text-neutral-400 dark:text-neutral-400'
           }`}
         >
           Tempo Focado Hoje
@@ -266,29 +266,29 @@ export function FocusCircle({
 
         {isEmpty ? (
           <div className="mt-4 flex flex-col items-center gap-2">
-            <p className={`${ctaSize} font-semibold tracking-wider text-[#8B5CF6] uppercase text-center max-w-[140px] leading-relaxed`}>
+            <p className={`${ctaSize} font-semibold tracking-wider text-[#8B5CF6] dark:text-[#C4B5FD] uppercase text-center max-w-[140px] leading-relaxed`}>
               Comece sua primeira sessão
             </p>
-            <div className="mt-4 w-12 h-1.5 bg-[#34117E]/10 rounded-full overflow-hidden">
-              <div className="h-full bg-[#34117E] w-1/3 rounded-full animate-pulse" />
+            <div className="mt-4 w-12 h-1.5 bg-[#34117E]/10 dark:bg-white/10 rounded-full overflow-hidden">
+              <div className="h-full bg-[#34117E] dark:bg-[#C4B5FD] w-1/3 rounded-full animate-pulse" />
             </div>
           </div>
         ) : isComplete ? (
           <div className="mt-4 flex flex-col items-center gap-2">
-            <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/15 border border-[#34117E]/30 text-[#34117E] px-3 py-1.5 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] animate-pulse" />
+            <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/15 dark:bg-[#A78BFA]/20 border border-[#34117E]/30 dark:border-[#A78BFA]/40 text-[#34117E] dark:text-[#C4B5FD] px-3 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] dark:bg-[#C4B5FD] animate-pulse" />
               Meta de hoje alcançada
             </div>
-            <p className="text-[#34117E]/70 text-xs font-medium mt-1">
+            <p className="text-[#34117E]/70 dark:text-[#C4B5FD]/80 text-xs font-medium mt-1">
               Nota média:{' '}
-              <strong className="text-[#34117E] font-mono">{avgToday}</strong>
+              <strong className="text-[#34117E] dark:text-[#C4B5FD] font-mono">{avgToday}</strong>
             </p>
           </div>
         ) : (
-          <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/10 border border-[#34117E]/20 px-3 py-1 rounded-full text-neutral-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#34117E]" />
+          <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/10 dark:bg-[#A78BFA]/15 border border-[#34117E]/20 dark:border-[#A78BFA]/30 px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] dark:bg-[#C4B5FD]" />
             Nota média:{' '}
-            <strong className="text-[#34117E] font-mono">{avgToday}</strong>
+            <strong className="text-[#34117E] dark:text-[#C4B5FD] font-mono">{avgToday}</strong>
           </div>
         )}
       </div>
