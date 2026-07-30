@@ -160,8 +160,10 @@ export function FocusCircle({
                 <circle
                   cx={headX}
                   cy={headY}
-                  r="3.5"
-                  className="fill-white stroke-[#4F46E5] stroke-[1px]"
+                  r={isMobile ? '4' : '3.5'}
+                  className={`fill-white stroke-[1px] ${
+                    isMobile ? 'stroke-[#34117E]' : 'stroke-[#4F46E5]'
+                  }`}
                 />
               )}
             </>
@@ -174,9 +176,12 @@ export function FocusCircle({
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="absolute inset-[-8%] rounded-full border-2 border-[#4F46E5]/40 pointer-events-none"
+          className={`absolute rounded-full border-2 pointer-events-none ${
+            isMobile ? 'inset-[-12%] border-[#34117E]/50' : 'inset-[-8%] border-[#4F46E5]/40'
+          }`}
         />
       )}
+
 
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6">
