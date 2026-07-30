@@ -318,7 +318,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-200 whitespace-nowrap cursor-pointer ${
                     isActive 
                       ? 'bg-gradient-to-br from-[#111827] to-[#1E1B4B] text-white border border-transparent shadow-sm-layered' 
-                      : 'bg-white dark:bg-[#151622] text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-sm-layered'
+                      : 'bg-white dark:bg-[#151622] text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-sm-layered'
                   }`}
                 >
                   {cat}
@@ -462,7 +462,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                 {/* Botão fechar */}
                 <button 
                   onClick={() => setSelectedProduct(null)}
-                  className="absolute top-5 right-6 w-8 h-8 rounded-full bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] hover:bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 transition-all cursor-pointer z-10 shrink-0 border border-transparent"
+                  className="absolute top-5 right-6 w-8 h-8 rounded-full bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 transition-all cursor-pointer z-10 shrink-0 border border-transparent"
                 >
                   <X size={15} strokeWidth={1.5} />
                 </button>

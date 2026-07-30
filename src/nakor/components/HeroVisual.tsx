@@ -99,7 +99,7 @@ export function HeroVisual() {
         <span className="text-2xl font-display font-black text-white block mb-2">80%</span>
         
         {/* Micro slider progress */}
-        <div className="w-full bg-white dark:bg-[#151622]/5 h-1.5 rounded-full overflow-hidden mb-1.5 border border-white/5">
+        <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden mb-1.5 border border-white/5">
           <div className="bg-gradient-to-r from-[#34117E] to-[#958CE8] h-full rounded-full" style={{ width: '80%' }} />
         </div>
         
@@ -187,7 +187,7 @@ export function HeroVisual() {
             <span>1 ciclo</span>
             <span>4 ciclos</span>
           </div>
-          <div className="w-full bg-white dark:bg-[#151622]/5 h-1.5 rounded-full overflow-hidden border border-white/5">
+          <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden border border-white/5">
             <div className="bg-[#34117E] h-full rounded-full transition-all duration-500" style={{ width: '25%' }} />
           </div>
         </div>
@@ -215,7 +215,7 @@ export function HeroVisual() {
               <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all ${
                 task.completed
                   ? 'bg-gradient-to-br from-[#34117E] to-[#958CE8] text-white shadow-[0_0_6px_rgba(52,17,126,0.4)]'
-                  : 'border border-white/20 bg-white dark:bg-[#151622]/5 group-hover/task:border-[#34117E]/50'
+                  : 'border border-white/20 bg-white/5 group-hover/task:border-[#34117E]/50'
               }`}>
                 {task.completed && <Check size={8} strokeWidth={4} />}
               </div>

@@ -56,7 +56,7 @@ export function ShareableCards() {
   return (
     <div className="w-full flex flex-col items-center">
       {/* Interactive Switcher */}
-      <div className="mb-12 flex flex-wrap justify-center gap-2 p-1.5 bg-white dark:bg-[#151622]/5 rounded-full border border-white/10 max-w-lg">
+      <div className="mb-12 flex flex-wrap justify-center gap-2 p-1.5 bg-white/5 rounded-full border border-white/10 max-w-lg">
         {EXAMPLES.map((item) => (
           <button
             key={item.id}
@@ -64,7 +64,7 @@ export function ShareableCards() {
             className={`px-5 py-2 text-sm font-display font-medium rounded-full transition-all duration-300 cursor-pointer ${
               selectedSession.id === item.id
                 ? 'bg-[#10367D] text-white shadow-sm'
-                : 'text-white/70 hover:text-white hover:bg-white dark:bg-[#151622]/5'
+                : 'text-white/70 hover:text-white hover:bg-white/5'
             }`}
           >
             {item.title} ({item.score.toFixed(1)})

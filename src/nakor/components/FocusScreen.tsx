@@ -135,7 +135,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
         <div className="w-full flex items-center justify-between mb-12">
           <button 
             onClick={() => setShowModal(true)}
-            className="text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:text-[#F8F9FA] transition-colors cursor-pointer"
+            className="text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-colors cursor-pointer"
           >
             <X size={24} />
           </button>

@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 function StatCard({ icon, value, label, bgColor, textColor, iconColor }: { icon: React.ReactNode; value: string; label: string; bgColor?: string; textColor?: string; iconColor?: string }) {
   return (
     <div className={`rounded-[20px] p-5 flex flex-col items-start transition-all shadow-sm-layered ${bgColor || 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'} hover:brightness-[0.98] border border-black/[0.02] dark:border-white/10`}>
-      <div className={`mb-3.5 ${iconColor || 'text-[#21222D] dark:text-[#F8F9FA]/60'}`}>
+      <div className={`mb-3.5 ${iconColor || 'text-[#21222D]/60 dark:text-[#F8F9FA]/60'}`}>
         {icon}
       </div>
       <span className={`font-mono font-bold text-sm leading-none tracking-tight mb-1 ${textColor || 'text-[#21222D] dark:text-[#F8F9FA]'}`}>{value}</span>
@@ -393,7 +393,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
             </div>
             
-            <div className="w-full h-1.5 bg-white dark:bg-[#151622]/25 rounded-full mb-6 overflow-hidden">
+            <div className="w-full h-1.5 bg-white/25 rounded-full mb-6 overflow-hidden">
               <div 
                 className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
                 style={{ width: `${Math.min((weeklyStats.totalHours / goalHours) * 100, 100)}%` }} 
@@ -410,7 +410,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                       className={`w-2 h-2 rounded-full transition-all duration-300 ${
                         active 
                           ? 'bg-white dark:bg-[#151622]' 
-                          : 'bg-white dark:bg-[#151622]/30'
+                          : 'bg-white/30'
                       } ${
                         isTodayDay
                           ? 'ring-2 ring-white ring-offset-2 ring-offset-[#34117E]' 
@@ -429,10 +429,10 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Recent Activities */}
           <div className="mb-10">
             <div className="flex justify-between items-baseline mb-4">
-              <h3 className="text-[#21222D] dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
+              <h3 className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
               <button 
                 onClick={() => onNavigate?.('history')}
-                className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
               >
                 Ver todas <ChevronRight size={12} strokeWidth={2} />
               </button>
@@ -451,7 +451,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     className="w-full bg-white dark:bg-[#151622] p-5 rounded-[20px] flex items-center justify-between border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:border-[#34117E]/40 shadow-md-layered transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D] dark:text-[#F8F9FA]/80">
+                      <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D]/80 dark:text-[#F8F9FA]/80">
                         {getCategoryIcon(act.name)}
                       </div>
                       <div>
@@ -486,18 +486,19 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
       <DesktopSidebar currentView="home" onNavigate={onNavigate} userName={userName} userEmail={userEmail} />
 
       {/* --- DESKTOP MAIN CONTENT --- */}
-      <div className="hidden md:flex w-full md:pl-[220px] justify-start pb-10 relative overflow-y-auto min-h-screen bg-[#F5F5F7] dark:bg-[#0D0F14]">
-        <div className="w-full max-w-[1100px] mx-auto p-12 flex gap-12 items-start text-[#21222D] dark:text-[#F8F9FA]">
+      <div className="hidden md:flex w-full md:pl-[240px] justify-start pb-10 relative overflow-y-auto min-h-screen bg-[#F5F5F7] dark:bg-[#0D0F14]">
+        <div className="w-full max-w-[1180px] mx-auto p-10 xl:p-12 flex gap-10 items-start text-[#21222D] dark:text-[#F8F9FA]">
           
           {/* Middle Column (Main Content Area) */}
-          <div className="flex-1 max-w-[560px] flex flex-col bg-transparent">
+          <div className="flex-1 min-w-0 max-w-[620px] flex flex-col bg-transparent">
+
             
             {/* Header */}
             <div className="flex justify-between items-start mb-12">
               <div>
                 <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
                 <h1 className="text-3xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">
-                  {greeting}, <span className="text-[#21222D] dark:text-[#F8F9FA]/80">{userName}</span>
+                  {greeting}, <span className="text-[#21222D]/80 dark:text-[#F8F9FA]/80">{userName}</span>
                 </h1>
                 <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
               </div>
@@ -520,28 +521,32 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             <DailyProgressBar tasks={tasks} onNavigate={onNavigate} activeDays={weeklyStats.activeDays} />
 
             {/* Desktop Hero Chronometer Card */}
-            <div className="w-full flex flex-col items-center mb-12 relative overflow-visible">
-               
-               <h3 className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">Tempo de foco hoje</h3>
-               
-               <FocusCircle
-                  todaySeconds={todaySeconds}
-                  displayHours={displayHours}
-                  displayMinutes={displayMinutes}
-                  avgToday={avgToday}
-                  progressPercent={progressPercent}
-                  size={280}
-                  variant="desktop"
-                />
+            <div className="w-full flex flex-col items-center mb-10 relative overflow-hidden rounded-[32px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-md-layered py-10 px-8">
+               <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[#34117E]/[0.07] blur-[80px]" />
+
+               <h3 className="relative text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">Tempo de foco hoje</h3>
+
+               <div className="relative z-10">
+                 <FocusCircle
+                    todaySeconds={todaySeconds}
+                    displayHours={displayHours}
+                    displayMinutes={displayMinutes}
+                    avgToday={avgToday}
+                    progressPercent={progressPercent}
+                    size={280}
+                    variant="desktop"
+                  />
+               </div>
             </div>
+
 
             {/* Recent Activities (Desktop) */}
             <div className="w-full bg-transparent">
               <div className="flex justify-between items-baseline mb-6">
-                <h3 className="text-xs font-bold tracking-wider text-[#21222D] dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
+                <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
                 <button 
                   onClick={() => onNavigate?.('history')} 
-                  className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                  className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
                 >
                   Ver todas <ChevronRight size={12} strokeWidth={2} />
                 </button>
@@ -560,7 +565,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                       className="w-full bg-white dark:bg-[#151622] p-5 rounded-[20px] flex items-center justify-between border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:border-[#34117E]/40 hover:shadow-md-layered cursor-pointer transition-all shadow-sm-layered"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D] dark:text-[#F8F9FA]/80">
+                        <div className="w-10 h-10 rounded-[16px] bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center shrink-0 text-[#21222D]/80 dark:text-[#F8F9FA]/80">
                           {getCategoryIcon(act.name)}
                         </div>
                         <div>
@@ -592,7 +597,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
               </div>
               
-              <div className="w-full h-1.5 bg-white dark:bg-[#151622]/25 rounded-full mb-6 overflow-hidden">
+              <div className="w-full h-1.5 bg-white/25 rounded-full mb-6 overflow-hidden">
                 <div 
                   className="h-full bg-white dark:bg-[#151622] rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
                   style={{ width: `${Math.min((weeklyStats.totalHours / goalHours) * 100, 100)}%` }} 
@@ -607,7 +612,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     <div key={day} className="flex flex-col items-center gap-2">
                       <div 
                         className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          active ? 'bg-white dark:bg-[#151622]' : 'bg-white dark:bg-[#151622]/30'
+                          active ? 'bg-white' : 'bg-white/30'
                         } ${
                           isTodayDay
                             ? 'ring-2 ring-white ring-offset-2 ring-offset-[#34117E]' 
@@ -625,7 +630,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
 
             {/* Estatísticas (Desktop) */}
             <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
-              <h3 className="text-xs font-bold tracking-wider text-[#21222D] dark:text-[#F8F9FA]/70 uppercase mb-5">Estatísticas</h3>
+              <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase mb-5">Estatísticas</h3>
               <div className="grid grid-cols-2 gap-4.5">
                 <StatCard 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
@@ -633,7 +638,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Hoje" 
                   bgColor="bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
                 <StatCard 
                   icon={<Flame size={16} strokeWidth={2.5} />} 
@@ -641,7 +646,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Sequência" 
                   bgColor="bg-[#ACD1FD]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
                 <StatCard 
                   icon={<Activity size={16} strokeWidth={2.5} />} 
@@ -649,7 +654,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Média" 
                   bgColor="bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
                 <StatCard 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
@@ -657,7 +662,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                   label="Tempo Total" 
                   bgColor="bg-[#ACD1FD]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
-                  iconColor="text-[#21222D] dark:text-[#F8F9FA]/60" 
+                  iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
                 />
               </div>
             </div>
