@@ -146,14 +146,8 @@ export function FocusCircle({
               {/* Progress head dot */}
               {!isComplete && (
                 <circle
-                  cx={(() => {
-                    const angle = progressPercent * 2 * Math.PI - Math.PI / 2;
-                    return 50 + radius * Math.cos(angle);
-                  })()}
-                  cy={(() => {
-                    const angle = progressPercent * 2 * Math.PI - Math.PI / 2;
-                    return 50 + radius * Math.sin(angle);
-                  })()}
+                  cx={headX}
+                  cy={headY}
                   r="3.5"
                   className="fill-white stroke-[#4F46E5] stroke-[1px]"
                 />
