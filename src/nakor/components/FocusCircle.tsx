@@ -206,27 +206,27 @@ export function FocusCircle({
 
         {isEmpty ? (
           <div className="mt-4 flex flex-col items-center gap-2">
-            <p className="text-[#34117E]/50 text-sm font-medium uppercase tracking-[0.15em]">
+            <p className="text-[#34117E]/70 text-sm font-medium uppercase tracking-[0.15em]">
               comece sua primeira sessão
             </p>
             {/* Pulsing indicator bar */}
-            <div className="mt-6 w-12 h-1 bg-[#34117E]/10 rounded-full overflow-hidden">
+            <div className="mt-6 w-14 h-1.5 bg-[#34117E]/15 rounded-full overflow-hidden">
               <div className="h-full bg-[#34117E] w-1/3 rounded-full animate-pulse" />
             </div>
           </div>
         ) : isComplete ? (
           <div className="mt-4 flex flex-col items-center gap-2">
-            <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/15 border border-[#34117E]/30 text-[#34117E] px-3 py-1.5 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4F46E5] animate-pulse" />
+            <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/20 border border-[#34117E]/40 text-[#34117E] px-3 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] animate-pulse" />
               Meta de hoje alcançada
             </div>
-            <p className="text-[#34117E]/60 text-xs font-medium mt-1">
+            <p className="text-[#34117E]/70 text-xs font-medium mt-1">
               Nota média:{' '}
               <strong className="text-[#34117E] font-mono">{avgToday}</strong>
             </p>
           </div>
         ) : (
-          <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/10 border border-[#34117E]/20 px-3 py-1 rounded-full text-neutral-600">
+          <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/15 border border-[#34117E]/25 px-3 py-1 rounded-full text-neutral-600">
             <span className="w-1.5 h-1.5 rounded-full bg-[#34117E]" />
             Nota média:{' '}
             <strong className="text-[#34117E] font-mono">{avgToday}</strong>
@@ -237,14 +237,15 @@ export function FocusCircle({
       {/* Ornamental floating accents */}
       <div
         className={`absolute top-4 left-4 w-2 h-2 rounded-full pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'bg-[#4F46E5]/40' : 'bg-[#34117E]/30'
+          isComplete ? 'bg-[#34117E]/50' : 'bg-[#34117E]/40'
         }`}
       />
       <div
         className={`absolute bottom-10 right-8 w-1.5 h-1.5 rounded-full pointer-events-none transition-colors duration-700 ${
-          isComplete ? 'bg-[#4F46E5]/30' : 'bg-[#34117E]/20'
+          isComplete ? 'bg-[#34117E]/40' : 'bg-[#34117E]/30'
         }`}
       />
+
     </div>
   );
 }
