@@ -27,6 +27,11 @@ export function FocusCircle({
   const isEmpty = todaySeconds === 0;
   const isComplete = progressPercent >= 1;
 
+  const headAngle = progressPercent * 2 * Math.PI - Math.PI / 2;
+  const headX = 50 + radius * Math.cos(headAngle);
+  const headY = 50 + radius * Math.sin(headAngle);
+
+
   return (
     <div
       className="relative flex items-center justify-center"
