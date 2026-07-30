@@ -75,7 +75,7 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
         </div>
         <div className="flex flex-col min-w-0">
           <span className="text-xs font-semibold text-white truncate">{userName}</span>
-          <span className="text-[10px] text-white/40 truncate">{userEmail}</span>
+          <span className="text-[10px] text-white/60 truncate">{userEmail}</span>
         </div>
       </div>
     </div>
