@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Flame, Book, Briefcase, Dumbbell, Activity, Bell, Settings, Clock, Plus, ChevronRight, ClipboardList, Check } from 'lucide-react';
 import { DesktopSidebar } from './DesktopSidebar';
+import { FocusCircle } from './FocusCircle';
 import { motion } from 'motion/react';
 
 function StatCard({ icon, value, label, bgColor, textColor, iconColor }: { icon: React.ReactNode; value: string; label: string; bgColor?: string; textColor?: string; iconColor?: string }) {
