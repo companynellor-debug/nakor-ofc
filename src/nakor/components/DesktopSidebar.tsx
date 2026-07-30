@@ -50,14 +50,15 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
               onClick={() => onNavigate?.(tab.id)}
               className={`group relative w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-all duration-200 cursor-pointer border select-none outline-none ${
                 isActive
-                  ? 'bg-white/[0.10] text-white border-white/[0.14] shadow-[0_8px_24px_-12px_rgba(0,0,0,0.9)]'
-                  : 'text-white/50 hover:bg-white/[0.06] hover:text-white border-transparent'
+                  ? 'bg-white/[0.14] text-white border-white/[0.20] shadow-[0_8px_24px_-12px_rgba(0,0,0,0.9)]'
+                  : 'text-white/75 hover:bg-white/[0.08] hover:text-white border-transparent'
               }`}
             >
               {isActive && (
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[#958CE8] shadow-[0_0_12px_rgba(149,140,232,0.8)]" />
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[#B9B2FF] shadow-[0_0_14px_rgba(185,178,255,0.9)]" />
               )}
-              <Icon size={17} strokeWidth={isActive ? 2.2 : 1.7} className={`shrink-0 ${isActive ? 'text-[#B9B2FF]' : ''}`} />
+              <Icon size={17} strokeWidth={isActive ? 2.2 : 1.9} className={`shrink-0 ${isActive ? 'text-[#CFC9FF] drop-shadow-[0_0_10px_rgba(185,178,255,0.6)]' : 'text-white/70 group-hover:text-white'}`} />
+              <span className="text-[13px] font-semibold tracking-tight">{tab.label}</span>
               <span className="text-[13px] font-semibold tracking-tight">{tab.label}</span>
             </button>
           );
