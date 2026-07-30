@@ -486,11 +486,12 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
       <DesktopSidebar currentView="home" onNavigate={onNavigate} userName={userName} userEmail={userEmail} />
 
       {/* --- DESKTOP MAIN CONTENT --- */}
-      <div className="hidden md:flex w-full md:pl-[220px] justify-start pb-10 relative overflow-y-auto min-h-screen bg-[#F5F5F7] dark:bg-[#0D0F14]">
-        <div className="w-full max-w-[1100px] mx-auto p-12 flex gap-12 items-start text-[#21222D] dark:text-[#F8F9FA]">
+      <div className="hidden md:flex w-full md:pl-[240px] justify-start pb-10 relative overflow-y-auto min-h-screen bg-[#F5F5F7] dark:bg-[#0D0F14]">
+        <div className="w-full max-w-[1180px] mx-auto p-10 xl:p-12 flex gap-10 items-start text-[#21222D] dark:text-[#F8F9FA]">
           
           {/* Middle Column (Main Content Area) */}
-          <div className="flex-1 max-w-[560px] flex flex-col bg-transparent">
+          <div className="flex-1 min-w-0 max-w-[620px] flex flex-col bg-transparent">
+
             
             {/* Header */}
             <div className="flex justify-between items-start mb-12">
