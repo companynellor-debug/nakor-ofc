@@ -430,7 +430,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
             </div>
 
             {/* Dashboard / Mini Mockup */}
-            <div className="bg-white dark:bg-[#151622]/[0.04] backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg-layered max-w-md">
+            <div className="bg-white/[0.04] backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg-layered max-w-md">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-mono tracking-wider text-[#E4DAFF] uppercase">Sessão Ativa</span>
                 <span className="text-[10px] font-mono text-[#F3EEFF] bg-white/10 px-2.5 py-0.5 rounded-full font-bold">Modo Foco</span>

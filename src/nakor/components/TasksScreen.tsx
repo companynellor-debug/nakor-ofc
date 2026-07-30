@@ -476,7 +476,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                   </div>
 
                   {/* Progress Bar */}
-                  <div className="w-full h-1.5 bg-white dark:bg-[#151622]/[0.08] rounded-full overflow-hidden">
+                  <div className="w-full h-1.5 bg-white/[0.08] rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-[#34117E] rounded-full transition-all duration-500"
                       style={{ width: `${progressPercent}%` }}
@@ -533,7 +533,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     {/* Card 1: Destaque */}
                     <div className="w-full bg-[#21222D] rounded-[28px] p-7 shadow-lg-layered flex flex-col relative overflow-hidden text-left text-white border border-white/[0.04]">
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-white dark:bg-[#151622]/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
+                        <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
                            <Target size={22} className="text-[#34117E]" />
                         </div>
                         
@@ -548,7 +548,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       </div>
 
                       <div className="space-y-2 mb-4">
-                        <div className="w-full h-2 bg-white dark:bg-[#151622]/[0.08] rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-white/[0.08] rounded-full overflow-hidden">
                           <div 
                             className="h-full bg-[#34117E] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(52,17,126,0.4)]"
                             style={{ width: `${Math.min((todayFocusMinutes / 60) * 100, 100)}%` }}
@@ -626,7 +626,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     {/* Card 1: Destaque */}
                     <div className="w-full bg-[#21222D] rounded-[28px] p-7 shadow-lg-layered flex flex-col relative overflow-hidden text-left text-white border border-white/[0.04]">
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-white dark:bg-[#151622]/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
+                        <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
                           <Target size={22} className="text-[#34117E]" />
                         </div>
                         
@@ -641,7 +641,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       </div>
 
                       <div className="space-y-2 mb-4">
-                        <div className="w-full h-2 bg-white dark:bg-[#151622]/[0.08] rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-white/[0.08] rounded-full overflow-hidden">
                           <div 
                             className="h-full bg-[#34117E] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(52,17,126,0.4)]"
                             style={{ width: `${Math.min((weeklyFocusHours / 10) * 100, 100)}%` }}
@@ -724,7 +724,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       <div className="space-y-2 mb-1">
                         <div className="w-full h-2 bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-white dark:bg-[#151622]/[0.05] rounded-full transition-all duration-500"
+                            className="h-full bg-white/[0.05] rounded-full transition-all duration-500"
                             style={{ width: `0%` }}
                           />
                         </div>

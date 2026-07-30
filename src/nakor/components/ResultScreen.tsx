@@ -637,14 +637,14 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             <span className="text-xl font-bold text-white mb-0.5">{minutesReal}min</span>
             <span className="text-neutral-400 text-[11px] font-medium">duração</span>
           </div>
-          <div className="w-px h-10 bg-white dark:bg-[#151622]/[0.08]" />
+          <div className="w-px h-10 bg-white/[0.08]" />
           <div className="flex-1 flex flex-col items-center">
             <span className="text-xl font-bold mb-0.5" style={{ color: accentColor }}>
               {evaluation ? evaluation.nota.toFixed(1) : '-'}
             </span>
             <span className="text-neutral-400 text-[11px] font-medium">sua nota</span>
           </div>
-          <div className="w-px h-10 bg-white dark:bg-[#151622]/[0.08]" />
+          <div className="w-px h-10 bg-white/[0.08]" />
           <div className="flex-1 flex flex-col items-center">
             <span className="text-xl font-bold text-white mb-0.5">
               {activity?.saidas === 1 ? '1 saída' : `${activity?.saidas || 0} saídas`}
@@ -1100,7 +1100,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           
           <button 
             onClick={() => onNavigate('home')}
-            className="w-full h-[56px] bg-white dark:bg-[#151622]/[0.04] border border-white/[0.05] hover:bg-white dark:bg-[#151622]/[0.08] active:scale-95 text-white font-bold text-base rounded-full flex justify-center items-center transition-all cursor-pointer"
+            className="w-full h-[56px] bg-white/[0.04] border border-white/[0.05] hover:bg-white/[0.08] active:scale-95 text-white font-bold text-base rounded-full flex justify-center items-center transition-all cursor-pointer"
           >
             Voltar para o Início
           </button>
@@ -1113,7 +1113,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
       {showShareModal && (
         <div className="fixed inset-0 bg-[#0d0f12]/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-[360px] bg-[#16191d] border border-white/[0.08] rounded-[28px] p-6 flex flex-col items-center gap-4 text-center shadow-2xl">
-            <div className="w-12 h-12 rounded-full bg-white dark:bg-[#151622]/[0.04] border border-white/[0.08] flex items-center justify-center text-xl mb-1">
+            <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-xl mb-1">
               📸
             </div>
             
