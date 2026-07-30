@@ -522,97 +522,19 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             <DailyProgressBar tasks={tasks} onNavigate={onNavigate} activeDays={weeklyStats.activeDays} />
 
             {/* Desktop Hero Chronometer Card */}
-            <div className="w-full flex flex-col items-center mb-10 relative overflow-visible">
+            <div className="w-full flex flex-col items-center mb-12 relative overflow-visible">
                
                <h3 className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">Tempo de foco hoje</h3>
                
-               <div className="relative w-60 h-60 flex flex-col items-center justify-center mb-2 z-10">
-                 {todaySeconds > 0 && (
-                   <div className="absolute inset-0 w-full h-full rounded-full z-0 pointer-events-none" style={{ boxShadow: '0 0 60px 10px rgba(139, 92, 246, 0.25)' }} />
-                 )}
-                 <svg className="absolute inset-0 w-full h-full -rotate-90 z-10 pointer-events-none overflow-visible" viewBox="0 0 256 256">
-                   <defs>
-                     <linearGradient id="timerProgressGradDesktop" x1="0%" y1="0%" x2="100%" y2="100%">
-                       <stop offset="0%" stopColor="#4F46E5" />
-                       <stop offset="100%" stopColor="#8B5CF6" />
-                     </linearGradient>
-                   </defs>
-                   {/* Background track circle */}
-                   <circle
-                     cx="128"
-                     cy="128"
-                     r={radius}
-                     className={`fill-transparent ${todaySeconds === 0 ? 'stroke-[#8B5CF6]/50' : 'stroke-[#E5E7EB]'}`}
-                     strokeWidth="3.5"
-                     strokeDasharray={todaySeconds === 0 ? "4 8" : undefined}
-                     style={todaySeconds === 0 ? { transformOrigin: '128px 128px', animation: 'spin 20s linear infinite' } : {}}
-                   />
-                   {/* Tick marks */}
-                   {Array.from({ length: 12 }).map((_, i) => {
-                     const angle = (i * Math.PI) / 6;
-                     const outerRadius = radius + 6;
-                     const innerRadius = radius;
-                     return (
-                       <line
-                         key={`desk-${i}`}
-                         x1={128 + innerRadius * Math.cos(angle)}
-                         y1={128 + innerRadius * Math.sin(angle)}
-                         x2={128 + outerRadius * Math.cos(angle)}
-                         y2={128 + outerRadius * Math.sin(angle)}
-                         stroke={todaySeconds === 0 ? "#8B5CF6" : "#D1D5DB"}
-                         strokeWidth="1.5"
-                         style={{
-                           opacity: todaySeconds === 0 ? 0.5 : 1,
-                           ...(todaySeconds === 0 ? { transformOrigin: '128px 128px', animation: 'spin 20s linear infinite' } : {})
-                         }}
-                       />
-                     );
-                   })}
-                   {/* Bright highlighted main progress line */}
-                   {todaySeconds > 0 && (
-                     <>
-                       <circle
-                         cx="128"
-                         cy="128"
-                         r={radius}
-                         stroke="url(#timerProgressGradDesktop)"
-                         strokeWidth="3.5"
-                         className="fill-transparent"
-                         strokeLinecap="round"
-                         strokeDasharray={strokeDasharray}
-                         strokeDashoffset={strokeDashoffset}
-                       />
-                       {(() => {
-                         const angle = (progressPercent * 2 * Math.PI) - (Math.PI / 2);
-                         const headX = 128 + radius * Math.cos(angle);
-                         const headY = 128 + radius * Math.sin(angle);
-                         return (
-                           <circle
-                             cx={headX}
-                             cy={headY}
-                             r="3.5"
-                             className="fill-white stroke-[#4F46E5] stroke-[1px]"
-                           />
-                         );
-                       })()}
-                     </>
-                   )}
-                 </svg>
-                 
-                 <div className="text-center z-20 flex flex-col items-center">
-                   <span className="text-4xl font-extrabold tracking-tight text-[#21222D] dark:text-[#F8F9FA] font-mono leading-none">
-                     {displayHours}h {displayMinutes}m
-                   </span>
-                   {todaySeconds === 0 ? (
-                     <span className="text-[11px] text-[#9CA3AF] dark:text-neutral-500 mt-2 font-medium">comece sua primeira sessão</span>
-                   ) : (
-                     <div className="mt-4 flex items-center gap-1.5 text-xs text-neutral-600 font-medium bg-[#34117E]/10 border border-[#34117E]/20 px-3 py-1 rounded-full">
-                       <span className="w-1.5 h-1.5 rounded-full bg-[#34117E]" />
-                       Nota média: <strong className="text-[#34117E] font-mono">{avgToday}</strong>
-                     </div>
-                   )}
-                 </div>
-               </div>
+               <FocusCircle
+                  todaySeconds={todaySeconds}
+                  displayHours={displayHours}
+                  displayMinutes={displayMinutes}
+                  avgToday={avgToday}
+                  progressPercent={progressPercent}
+                  size={280}
+                  variant="desktop"
+                />
             </div>
 
             {/* Recent Activities (Desktop) */}
