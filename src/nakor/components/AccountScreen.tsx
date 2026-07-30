@@ -144,7 +144,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
                 </div>
               )}
             </div>
-            <span className="text-[#34117E] text-sm font-semibold">
+            <span className="text-[#34117E] dark:text-[#C4B5FD] text-sm font-semibold">
               Toque para alterar
             </span>
           </div>

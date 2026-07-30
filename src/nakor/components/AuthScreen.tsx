@@ -151,7 +151,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
             {/* Notification/Message Alert */}
             {message && (
               <div className="w-full mb-5 px-4 py-3 bg-[#F3EEFF] border border-[#E4DAFF] rounded-2xl text-center">
-                <p className="text-xs font-semibold text-[#34117E] leading-snug">
+                <p className="text-xs font-semibold text-[#34117E] dark:text-[#C4B5FD] leading-snug">
                   {message}
                 </p>
               </div>
@@ -225,7 +225,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         setForgotPasswordMsg(true);
                         setTimeout(() => setForgotPasswordMsg(false), 4000);
                       }}
-                      className="text-xs text-[#6D28D9] hover:text-[#34117E] transition-colors font-medium cursor-pointer"
+                      className="text-xs text-[#6D28D9] hover:text-[#34117E] dark:text-[#C4B5FD] transition-colors font-medium cursor-pointer"
                     >
                       Esqueci minha senha
                     </button>
@@ -379,7 +379,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                       setView('register');
                       setErrors({});
                     }}
-                    className="w-full py-4 bg-white dark:bg-[#151622] hover:bg-[#FAFAFB] text-[#34117E] font-bold rounded-xl text-sm border border-[#ECECF1] shadow-sm-layered transition-all active:scale-[0.98] text-center cursor-pointer"
+                    className="w-full py-4 bg-white dark:bg-[#151622] hover:bg-[#FAFAFB] text-[#34117E] dark:text-[#C4B5FD] font-bold rounded-xl text-sm border border-[#ECECF1] shadow-sm-layered transition-all active:scale-[0.98] text-center cursor-pointer"
                   >
                     Criar uma conta
                   </button>
@@ -390,7 +390,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                     setView('login');
                     setErrors({});
                   }}
-                  className="text-xs font-mono font-bold text-[#6D28D9] hover:text-[#34117E] transition-all cursor-pointer"
+                  className="text-xs font-mono font-bold text-[#6D28D9] hover:text-[#34117E] dark:text-[#C4B5FD] transition-all cursor-pointer"
                 >
                   VOLTAR PARA O LOGIN
                 </button>
@@ -454,7 +454,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                 "O Nakor mudou completamente minha rotina de estudos. O timer bloqueado não me deixa pegar o celular, e as notas de IA me dão insights que nunca tive antes."
               </p>
               <div className="flex items-center gap-2 mt-3">
-                <div className="w-6 h-6 rounded-full bg-[#F3EEFF] text-[#34117E] flex items-center justify-center font-bold text-[9px]">
+                <div className="w-6 h-6 rounded-full bg-[#F3EEFF] text-[#34117E] dark:text-[#C4B5FD] flex items-center justify-center font-bold text-[9px]">
                   MS
                 </div>
                 <span className="text-[11px] font-medium text-white">Mateus S., Estudante de Medicina</span>

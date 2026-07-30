@@ -169,7 +169,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
                     onClick={() => handleItemClick('hours', i)}
                     className={`h-12 flex items-center justify-center snap-center cursor-pointer transition-all duration-200 select-none ${
                       isSelected 
-                        ? 'text-[#34117E] font-black text-2xl scale-110 drop-shadow-[0_0_10px_rgba(52,17,126,0.3)]' 
+                        ? 'text-[#34117E] dark:text-[#C4B5FD] font-black text-2xl scale-110 drop-shadow-[0_0_10px_rgba(52,17,126,0.3)]' 
                         : 'text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] font-bold text-base'
                     }`}
                   >
@@ -230,7 +230,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
                     onClick={() => handleItemClick('minutes', i)}
                     className={`h-12 flex items-center justify-center snap-center cursor-pointer transition-all duration-200 select-none ${
                       isSelected 
-                        ? 'text-[#34117E] font-black text-2xl scale-110 drop-shadow-[0_0_10px_rgba(52,17,126,0.3)]' 
+                        ? 'text-[#34117E] dark:text-[#C4B5FD] font-black text-2xl scale-110 drop-shadow-[0_0_10px_rgba(52,17,126,0.3)]' 
                         : 'text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] font-bold text-base'
                     }`}
                   >
@@ -301,7 +301,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
         <div className="w-full flex items-center justify-between mb-8">
           <button 
             onClick={() => onNavigate('home')}
-            className="text-[#21222D] dark:text-[#F8F9FA] hover:text-[#34117E] transition-colors cursor-pointer"
+            className="text-[#21222D] dark:text-[#F8F9FA] hover:text-[#34117E] dark:text-[#C4B5FD] transition-colors cursor-pointer"
           >
             <ArrowLeft size={24} />
           </button>
@@ -367,7 +367,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
             </div>
             <button 
               onClick={() => setIsAddingSubtask(true)}
-              className="text-[#34117E] text-sm font-bold flex items-center gap-1 hover:brightness-110 disabled:opacity-50 cursor-pointer"
+              className="text-[#34117E] dark:text-[#C4B5FD] text-sm font-bold flex items-center gap-1 hover:brightness-110 disabled:opacity-50 cursor-pointer"
               disabled={subtasks.length >= 5}
             >
               <Plus size={16} /> Adicionar

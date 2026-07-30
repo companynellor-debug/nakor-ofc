@@ -249,7 +249,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
           {/* HEADER */}
           <div id="loja-header" className="w-full flex flex-col mb-10">
             <div className="mb-6">
-              <span className="text-[10px] text-[#34117E] font-mono tracking-widest uppercase mb-1.5 block font-bold">RECOMPENSAS</span>
+              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">RECOMPENSAS</span>
               <h1 className="text-3xl font-semibold tracking-tight text-[#21222D] dark:text-[#F8F9FA] font-sans">Trocas</h1>
               <p className="text-neutral-500 dark:text-neutral-400 text-xs mt-0.5 font-medium">Sua dedicação diária vale prêmios exclusivos</p>
             </div>
@@ -469,7 +469,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
 
                 {/* Badge de categoria */}
                 <div className="flex justify-start shrink-0 mb-3">
-                  <span className="bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 text-[#34117E] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 font-mono font-medium text-[9px] tracking-widest rounded-full px-3 py-1 uppercase">
+                  <span className="bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 text-[#34117E] dark:text-[#C4B5FD] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 font-mono font-medium text-[9px] tracking-widest rounded-full px-3 py-1 uppercase">
                     {selectedProduct.category}
                   </span>
                 </div>
@@ -502,7 +502,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   {/* Custo do Resgate */}
                   <div className="flex justify-between items-center border-t border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 pt-3.5">
                     <span className="text-neutral-600 text-xs font-medium">Custo do Resgate</span>
-                    <span className="text-[#34117E] font-bold text-sm font-mono">
+                    <span className="text-[#34117E] dark:text-[#C4B5FD] font-bold text-sm font-mono">
                       {selectedProduct.price} COINS
                     </span>
                   </div>

@@ -114,7 +114,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
             onClick={onLogin}
             className="text-xs text-neutral-600 hover:text-neutral-900 font-bold transition-colors"
           >
-            Já tem uma conta? <span className="text-[#34117E]">Fazer login</span>
+            Já tem uma conta? <span className="text-[#34117E] dark:text-[#C4B5FD]">Fazer login</span>
           </button>
 
           {/* Footer links */}

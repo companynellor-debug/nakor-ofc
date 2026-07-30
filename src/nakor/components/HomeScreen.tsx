@@ -62,7 +62,7 @@ function DailyProgressBar({
         
         {totalTasks > 0 ? (
           <div className="text-right shrink-0">
-            <span className="font-mono font-extrabold text-sm text-[#34117E] tracking-tight">
+            <span className="font-mono font-extrabold text-sm text-[#34117E] dark:text-[#C4B5FD] tracking-tight">
               {percent}%
             </span>
           </div>
@@ -293,10 +293,10 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
 
   const getCategoryIcon = (nome: string) => {
     const n = nome.toLowerCase();
-    if (n.includes('estudo') || n.includes('matemática')) return <Book size={18} strokeWidth={1.5} className="text-[#34117E]" />;
-    if (n.includes('treino') || n.includes('academia') || n.includes('exerc')) return <Dumbbell size={18} strokeWidth={1.5} className="text-[#34117E]" />;
-    if (n.includes('projeto') || n.includes('trabalho') || n.includes('code')) return <Briefcase size={18} strokeWidth={1.5} className="text-[#34117E]" />;
-    return <Activity size={18} strokeWidth={1.5} className="text-[#34117E]" />;
+    if (n.includes('estudo') || n.includes('matemática')) return <Book size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('treino') || n.includes('academia') || n.includes('exerc')) return <Dumbbell size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('projeto') || n.includes('trabalho') || n.includes('code')) return <Briefcase size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    return <Activity size={18} strokeWidth={1.5} className="text-[#34117E] dark:text-[#C4B5FD]" />;
   };
 
   const activitiesList = useMemo(() => {
@@ -432,7 +432,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <h3 className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
               <button 
                 onClick={() => onNavigate?.('history')}
-                className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
               >
                 Ver todas <ChevronRight size={12} strokeWidth={2} />
               </button>
@@ -462,7 +462,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                     <div className="flex items-center gap-3">
                       <span className="text-neutral-500 dark:text-neutral-400 font-mono text-xs">{act.dateTimeStr.split(',')[0]}</span>
                       <div className="h-6 px-2.5 rounded-full bg-[#34117E]/10 border border-[#34117E]/25 flex items-center justify-center">
-                        <span className="text-[#34117E] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
+                        <span className="text-[#34117E] dark:text-[#C4B5FD] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
                       </div>
                     </div>
                   </div>
@@ -546,7 +546,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
                 <button 
                   onClick={() => onNavigate?.('history')} 
-                  className="text-[#34117E] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
+                  className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
                 >
                   Ver todas <ChevronRight size={12} strokeWidth={2} />
                 </button>
@@ -576,7 +576,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                       <div className="flex items-center gap-3">
                         <span className="text-neutral-500 dark:text-neutral-400 font-mono text-xs">{act.duration}</span>
                         <div className="h-6 px-2.5 rounded-full bg-[#34117E]/10 border border-[#34117E]/25 flex items-center justify-center">
-                          <span className="text-[#34117E] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
+                          <span className="text-[#34117E] dark:text-[#C4B5FD] font-mono font-bold text-xs">{act.score.toFixed(1)}</span>
                         </div>
                       </div>
                     </div>

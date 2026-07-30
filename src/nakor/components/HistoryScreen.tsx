@@ -42,12 +42,12 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
 
   const getCategoryIcon = (nome: string) => {
     const n = nome.toLowerCase();
-    if (n.includes('estudo') || n.includes('livro')) return <Book size={18} className="text-[#34117E]" />;
-    if (n.includes('treino') || n.includes('academia') || n.includes('exerc')) return <Dumbbell size={18} className="text-[#34117E]" />;
-    if (n.includes('code') || n.includes('projeto') || n.includes('program')) return <Code size={18} className="text-[#34117E]" />;
-    if (n.includes('escrever') || n.includes('redação') || n.includes('texto') || n.includes('leitura')) return <Pencil size={18} className="text-[#34117E]" />;
-    if (n.includes('trabalho') || n.includes('reunião')) return <Laptop size={18} className="text-[#34117E]" />;
-    return <Activity size={18} className="text-[#34117E]" />;
+    if (n.includes('estudo') || n.includes('livro')) return <Book size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('treino') || n.includes('academia') || n.includes('exerc')) return <Dumbbell size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('code') || n.includes('projeto') || n.includes('program')) return <Code size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('escrever') || n.includes('redação') || n.includes('texto') || n.includes('leitura')) return <Pencil size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    if (n.includes('trabalho') || n.includes('reunião')) return <Laptop size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />;
+    return <Activity size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />;
   };
 
   // Streak calculation (same as HomeScreen/ProfileScreen)
