@@ -511,6 +511,8 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </section>
 
       </div>
+      </div>
+
     </div>
   );
 }
