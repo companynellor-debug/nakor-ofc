@@ -185,7 +185,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         
         {/* --- ETAPA 1 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-5">
+        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
           <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
               <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
@@ -243,7 +243,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </section>
 
         {/* --- ETAPA 2 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-5">
+        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
           <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
               <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
@@ -301,7 +301,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </section>
 
         {/* --- ETAPA 3 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-5">
+        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
           <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
               <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
@@ -359,7 +359,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </section>
 
         {/* --- ETAPA 4 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-5">
+        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
           <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
             <div className="space-y-6">
               <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
@@ -417,7 +417,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </section>
 
         {/* --- ETAPA 5: DRUM PICKER --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-5">
+        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
           <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col h-full max-h-[520px] justify-between">
             <div className="space-y-5">
               <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
