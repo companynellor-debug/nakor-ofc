@@ -149,7 +149,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
       </div>
       
       {/* HEADER */}
-      <div className="absolute top-0 left-0 right-0 z-50 px-5 py-5 bg-transparent flex items-center gap-4 max-w-lg mx-auto w-full">
+      <div className="relative z-50 shrink-0 px-4 sm:px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-3 bg-transparent grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 max-w-lg mx-auto w-full">
         {/* Back Button */}
         <button 
           onClick={handleBack}
@@ -160,11 +160,11 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </button>
 
         {/* Progress Bar */}
-        <div className="flex gap-1.5 flex-grow">
+        <div className="flex min-w-0 gap-1.5">
           {[0, 1, 2, 3, 4].map((stepIdx) => (
             <div 
               key={stepIdx} 
-              className={`h-1.5 flex-grow rounded-full transition-all duration-300 ${
+              className={`h-1.5 flex-1 min-w-0 rounded-full transition-all duration-300 ${
                 stepIdx <= currentStep ? 'bg-brand-purple-500' : 'bg-brand-border'
               }`}
             />
@@ -177,10 +177,12 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
       </div>
 
       {/* SLIDER */}
+      <div className="relative z-10 flex-1 min-h-0 overflow-hidden">
       <div 
-        className="w-full h-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col relative z-10"
+        className="w-full h-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col"
         style={{ transform: `translateY(-${currentStep * 100}%)` }}
       >
+
         
         {/* --- ETAPA 1 --- */}
         <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-5">
