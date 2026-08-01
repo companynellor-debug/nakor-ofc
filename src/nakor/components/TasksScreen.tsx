@@ -569,10 +569,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <button 
                           onClick={() => onNavigate?.('new_activity')}
-                          className="bg-[#34117E] hover:bg-[#260b61] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
+                          className="bg-[#5B34C7] hover:bg-[#4A2AA8] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
                         >
                           Iniciar
                         </button>
+
                       </div>
                     </div>
 
