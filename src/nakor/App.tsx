@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebar } from './components/DesktopSidebar';
 import { AuthScreen } from './components/AuthScreen';
@@ -40,10 +40,31 @@ import {
   Store
 } from 'lucide-react';
 
+const TAB_ORDER = ['home', 'tasks', 'new_activity', 'loja', 'profile'];
+
 export default function App() {
   const [view, setView] = useState<string>('landing');
   const [loadingTab, setLoadingTab] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // Direction of the tab change (1 = forward, -1 = backward, 0 = neutral)
+  const prevViewRef = useRef(view);
+  const navDirRef = useRef(0);
+  if (prevViewRef.current !== view) {
+    const from = TAB_ORDER.indexOf(prevViewRef.current);
+    const to = TAB_ORDER.indexOf(view);
+    navDirRef.current = from !== -1 && to !== -1 && from !== to ? (to > from ? 1 : -1) : 0;
+    prevViewRef.current = view;
+  }
+  const dir = navDirRef.current;
+
+  const tabAnim = {
+    initial: { opacity: 0, x: dir * 44, scale: 0.98, filter: 'blur(8px)' },
+    animate: { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' },
+    exit: { opacity: 0, x: dir * -44, scale: 0.985, filter: 'blur(8px)' },
+    transition: { type: 'spring' as const, stiffness: 340, damping: 34, mass: 0.7 },
+  };
+
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('nakor_theme') as 'light' | 'dark' | null;
@@ -208,10 +229,7 @@ export default function App() {
             {view === 'home' && (
               <motion.div
                 key="home"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <HomeScreen 
@@ -225,10 +243,7 @@ export default function App() {
             {view === 'new_activity' && (
               <motion.div
                 key="new_activity"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <NewActivityScreen 
@@ -255,10 +270,7 @@ export default function App() {
             {view === 'diario-depois' && (
               <motion.div
                 key="diario-depois"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <AfterDiaryScreen 
@@ -295,10 +307,7 @@ export default function App() {
             {view === 'history' && (
               <motion.div
                 key="history"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <HistoryScreen 
@@ -312,10 +321,7 @@ export default function App() {
             {view === 'tasks' && (
               <motion.div
                 key="tasks"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <TasksScreen 
@@ -328,10 +334,7 @@ export default function App() {
             {view === 'profile' && (
               <motion.div
                 key="profile"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <ProfileScreen 
@@ -347,10 +350,7 @@ export default function App() {
             {view === 'conquistas' && (
               <motion.div 
                 key="conquistas" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -367,10 +367,7 @@ export default function App() {
             {view === 'loja' && (
               <motion.div
                 key="loja"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <LojaScreen 
@@ -384,10 +381,7 @@ export default function App() {
             {view === 'notifications' && (
               <motion.div 
                 key="notifications" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -404,10 +398,7 @@ export default function App() {
             {view === 'account' && (
               <motion.div 
                 key="account" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -424,10 +415,7 @@ export default function App() {
             {view === 'focus_time' && (
               <motion.div 
                 key="focus_time" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -444,10 +432,7 @@ export default function App() {
             {view === 'card_colors' && (
               <motion.div 
                 key="card_colors" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -522,14 +507,28 @@ export default function App() {
                         onClick={() => handleNavigate(tab.id)}
                         className="flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] active:scale-95 transition-transform h-full pt-1"
                       >
-                        {isLoading ? (
-                          <Loader2 size={22} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin mb-1" />
-                        ) : (
-                          <Icon size={22} className={`${isActive ? 'text-[#21222D] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#9CA3AF] dark:text-[#A2A5B9]'} transition-colors duration-150`} strokeWidth={isActive ? 2.5 : 2} />
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-pill"
+                            transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.6 }}
+                            className="absolute inset-x-2 inset-y-2 rounded-[22px] bg-[#34117E]/[0.08] dark:bg-[#C4B5FD]/[0.14] z-0"
+                          />
                         )}
-                        <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-[#A2A5B9] font-medium'} transition-colors duration-150`}>{tab.label}</span>
+                        <motion.span
+                          className="relative z-10 flex flex-col items-center"
+                          animate={isActive ? { y: -2, scale: 1.08 } : { y: 0, scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 24 }}
+                        >
+                          {isLoading ? (
+                            <Loader2 size={22} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin mb-1" />
+                          ) : (
+                            <Icon size={22} className={`${isActive ? 'text-[#34117E] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#9CA3AF] dark:text-[#A2A5B9]'} transition-colors duration-200`} strokeWidth={isActive ? 2.5 : 2} />
+                          )}
+                          <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-[#A2A5B9] font-medium'} transition-colors duration-200`}>{tab.label}</span>
+                        </motion.span>
                       </button>
                     );
+
                   })}
                 </div>
               </div>
