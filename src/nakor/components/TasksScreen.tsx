@@ -780,7 +780,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
 
       {/* Modal Bottom Sheet with slide up style */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center select-none">
+        <div className="fixed inset-0 z-[100] flex items-end justify-center select-none">
           {/* Backdrop Overlay */}
           <div 
             onClick={() => setIsModalOpen(false)}
@@ -788,7 +788,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
           />
 
           {/* Modal Container */}
-          <div className="relative w-full max-w-[390px] bg-white dark:bg-[#151622] rounded-t-[32px] border-t border-[#DBDBE5] dark:border-[#2A2B3D] p-6 pb-12 z-10 shadow-2xl flex flex-col transform translate-y-0 transition-transform duration-300">
+          <div className="relative w-full max-w-[390px] max-h-[92vh] overflow-y-auto bg-white dark:bg-[#151622] rounded-t-[32px] border-t border-[#DBDBE5] dark:border-[#2A2B3D] p-6 pb-[calc(env(safe-area-inset-bottom)+7rem)] z-10 shadow-2xl flex flex-col transform translate-y-0 transition-transform duration-300">
             {/* Header / Drag Indicator */}
             <div className="w-12 h-1 bg-neutral-300 rounded-full mx-auto mb-5" />
             
