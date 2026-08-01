@@ -37,6 +37,7 @@ import {
   User,
   PieChart,
   ShoppingBag, Loader2, Moon, Sun,
+  House, ListChecks, Gift, UserRound,
   Store
 } from 'lucide-react';
 
