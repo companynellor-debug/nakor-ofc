@@ -311,99 +311,37 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
           {/* Column 2: Settings */}
           <div className="w-full space-y-6">
             
-            <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 overflow-hidden divide-y divide-[#F3F4F6] shadow-sm">
-              <button 
-                onClick={() => onNavigate && onNavigate('history')}
-                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
-                    <Clock size={16} className="text-[#4F46E5]" />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Histórico</span>
-                </div>
-                <ChevronRight size={16} className="text-[#D1D5DB]" />
-              </button>
-              
-              <button 
-                onClick={() => onNavigate && onNavigate('conquistas')}
-                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
-                    <Trophy size={16} className="text-[#4F46E5]" />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Conquistas</span>
-                </div>
-                <ChevronRight size={16} className="text-[#D1D5DB]" />
-              </button>
-
-              <button 
-                onClick={() => onNavigate && onNavigate('notifications')}
-                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
-                    <Bell size={16} />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Notificações</span>
-                </div>
-                <ChevronRight size={16} className="text-[#D1D5DB]" />
-              </button>
-
-              <button 
-                onClick={() => onNavigate && onNavigate('focus_time')}
-                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
-                    <Clock size={16} />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Hora do Foco</span>
-                </div>
-                <ChevronRight size={16} className="text-[#D1D5DB]" />
-              </button>
-
-              <button 
-                onClick={() => onNavigate && onNavigate('card_colors')}
-                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] dark:hover:bg-white/5 transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] dark:bg-white/5 flex items-center justify-center">
-                    <Palette size={16} />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Cores dos cards</span>
-                </div>
-                <ChevronRight size={16} className="text-[#D1D5DB] dark:text-neutral-600" />
-              </button>
-
-              {onToggleTheme && (
-                <button 
-                  onClick={onToggleTheme}
-                  className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] dark:hover:bg-white/5 transition-colors cursor-pointer"
+            <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/50 overflow-hidden divide-y divide-[#F3F4F6] dark:divide-white/[0.06] shadow-[0_10px_30px_-18px_rgba(23,16,54,0.25)]">
+              {[
+                { key: 'history', label: 'Histórico', Icon: History, onClick: () => onNavigate && onNavigate('history') },
+                { key: 'conquistas', label: 'Conquistas', Icon: Trophy, onClick: () => onNavigate && onNavigate('conquistas') },
+                { key: 'notifications', label: 'Notificações', Icon: Bell, onClick: () => onNavigate && onNavigate('notifications') },
+                { key: 'focus_time', label: 'Hora do Foco', Icon: AlarmClock, onClick: () => onNavigate && onNavigate('focus_time') },
+                { key: 'card_colors', label: 'Cores dos cards', Icon: Palette, onClick: () => onNavigate && onNavigate('card_colors') },
+                ...(onToggleTheme
+                  ? [{
+                      key: 'theme',
+                      label: `Tema: ${theme === 'light' ? 'Claro' : 'Escuro'}`,
+                      Icon: theme === 'light' ? Moon : Sun,
+                      onClick: onToggleTheme
+                    }]
+                  : []),
+                { key: 'help', label: 'Ajuda', Icon: LifeBuoy, onClick: () => handleItemClick('Ajuda') }
+              ].map(({ key, label, Icon, onClick }) => (
+                <button
+                  key={key}
+                  onClick={onClick}
+                  className="group w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] dark:hover:bg-white/[0.04] transition-colors cursor-pointer"
                 >
-                  <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                    <div className="w-8 h-8 rounded-full bg-[#F3F4F6] dark:bg-white/5 flex items-center justify-center">
-                      {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-9 h-9 rounded-2xl bg-[#F4F2FF] dark:bg-[#C4B5FD]/[0.12] border border-[#34117E]/[0.08] dark:border-white/[0.08] flex items-center justify-center transition-all duration-200 group-hover:bg-[#EAE6FF] dark:group-hover:bg-[#C4B5FD]/[0.18]">
+                      <Icon size={16} strokeWidth={2} className="text-[#4F46E5] dark:text-[#C4B5FD]" />
                     </div>
-                    <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Tema: {theme === 'light' ? 'Claro' : 'Escuro'}</span>
+                    <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">{label}</span>
                   </div>
-                  <ChevronRight size={16} className="text-[#D1D5DB] dark:text-neutral-600" />
+                  <ChevronRight size={16} className="text-[#C9CBD6] dark:text-neutral-500 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </button>
-              )}
-
-              <button 
-                onClick={() => handleItemClick('Ajuda')}
-                className="w-full p-4 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3 text-[#6B7280] dark:text-neutral-400">
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
-                    <HelpCircle size={16} />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA]">Ajuda</span>
-                </div>
-                <ChevronRight size={16} className="text-[#D1D5DB]" />
-              </button>
+              ))}
             </div>
 
             {/* Logout Button */}
