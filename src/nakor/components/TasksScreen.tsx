@@ -534,11 +534,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <div className="w-full bg-[#21222D] rounded-[28px] p-7 shadow-lg-layered flex flex-col relative overflow-hidden text-left text-white border border-white/[0.04]">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
-                           <Target size={22} className="text-[#34117E] dark:text-[#C4B5FD]" />
+                           <Target size={22} className="text-[#C4B5FD]" />
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/15 text-[#34117E] dark:text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#34117E]/30">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#C4B5FD]/15 text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#C4B5FD]/30">
                             DESAFIO DIÁRIO
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
@@ -550,16 +550,17 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       <div className="space-y-2 mb-4">
                         <div className="w-full h-2 bg-white/[0.08] rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-[#34117E] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(52,17,126,0.4)]"
+                            className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#C4B5FD] rounded-full transition-all duration-500 shadow-[0_0_12px_rgba(196,181,253,0.5)]"
                             style={{ width: `${Math.min((todayFocusMinutes / 60) * 100, 100)}%` }}
                           />
                         </div>
                         <div className="flex justify-end">
                           <span className="text-xs font-bold text-white/60">
-                            <span className="text-[#34117E] dark:text-[#C4B5FD]">{todayFocusMinutes}</span> / 60 min
+                            <span className="text-[#C4B5FD]">{todayFocusMinutes}</span> / 60 min
                           </span>
                         </div>
                       </div>
+
 
                       <div className="flex items-center justify-between pt-1">
                         <div className="flex items-center gap-1.5 text-xs text-white/70 font-medium">
@@ -568,10 +569,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <button 
                           onClick={() => onNavigate?.('new_activity')}
-                          className="bg-[#34117E] hover:bg-[#260b61] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
+                          className="bg-[#5B34C7] hover:bg-[#4A2AA8] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
                         >
                           Iniciar
                         </button>
+
                       </div>
                     </div>
 
@@ -627,11 +629,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <div className="w-full bg-[#21222D] rounded-[28px] p-7 shadow-lg-layered flex flex-col relative overflow-hidden text-left text-white border border-white/[0.04]">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center shrink-0 border border-white/[0.08]">
-                          <Target size={22} className="text-[#34117E] dark:text-[#C4B5FD]" />
+                          <Target size={22} className="text-[#C4B5FD]" />
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/15 text-[#34117E] dark:text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#34117E]/30">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#C4B5FD]/15 text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#C4B5FD]/30">
                             DESAFIO SEMANAL
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
@@ -643,13 +645,13 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       <div className="space-y-2 mb-4">
                         <div className="w-full h-2 bg-white/[0.08] rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-[#34117E] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(52,17,126,0.4)]"
+                            className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#C4B5FD] rounded-full transition-all duration-500 shadow-[0_0_12px_rgba(196,181,253,0.5)]"
                             style={{ width: `${Math.min((weeklyFocusHours / 10) * 100, 100)}%` }}
                           />
                         </div>
                         <div className="flex justify-end">
                           <span className="text-xs font-bold text-white/60">
-                            <span className="text-[#34117E] dark:text-[#C4B5FD]">{weeklyFocusHours.toFixed(1)}h</span> / 10h
+                            <span className="text-[#C4B5FD]">{weeklyFocusHours.toFixed(1)}h</span> / 10h
                           </span>
                         </div>
                       </div>
@@ -661,11 +663,12 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <button 
                           onClick={() => onNavigate?.('new_activity')}
-                          className="bg-[#34117E] hover:bg-[#260b61] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
+                          className="bg-[#5B34C7] hover:bg-[#4A2AA8] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
                         >
                           Continuar
                         </button>
                       </div>
+
                     </div>
 
                     {/* Card 2: Streak */}
@@ -724,7 +727,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       <div className="space-y-2 mb-1">
                         <div className="w-full h-2 bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-white/[0.05] rounded-full transition-all duration-500"
+                            className="h-full bg-[#34117E]/40 dark:bg-[#C4B5FD]/40 rounded-full transition-all duration-500"
                             style={{ width: `0%` }}
                           />
                         </div>
