@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, ClipboardList, ShoppingBag, Clock, User } from 'lucide-react';
+import { House, ListChecks, Gift, UserRound } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
 
 interface DesktopSidebarProps {
@@ -37,10 +37,10 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
 
       <nav className="relative flex-1 space-y-1">
         {[
-          { id: 'home', icon: Home, label: 'Início' },
-          { id: 'tasks', icon: ClipboardList, label: 'Tarefas' },
-          { id: 'loja', icon: ShoppingBag, label: 'Trocas' },
-          { id: 'profile', icon: User, label: 'Perfil' }
+          { id: 'home', icon: House, label: 'Início' },
+          { id: 'tasks', icon: ListChecks, label: 'Tarefas' },
+          { id: 'loja', icon: Gift, label: 'Trocas' },
+          { id: 'profile', icon: UserRound, label: 'Perfil' }
         ].map(tab => {
           const Icon = tab.icon;
           const isActive = currentView === tab.id;
@@ -48,16 +48,22 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
             <button
               key={tab.id}
               onClick={() => onNavigate?.(tab.id)}
-              className={`group relative w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-all duration-200 cursor-pointer border select-none outline-none ${
+              className={`group relative w-full flex items-center gap-3 px-2.5 py-2 rounded-2xl transition-all duration-200 cursor-pointer border select-none outline-none ${
                 isActive
-                  ? 'bg-white/[0.14] text-white border-white/[0.20] shadow-[0_8px_24px_-12px_rgba(0,0,0,0.9)]'
-                  : 'text-white/75 hover:bg-white/[0.08] hover:text-white border-transparent'
+                  ? 'bg-white/[0.10] text-white border-white/[0.16] shadow-[0_10px_28px_-14px_rgba(0,0,0,0.95)] backdrop-blur-xl'
+                  : 'text-white/75 hover:bg-white/[0.06] hover:text-white border-transparent'
               }`}
             >
               {isActive && (
                 <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[#B9B2FF] shadow-[0_0_14px_rgba(185,178,255,0.9)]" />
               )}
-              <Icon size={17} strokeWidth={isActive ? 2.2 : 1.9} className={`shrink-0 ${isActive ? 'text-[#CFC9FF] drop-shadow-[0_0_10px_rgba(185,178,255,0.6)]' : 'text-white/70 group-hover:text-white'}`} />
+              <span className={`relative flex items-center justify-center w-8 h-8 rounded-xl shrink-0 transition-all duration-200 ${
+                isActive
+                  ? 'bg-gradient-to-br from-[#6D5BF5] to-[#3A26C4] shadow-[0_6px_16px_-4px_rgba(109,91,245,0.7)]'
+                  : 'bg-white/[0.06] group-hover:bg-white/[0.10]'
+              }`}>
+                <Icon size={16} strokeWidth={isActive ? 2.3 : 1.9} className={isActive ? 'text-white' : 'text-white/70 group-hover:text-white'} />
+              </span>
               <span className="text-[13px] font-semibold tracking-tight">{tab.label}</span>
             </button>
           );

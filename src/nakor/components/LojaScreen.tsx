@@ -519,7 +519,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                 ) : coins >= selectedProduct.price ? (
                   <button 
                     onClick={() => handleRedeem(selectedProduct)}
-                    className="w-full h-12 bg-[#34117E] hover:bg-[#260b61] text-white font-bold text-xs rounded-[16px] flex items-center justify-center mt-6 transition-all cursor-pointer shadow-sm-layered"
+                    className="w-full h-12 bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] text-white font-bold text-xs rounded-[16px] flex items-center justify-center mt-6 transition-all cursor-pointer shadow-sm-layered"
                   >
                     Resgatar por {selectedProduct.price} coins
                   </button>

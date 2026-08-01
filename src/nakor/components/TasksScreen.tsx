@@ -845,7 +845,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
               {/* Confirm Button */}
               <button
                 type="submit"
-                className="w-full bg-[#34117E] hover:bg-[#260b61] active:scale-95 text-white font-bold py-4 rounded-[16px] text-sm transition-all shadow-md-layered mt-2 cursor-pointer flex justify-center items-center"
+                className="w-full bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 text-white font-bold py-4 rounded-[16px] text-sm transition-all shadow-md-layered mt-2 cursor-pointer flex justify-center items-center"
               >
                 Adicionar
               </button>

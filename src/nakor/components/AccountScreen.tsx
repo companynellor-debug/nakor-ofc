@@ -240,7 +240,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
 
           <button 
             onClick={handleSave}
-            className="w-full h-[56px] rounded-full bg-[#34117E] hover:bg-[#260b61] text-white font-bold text-[16px] flex items-center justify-center mt-2 transition-all active:scale-[0.98] shadow-md-layered cursor-pointer"
+            className="w-full h-[56px] rounded-full bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] text-white font-bold text-[16px] flex items-center justify-center mt-2 transition-all active:scale-[0.98] shadow-md-layered cursor-pointer"
           >
             Salvar alterações
           </button>
