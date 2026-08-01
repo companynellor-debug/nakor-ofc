@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, ClipboardList, ShoppingBag, Clock, User } from 'lucide-react';
+import { House, ListChecks, Gift, UserRound } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
 
 interface DesktopSidebarProps {
