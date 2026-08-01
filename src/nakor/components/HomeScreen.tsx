@@ -474,7 +474,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* New Activity button inside scroll view */}
           <button 
             onClick={() => onNavigate?.('new_activity')}
-            className="w-full h-[56px] bg-[#34117E] hover:bg-[#260b61] active:scale-95 text-white font-bold text-[16px] rounded-[16px] flex justify-center items-center gap-2 transition-all cursor-pointer shadow-md-layered mb-8"
+            className="w-full h-[56px] bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 text-white font-bold text-[16px] rounded-[16px] flex justify-center items-center gap-2 transition-all cursor-pointer shadow-md-layered mb-8"
           >
             <Plus size={18} strokeWidth={2.5} />
             <span>Nova Atividade</span>
@@ -670,7 +670,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* New Activity trigger button */}
             <button 
               onClick={() => onNavigate?.('new_activity')}
-              className="w-full h-[56px] bg-[#34117E] hover:bg-[#260b61] active:scale-95 text-white font-bold text-[16px] rounded-[16px] flex justify-center items-center gap-2 transition-all cursor-pointer shadow-md-layered"
+              className="w-full h-[56px] bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 text-white font-bold text-[16px] rounded-[16px] flex justify-center items-center gap-2 transition-all cursor-pointer shadow-md-layered"
             >
               <Plus size={18} strokeWidth={2.5} />
               <span>Nova Atividade</span>

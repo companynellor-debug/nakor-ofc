@@ -104,7 +104,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           {/* Primary CTA */}
           <button 
             onClick={onStart}
-            className="w-full max-w-xs bg-[#34117E] hover:bg-[#260b61] active:scale-[0.98] text-white font-bold py-4 px-8 rounded-full text-[15px] transition-all shadow-[0_4px_20px_rgba(52,17,126,0.3)] mb-4"
+            className="w-full max-w-xs bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-[0.98] text-white font-bold py-4 px-8 rounded-full text-[15px] transition-all shadow-[0_4px_20px_rgba(52,17,126,0.3)] mb-4"
           >
             Criar conta
           </button>

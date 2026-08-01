@@ -143,7 +143,7 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
         <button 
           onClick={handleSubmit}
           disabled={afterText.length < 30 || isLoading}
-          className="w-full max-w-[342px] h-[56px] mb-8 bg-[#34117E] hover:bg-[#260b61] active:scale-95 disabled:opacity-50 disabled:hover:bg-[#34117E] disabled:active:scale-100 text-white font-bold text-base rounded-full flex justify-center items-center transition-all shadow-[0_4px_25px_rgba(52,17,126,0.25)] cursor-pointer"
+          className="w-full max-w-[342px] h-[56px] mb-8 bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 disabled:opacity-50 disabled:hover:bg-[#34117E] disabled:active:scale-100 text-white font-bold text-base rounded-full flex justify-center items-center transition-all shadow-[0_4px_25px_rgba(52,17,126,0.25)] cursor-pointer"
         >
           {isLoading ? 'avaliando sua sessão...' : 'Ver minha nota'}
         </button>
