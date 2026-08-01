@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebar } from './components/DesktopSidebar';
 import { AuthScreen } from './components/AuthScreen';
@@ -39,6 +39,8 @@ import {
   ShoppingBag, Loader2, Moon, Sun,
   Store
 } from 'lucide-react';
+
+const TAB_ORDER = ['home', 'tasks', 'new_activity', 'loja', 'profile'];
 
 export default function App() {
   const [view, setView] = useState<string>('landing');
@@ -208,10 +210,7 @@ export default function App() {
             {view === 'home' && (
               <motion.div
                 key="home"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <HomeScreen 
@@ -225,10 +224,7 @@ export default function App() {
             {view === 'new_activity' && (
               <motion.div
                 key="new_activity"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <NewActivityScreen 
@@ -255,10 +251,7 @@ export default function App() {
             {view === 'diario-depois' && (
               <motion.div
                 key="diario-depois"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <AfterDiaryScreen 
@@ -295,10 +288,7 @@ export default function App() {
             {view === 'history' && (
               <motion.div
                 key="history"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <HistoryScreen 
@@ -312,10 +302,7 @@ export default function App() {
             {view === 'tasks' && (
               <motion.div
                 key="tasks"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <TasksScreen 
@@ -328,10 +315,7 @@ export default function App() {
             {view === 'profile' && (
               <motion.div
                 key="profile"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <ProfileScreen 
@@ -347,10 +331,7 @@ export default function App() {
             {view === 'conquistas' && (
               <motion.div 
                 key="conquistas" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -367,10 +348,7 @@ export default function App() {
             {view === 'loja' && (
               <motion.div
                 key="loja"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full flex-1 flex flex-col"
               >
                 <LojaScreen 
@@ -384,10 +362,7 @@ export default function App() {
             {view === 'notifications' && (
               <motion.div 
                 key="notifications" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -404,10 +379,7 @@ export default function App() {
             {view === 'account' && (
               <motion.div 
                 key="account" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -424,10 +396,7 @@ export default function App() {
             {view === 'focus_time' && (
               <motion.div 
                 key="focus_time" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
@@ -444,10 +413,7 @@ export default function App() {
             {view === 'card_colors' && (
               <motion.div 
                 key="card_colors" 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                {...tabAnim}
                 className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
               >
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
