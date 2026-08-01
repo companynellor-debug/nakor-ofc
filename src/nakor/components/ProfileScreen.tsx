@@ -11,7 +11,8 @@ import {
   Flame,
   AlertCircle,
   Trophy,
-  Camera, Moon, Sun
+  Camera, Moon, Sun,
+  History, AlarmClock, LifeBuoy
 } from 'lucide-react';
 
 interface ProfileScreenProps {
