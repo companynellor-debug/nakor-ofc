@@ -37,10 +37,10 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
 
       <nav className="relative flex-1 space-y-1">
         {[
-          { id: 'home', icon: Home, label: 'Início' },
-          { id: 'tasks', icon: ClipboardList, label: 'Tarefas' },
-          { id: 'loja', icon: ShoppingBag, label: 'Trocas' },
-          { id: 'profile', icon: User, label: 'Perfil' }
+          { id: 'home', icon: House, label: 'Início' },
+          { id: 'tasks', icon: ListChecks, label: 'Tarefas' },
+          { id: 'loja', icon: Gift, label: 'Trocas' },
+          { id: 'profile', icon: UserRound, label: 'Perfil' }
         ].map(tab => {
           const Icon = tab.icon;
           const isActive = currentView === tab.id;
