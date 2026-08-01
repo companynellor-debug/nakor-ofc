@@ -47,6 +47,25 @@ export default function App() {
   const [loadingTab, setLoadingTab] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
+  // Direction of the tab change (1 = forward, -1 = backward, 0 = neutral)
+  const prevViewRef = useRef(view);
+  const navDirRef = useRef(0);
+  if (prevViewRef.current !== view) {
+    const from = TAB_ORDER.indexOf(prevViewRef.current);
+    const to = TAB_ORDER.indexOf(view);
+    navDirRef.current = from !== -1 && to !== -1 && from !== to ? (to > from ? 1 : -1) : 0;
+    prevViewRef.current = view;
+  }
+  const dir = navDirRef.current;
+
+  const tabAnim = {
+    initial: { opacity: 0, x: dir * 44, scale: 0.98, filter: 'blur(8px)' },
+    animate: { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' },
+    exit: { opacity: 0, x: dir * -44, scale: 0.985, filter: 'blur(8px)' },
+    transition: { type: 'spring' as const, stiffness: 340, damping: 34, mass: 0.7 },
+  };
+
+
   useEffect(() => {
     const savedTheme = localStorage.getItem('nakor_theme') as 'light' | 'dark' | null;
     if (savedTheme) {
