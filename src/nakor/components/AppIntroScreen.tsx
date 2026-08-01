@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import intro1 from '../../assets/intro-1.png.asset.json';
-import intro2 from '../../assets/intro-2.png.asset.json';
-import intro3 from '../../assets/intro-3.png.asset.json';
+import intro1 from '../../assets/intro-1.png';
+import intro2 from '../../assets/intro-2.png';
+import intro3 from '../../assets/intro-3.png';
 
 
 interface AppIntroScreenProps {
@@ -14,17 +14,17 @@ const slides = [
   {
     title: "Desbloqueie seu Foco",
     description: "Concentre-se no que realmente importa e atinja seus objetivos diários com eficiência.",
-    image: intro1.url
+    image: intro1
   },
   {
     title: "Planejamento Rápido",
     description: "Crie atividades e estabeleça metas claras para manter o ritmo ao longo do dia.",
-    image: intro2.url
+    image: intro2
   },
   {
     title: "Acompanhe seu Progresso",
     description: "Receba feedbacks por IA e visualize seu desempenho para manter a consistência.",
-    image: intro3.url
+    image: intro3
   }
 ];
 

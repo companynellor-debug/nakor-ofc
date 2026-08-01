@@ -1,4 +1,4 @@
-import logoAsset from '../../assets/nakor-logo.png.asset.json';
+import logoAsset from '../../assets/nakor-logo.png';
 
 interface NakorLogoProps {
   className?: string;
@@ -9,7 +9,7 @@ interface NakorLogoProps {
 export function NakorLogo({ className = '', size = 32 }: NakorLogoProps) {
   return (
     <img
-      src={logoAsset.url}
+      src={logoAsset}
       alt="Nakor"
       width={size}
       height={size}
