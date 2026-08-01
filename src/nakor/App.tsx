@@ -507,14 +507,28 @@ export default function App() {
                         onClick={() => handleNavigate(tab.id)}
                         className="flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] active:scale-95 transition-transform h-full pt-1"
                       >
-                        {isLoading ? (
-                          <Loader2 size={22} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin mb-1" />
-                        ) : (
-                          <Icon size={22} className={`${isActive ? 'text-[#21222D] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#9CA3AF] dark:text-[#A2A5B9]'} transition-colors duration-150`} strokeWidth={isActive ? 2.5 : 2} />
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-pill"
+                            transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.6 }}
+                            className="absolute inset-x-2 inset-y-2 rounded-[22px] bg-[#34117E]/[0.08] dark:bg-[#C4B5FD]/[0.14] z-0"
+                          />
                         )}
-                        <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-[#A2A5B9] font-medium'} transition-colors duration-150`}>{tab.label}</span>
+                        <motion.span
+                          className="relative z-10 flex flex-col items-center"
+                          animate={isActive ? { y: -2, scale: 1.08 } : { y: 0, scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 24 }}
+                        >
+                          {isLoading ? (
+                            <Loader2 size={22} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin mb-1" />
+                          ) : (
+                            <Icon size={22} className={`${isActive ? 'text-[#34117E] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#9CA3AF] dark:text-[#A2A5B9]'} transition-colors duration-200`} strokeWidth={isActive ? 2.5 : 2} />
+                          )}
+                          <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-[#A2A5B9] font-medium'} transition-colors duration-200`}>{tab.label}</span>
+                        </motion.span>
                       </button>
                     );
+
                   })}
                 </div>
               </div>
