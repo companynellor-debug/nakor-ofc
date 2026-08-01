@@ -37,6 +37,7 @@ import {
   User,
   PieChart,
   ShoppingBag, Loader2, Moon, Sun,
+  House, ListChecks, Gift, UserRound,
   Store
 } from 'lucide-react';
 
@@ -455,28 +456,28 @@ export default function App() {
         {/* Bottom Navbar */}
         {view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && !isLojaDrawerOpen && (() => {
           const tabs = [
-            { id: 'home', icon: Home, label: 'Início' },
-            { id: 'tasks', icon: ClipboardList, label: 'Tarefas' },
+            { id: 'home', icon: House, label: 'Início' },
+            { id: 'tasks', icon: ListChecks, label: 'Tarefas' },
             { id: 'new_activity', icon: Play, label: 'Iniciar', isCenter: true },
-            { id: 'loja', icon: ShoppingBag, Loader2, Moon, Sun, label: 'Trocas' },
-            { id: 'profile', icon: User, label: 'Perfil' }
+            { id: 'loja', icon: Gift, label: 'Trocas' },
+            { id: 'profile', icon: UserRound, label: 'Perfil' }
           ];
 
           return (
-            <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-              <div className="relative w-full drop-shadow-[0_12px_28px_rgba(0,0,0,0.08)] h-[76px]">
+            <div className="md:hidden fixed bottom-5 left-4 right-4 z-50">
+              <div className="relative w-full h-[74px] drop-shadow-[0_14px_34px_rgba(23,16,54,0.14)]">
                 {/* Background with cutout */}
-                <div 
-                  className="absolute inset-0 bg-white dark:bg-[#1A1B29] dark:border dark:border-white/[0.10] dark:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.9)] rounded-[32px] z-0"
+                <div
+                  className="absolute inset-0 rounded-[28px] bg-white/90 dark:bg-[#161724]/92 backdrop-blur-2xl border border-[#34117E]/[0.07] dark:border-white/[0.10] dark:shadow-[0_14px_40px_-12px_rgba(0,0,0,0.9)] z-0"
                   style={{
-                    WebkitMaskImage: 'radial-gradient(circle 38px at 50% 0px, transparent 100%, black 100%)',
-                    maskImage: 'radial-gradient(circle 38px at 50% 0px, transparent 100%, black 100%)'
+                    WebkitMaskImage: 'radial-gradient(circle 37px at 50% 0px, transparent 100%, black 100%)',
+                    maskImage: 'radial-gradient(circle 37px at 50% 0px, transparent 100%, black 100%)'
                   }}
                 />
-                
+
                 {/* Icons */}
-                <div className="absolute inset-0 flex items-center justify-between px-2 z-10">
-                  {tabs.map((tab, i) => {
+                <div className="absolute inset-0 flex items-stretch justify-between px-1.5 z-10">
+                  {tabs.map((tab) => {
                     const isActive = view === tab.id;
                     const isLoading = loadingTab === tab.id;
                     const Icon = tab.icon;
@@ -486,16 +487,17 @@ export default function App() {
                         <div key={tab.id} className="relative flex flex-col items-center justify-center w-[20%] h-full">
                           <button
                             onClick={() => handleNavigate(tab.id)}
+                            aria-label="Iniciar atividade"
                             className="absolute -top-7 flex flex-col items-center justify-center cursor-pointer outline-none select-none active:scale-95 transition-transform"
                           >
-                            <div className="w-[58px] h-[58px] rounded-full flex items-center justify-center shadow-[0_8px_20px_rgba(79,70,229,0.3)] bg-[#4F46E5] text-white">
+                            <span className="absolute inset-0 rounded-full bg-[#4F46E5]/35 blur-[18px]" />
+                            <div className="relative w-[58px] h-[58px] rounded-full flex items-center justify-center shadow-[0_10px_24px_-4px_rgba(79,70,229,0.55)] bg-gradient-to-br from-[#6D5BF5] to-[#3A26C4] ring-[3px] ring-white dark:ring-[#161724] text-white">
                               {isLoading ? (
                                 <Loader2 size={26} className="text-white animate-spin" />
                               ) : (
-                                <Play size={26} className="text-white fill-white ml-1" />
+                                <Play size={24} className="text-white fill-white ml-0.5" />
                               )}
                             </div>
-                            <span className="text-[10px] mt-2 font-semibold text-[#9CA3AF] dark:text-neutral-400 opacity-0">Iniciar</span>
                           </button>
                         </div>
                       );
@@ -505,27 +507,33 @@ export default function App() {
                       <button
                         key={tab.id}
                         onClick={() => handleNavigate(tab.id)}
-                        className="flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] active:scale-95 transition-transform h-full pt-1"
+                        className="group flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] h-full active:scale-95 transition-transform gap-1"
                       >
-                        {isActive && (
-                          <motion.span
-                            layoutId="nav-pill"
-                            transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.6 }}
-                            className="absolute inset-x-2 inset-y-2 rounded-[22px] bg-[#34117E]/[0.08] dark:bg-[#C4B5FD]/[0.14] z-0"
-                          />
-                        )}
-                        <motion.span
-                          className="relative z-10 flex flex-col items-center"
-                          animate={isActive ? { y: -2, scale: 1.08 } : { y: 0, scale: 1 }}
-                          transition={{ type: "spring", stiffness: 500, damping: 24 }}
-                        >
-                          {isLoading ? (
-                            <Loader2 size={22} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin mb-1" />
-                          ) : (
-                            <Icon size={22} className={`${isActive ? 'text-[#34117E] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#9CA3AF] dark:text-[#A2A5B9]'} transition-colors duration-200`} strokeWidth={isActive ? 2.5 : 2} />
+                        <span className="relative flex items-center justify-center w-10 h-8">
+                          {isActive && (
+                            <motion.span
+                              layoutId="nav-pill"
+                              transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.6 }}
+                              className="absolute inset-0 rounded-2xl bg-[#34117E]/[0.09] dark:bg-[#C4B5FD]/[0.16] z-0"
+                            />
                           )}
-                          <span className={`text-[10px] mt-1.5 ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-bold' : 'text-[#9CA3AF] dark:text-[#A2A5B9] font-medium'} transition-colors duration-200`}>{tab.label}</span>
-                        </motion.span>
+                          <motion.span
+                            className="relative z-10 flex items-center justify-center"
+                            animate={isActive ? { y: -1, scale: 1.1 } : { y: 0, scale: 1 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 24 }}
+                          >
+                            {isLoading ? (
+                              <Loader2 size={21} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin" />
+                            ) : (
+                              <Icon
+                                size={21}
+                                className={`${isActive ? 'text-[#34117E] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#A0A3B1] dark:text-[#A2A5B9]'} transition-colors duration-200`}
+                                strokeWidth={isActive ? 2.4 : 1.9}
+                              />
+                            )}
+                          </motion.span>
+                        </span>
+                        <span className={`text-[10px] leading-none tracking-[-0.01em] ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-semibold' : 'text-[#A0A3B1] dark:text-[#A2A5B9] font-medium'} transition-colors duration-200`}>{tab.label}</span>
                       </button>
                     );
 
