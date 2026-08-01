@@ -468,7 +468,7 @@ export default function App() {
               <div className="relative w-full h-[74px] drop-shadow-[0_14px_34px_rgba(23,16,54,0.14)]">
                 {/* Background with cutout */}
                 <div
-                  className="absolute inset-0 rounded-[28px] bg-white/90 dark:bg-[#16172480]/90 backdrop-blur-2xl border border-[#34117E]/[0.07] dark:border-white/[0.10] dark:shadow-[0_14px_40px_-12px_rgba(0,0,0,0.9)] z-0"
+                  className="absolute inset-0 rounded-[28px] bg-white/90 dark:bg-[#161724]/92 backdrop-blur-2xl border border-[#34117E]/[0.07] dark:border-white/[0.10] dark:shadow-[0_14px_40px_-12px_rgba(0,0,0,0.9)] z-0"
                   style={{
                     WebkitMaskImage: 'radial-gradient(circle 37px at 50% 0px, transparent 100%, black 100%)',
                     maskImage: 'radial-gradient(circle 37px at 50% 0px, transparent 100%, black 100%)'
