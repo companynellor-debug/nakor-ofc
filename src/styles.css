@@ -122,16 +122,15 @@
   transform: translateY(0px);
 }
 
-/* Scrollbar styling */
+/* Scrollbar hidden globally */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 ::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #F5F5F5;
-}
-::-webkit-scrollbar-thumb {
-  background: #10367D;
-  border-radius: 4px;
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 @keyframes move-bubbles {
