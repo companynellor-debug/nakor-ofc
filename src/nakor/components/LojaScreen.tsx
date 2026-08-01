@@ -255,22 +255,22 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
             </div>
 
             {/* WALLET CARD */}
-            <div className="w-full bg-white border border-[#DBDBE5]/25 rounded-[20px] p-5 shadow-[0_2px_16px_rgba(0,0,0,0.06)] relative overflow-hidden">
+            <div className="w-full bg-gradient-to-br from-[#111827] to-[#1E1B4B] rounded-[20px] p-5 shadow-lg relative overflow-hidden">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[#6B7280] text-[10px] font-mono tracking-[2px] uppercase mb-1">
+                  <div className="text-[#9CA3AF] dark:text-neutral-400 text-[10px] font-mono tracking-[2px] uppercase mb-1">
                     Seu Saldo
                   </div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-[#21222D] font-mono text-[40px] font-bold leading-none">
+                    <span className="text-white font-mono text-[40px] font-bold leading-none">
                       {coins.toLocaleString('pt-BR')}
                     </span>
-                    <span className="text-[#34117E] text-sm font-mono">
+                    <span className="text-[#A5B4FC] text-sm font-mono">
                       coins
                     </span>
                   </div>
                   {lastSessionCoins && (
-                    <div className="text-[#6B7280] text-[11px] mt-1.5">
+                    <div className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1.5">
                       +{lastSessionCoins} coins na última sessão
                     </div>
                   )}
@@ -278,7 +278,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                 
                 {/* Coin Icon */}
                 <div 
-                  className="w-12 h-12 rounded-full bg-white border border-[#34117E]/10 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.15)] shrink-0"
+                  className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] shrink-0"
                 >
                   <NakorLogo color="white" size={24} />
                 </div>
@@ -288,10 +288,10 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
               <div className="mt-4">
                 {nextProduct ? (
                   <>
-                    <div className="text-[#6B7280] text-[11px] mb-2 font-medium">
+                    <div className="text-[#9CA3AF] dark:text-neutral-400 text-[11px] mb-2 font-medium">
                       Faltam {nextProduct.price - coins} coins para {nextProduct.name}
                     </div>
-                    <div className="w-full h-[6px] bg-[#E5E7EB] rounded-[3px] overflow-hidden">
+                    <div className="w-full h-[6px] bg-[#374151] rounded-[3px] overflow-hidden">
                       <div 
                         className="h-full bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] rounded-[3px]"
                         style={{ width: `${Math.min(100, (coins / nextProduct.price) * 100)}%` }}
@@ -299,7 +299,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                     </div>
                   </>
                 ) : (
-                  <div className="text-[#34117E] text-[11px] font-medium pt-1">
+                  <div className="text-[#A5B4FC] text-[11px] font-medium pt-1">
                     Você pode resgatar prêmios!
                   </div>
                 )}
