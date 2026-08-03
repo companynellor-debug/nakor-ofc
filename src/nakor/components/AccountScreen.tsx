@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle, Trash2 } from 'lucide-react';
+import { updateAccount, wipeEverything, clearAppData } from '../lib/localStore';
 
 interface AccountScreenProps {
   onBack: () => void;
