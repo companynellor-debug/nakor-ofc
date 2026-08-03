@@ -404,6 +404,29 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
         });
       };
 
+      // Layout unificado: captura apenas o card único
+      if (estiloCards.layout === 'unificado' && cardUnifiedRef.current) {
+        const el = cardUnifiedRef.current;
+        const dataUrl = await toPng(el, {
+          cacheBust: true,
+          pixelRatio: 3,
+          width: el.offsetWidth,
+          height: el.offsetHeight,
+        });
+        const img = await loadImage(dataUrl);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const c = canvas.getContext('2d');
+        if (!c) throw new Error('Could not get 2d context');
+        c.drawImage(img, 0, 0);
+        const finalUrl = canvas.toDataURL('image/png');
+        return new Promise((resolve) => {
+          canvas.toBlob((blob) => resolve(blob ? { blob, dataUrl: finalUrl } : null), 'image/png');
+        });
+      }
+
+
       // Measure maximum height of active card containers to align them perfectly side-by-side!
       let maxCardHeight = 280;
       if (estiloCards.conteudo?.textoAntes && cardAntesRef.current) {
