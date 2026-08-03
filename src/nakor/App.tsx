@@ -120,24 +120,32 @@ export default function App() {
 
   // Check if onboarding completed or user logged in on mount
   useEffect(() => {
-    const savedEmail = localStorage.getItem('nakor_user_email');
-    if (savedEmail) {
-      setUserEmail(savedEmail);
-      
-      const savedOnboarding = localStorage.getItem(`nakor_onboarding_${savedEmail}`) || localStorage.getItem('nakor_onboarding');
-      if (savedOnboarding) {
-        try {
-          setOnboardingData(JSON.parse(savedOnboarding));
-          setIsOnboardingComplete(true);
-          setView('home');
-        } catch (e) {
-          setView('onboarding');
-        }
-      } else {
-        setView('onboarding');
-      }
-    } else {
+    initStore();
+    const savedEmail = getActiveEmail();
+    if (!savedEmail) {
       setView('landing');
+      return;
+    }
+
+    const account = getAccount(savedEmail);
+    if (!account) {
+      clearActiveAccount();
+      setView('landing');
+      return;
+    }
+
+    setUserEmail(account.email);
+    ensureDataOwner(account.email);
+
+    if (account.onboardingDone) {
+      setOnboardingData(account.onboardingData);
+      setIsOnboardingComplete(true);
+      if (account.onboardingData) {
+        localStorage.setItem('nakor_onboarding', JSON.stringify(account.onboardingData));
+      }
+      setView('home');
+    } else {
+      setView('onboarding');
     }
   }, []);
 
@@ -145,17 +153,15 @@ export default function App() {
     setOnboardingData(data);
     setIsOnboardingComplete(true);
     if (userEmail) {
-      localStorage.setItem(`nakor_onboarding_${userEmail}`, JSON.stringify(data));
+      completeOnboarding(userEmail, data);
     }
-    localStorage.setItem('nakor_onboarding', JSON.stringify(data));
     setView('home');
   };
 
   const handleResetOnboarding = () => {
     if (userEmail) {
-      localStorage.removeItem(`nakor_onboarding_${userEmail}`);
+      resetOnboarding(userEmail);
     }
-    localStorage.removeItem('nakor_onboarding');
     setOnboardingData(null);
     setIsOnboardingComplete(false);
     setView('onboarding');
@@ -163,41 +169,26 @@ export default function App() {
 
   const handleAuthSuccess = (email: string, name?: string) => {
     setUserEmail(email);
-    localStorage.setItem('nakor_user_email', email);
-    if (name) {
-      localStorage.setItem('nakor_user', name);
-    }
-    
-    const savedOnboarding = localStorage.getItem(`nakor_onboarding_${email}`) || localStorage.getItem('nakor_onboarding');
-    
-    if (name) {
-      // Novo cadastro: forçar o questionário uma única vez
-      localStorage.removeItem(`nakor_onboarding_${email}`);
-      localStorage.removeItem('nakor_onboarding');
+    const account = getAccount(email);
+
+    if (account?.onboardingDone) {
+      // Conta já respondeu o questionário: nunca mostrar de novo
+      setOnboardingData(account.onboardingData);
+      setIsOnboardingComplete(true);
+      setView('home');
+    } else {
       setOnboardingData(null);
       setIsOnboardingComplete(false);
       setView('onboarding');
-    } else {
-      // Login: restaurar se existir, senão direcionar para o questionário
-      if (savedOnboarding) {
-        try {
-          setOnboardingData(JSON.parse(savedOnboarding));
-          setIsOnboardingComplete(true);
-          setView('home');
-        } catch (e) {
-          setView('onboarding');
-        }
-      } else {
-        setView('onboarding');
-      }
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('nakor_user_email');
+    clearActiveAccount();
     setUserEmail(null);
     setIsOnboardingComplete(false);
     setOnboardingData(null);
+
     setAuthInitialView('login');
     setAuthMessage('');
     setView('auth');
