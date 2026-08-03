@@ -179,7 +179,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
               cy="150"
               r="140"
               stroke="url(#timerGradient)"
-              className="transition-all duration-1000 ease-linear"
+              className="fill-transparent transition-all duration-1000 ease-linear"
               strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={circumference}
