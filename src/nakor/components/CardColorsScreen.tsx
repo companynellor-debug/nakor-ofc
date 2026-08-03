@@ -129,6 +129,7 @@ export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
   const [accentColor, setAccentColor] = useState('#7C3AED');
   const [bgStyle, setBgStyle] = useState('gradient'); // 'gradient', 'solid', 'grain'
   const [scoreStyle, setScoreStyle] = useState('large'); // 'large', 'compact'
+  const [layout, setLayout] = useState('trio'); // 'trio' | 'unificado'
   
   const [bgOpacity, setBgOpacity] = useState(80); // 0 to 100
   const [conteudo, setConteudo] = useState({
