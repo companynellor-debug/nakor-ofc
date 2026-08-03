@@ -20,6 +20,15 @@ import { AppIntroScreen } from "./components/AppIntroScreen";
 import { HeroVisual } from './components/HeroVisual';
 import { PhoneMockups } from './components/PhoneMockups';
 import { NakorLogo } from './components/NakorLogo';
+import {
+  initStore,
+  getActiveEmail,
+  getAccount,
+  clearActiveAccount,
+  ensureDataOwner,
+  completeOnboarding,
+  resetOnboarding,
+} from './lib/localStore';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
