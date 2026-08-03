@@ -362,6 +362,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
   }, []);
 
   const cardAntesRef = useRef<HTMLDivElement>(null);
+
   const cardDepoisRef = useRef<HTMLDivElement>(null);
   const cardScoreRef = useRef<HTMLDivElement>(null);
 
