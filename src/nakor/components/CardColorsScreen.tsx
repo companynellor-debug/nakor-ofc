@@ -173,7 +173,7 @@ useEffect(() => {
 
   const handleSave = () => {
     try {
-      const config = { accentColor, bgStyle, scoreStyle, bgOpacity, conteudo };
+      const config = { accentColor, bgStyle, scoreStyle, layout, bgOpacity, conteudo };
       localStorage.setItem('nakor_estilo_cards', JSON.stringify(config));
       
       setShowToast(true);
