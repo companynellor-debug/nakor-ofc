@@ -282,7 +282,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
     try {
       const savedStyle = localStorage.getItem('nakor_estilo_cards');
       if (savedStyle) {
-        setEstiloCards(JSON.parse(savedStyle));
+        setEstiloCards((prev: any) => ({ ...prev, ...JSON.parse(savedStyle) }));
       }
     } catch (e) {}
 
