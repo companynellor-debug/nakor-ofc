@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Check, Clock } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
+import { UnifiedGlowCard } from './UnifiedGlowCard';
 
 interface CardColorsScreenProps {
   onBack: () => void;
@@ -129,6 +130,7 @@ export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
   const [accentColor, setAccentColor] = useState('#7C3AED');
   const [bgStyle, setBgStyle] = useState('gradient'); // 'gradient', 'solid', 'grain'
   const [scoreStyle, setScoreStyle] = useState('large'); // 'large', 'compact'
+  const [layout, setLayout] = useState('trio'); // 'trio' | 'unificado'
   
   const [bgOpacity, setBgOpacity] = useState(80); // 0 to 100
   const [conteudo, setConteudo] = useState({
@@ -153,6 +155,7 @@ useEffect(() => {
         if (parsed.accentColor) setAccentColor(parsed.accentColor);
         if (parsed.bgStyle) setBgStyle(parsed.bgStyle);
         if (parsed.scoreStyle) setScoreStyle(parsed.scoreStyle);
+        if (parsed.layout) setLayout(parsed.layout);
         if (parsed.bgOpacity !== undefined) setBgOpacity(parsed.bgOpacity);
         if (parsed.conteudo) setConteudo(parsed.conteudo);
       }
@@ -171,7 +174,7 @@ useEffect(() => {
 
   const handleSave = () => {
     try {
-      const config = { accentColor, bgStyle, scoreStyle, bgOpacity, conteudo };
+      const config = { accentColor, bgStyle, scoreStyle, layout, bgOpacity, conteudo };
       localStorage.setItem('nakor_estilo_cards', JSON.stringify(config));
       
       setShowToast(true);
@@ -234,7 +237,19 @@ useEffect(() => {
         <div className="px-5 mt-2 flex flex-col gap-6">
           
           {/* Preview */}
+          {layout === 'unificado' ? (
+            <UnifiedGlowCard
+              accentColor={accentColor}
+              title={lastActivity?.nome || 'Sessão de Foco'}
+              minutes={lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 45}
+              plannedMinutes={lastActivity?.duracao_prevista ? Math.round(lastActivity.duracao_prevista / 60) : 60}
+              score={lastActivity?.nota ?? 8.7}
+              exits={lastActivity?.saidas ?? 0}
+              message={conteudo.fraseIA ? (lastActivity?.mensagem_card || 'isso aí 😎') : undefined}
+            />
+          ) : (
           <div 
+
             className="w-full h-auto min-h-[380px] relative overflow-hidden shadow-xl transition-all duration-300" 
             style={{
               ...getCardBgStyle(bgStyle, accentColor, bgOpacity),
@@ -458,6 +473,57 @@ useEffect(() => {
 
             </div>
           </div>
+          )}
+
+          {/* Formato do Card */}
+          <div className="flex flex-col gap-2">
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Formato dos cards</span>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { id: 'trio', label: '3 cards alinhados', hint: 'Antes • Depois • Nota' },
+                { id: 'unificado', label: 'Card único glow', hint: 'Tudo em um só card' },
+              ].map((opt) => {
+                const isSelected = layout === opt.id;
+                return (
+                  <motion.button
+                    key={opt.id}
+                    onClick={() => setLayout(opt.id)}
+                    whileTap={{ scale: 0.96 }}
+                    className="flex flex-col items-start gap-2 p-3 rounded-[20px] border-2 text-left cursor-pointer bg-white dark:bg-[#151622] transition-all"
+                    style={{
+                      borderColor: isSelected ? accentColor : 'rgba(219,219,229,0.5)',
+                      boxShadow: isSelected ? `0 10px 20px -6px ${hexToRgba(accentColor, 0.3)}` : 'none',
+                    }}
+                  >
+                    <div className="w-full h-14 flex items-center justify-center gap-1.5">
+                      {opt.id === 'trio' ? (
+                        <>
+                          <div className="w-4 h-11 rounded-md" style={{ backgroundColor: hexToRgba(accentColor, 0.35) }} />
+                          <div className="w-4 h-11 rounded-md" style={{ backgroundColor: hexToRgba(accentColor, 0.6) }} />
+                          <div className="w-4 h-11 rounded-md" style={{ backgroundColor: hexToRgba(accentColor, 0.9) }} />
+                        </>
+                      ) : (
+                        <div
+                          className="w-14 h-14 rounded-2xl"
+                          style={{
+                            backgroundColor: '#0A0A0C',
+                            backgroundImage: `radial-gradient(120% 85% at 50% 110%, ${hexToRgba(accentColor, 0.95)} 0%, transparent 75%)`,
+                          }}
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <p className={`text-[13px] font-bold m-0 ${isSelected ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-neutral-500 dark:text-neutral-400'}`}>
+                        {opt.label}
+                      </p>
+                      <p className="text-[10px] text-neutral-400 m-0">{opt.hint}</p>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+
 
           {/* Seleção de Cor */}
           <div className="flex flex-col gap-2">

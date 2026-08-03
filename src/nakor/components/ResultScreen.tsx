@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { CheckCircle2, Home, Clock, User, Info } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { NakorLogo } from './NakorLogo';
+import { UnifiedGlowCard } from './UnifiedGlowCard';
 
 interface ResultScreenProps {
   onNavigate: (view: string) => void;
@@ -259,10 +260,11 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
     return currentStreak;
   }, []);
 
-  const [estiloCards, setEstiloCards] = useState({
+  const [estiloCards, setEstiloCards] = useState<any>({
     accentColor: '#A5CE00',
     bgStyle: 'gradient',
     scoreStyle: 'large',
+    layout: 'trio',
     bgOpacity: 80,
     conteudo: {
       textoAntes: true,
@@ -280,7 +282,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
     try {
       const savedStyle = localStorage.getItem('nakor_estilo_cards');
       if (savedStyle) {
-        setEstiloCards(JSON.parse(savedStyle));
+        setEstiloCards((prev: any) => ({ ...prev, ...JSON.parse(savedStyle) }));
       }
     } catch (e) {}
 
@@ -361,8 +363,10 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
   }, []);
 
   const cardAntesRef = useRef<HTMLDivElement>(null);
+
   const cardDepoisRef = useRef<HTMLDivElement>(null);
   const cardScoreRef = useRef<HTMLDivElement>(null);
+  const cardUnifiedRef = useRef<HTMLDivElement>(null);
 
   const userStreak = useMemo(() => {
     try {
@@ -399,6 +403,29 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           img.src = url;
         });
       };
+
+      // Layout unificado: captura apenas o card único
+      if (estiloCards.layout === 'unificado' && cardUnifiedRef.current) {
+        const el = cardUnifiedRef.current;
+        const dataUrl = await toPng(el, {
+          cacheBust: true,
+          pixelRatio: 3,
+          width: el.offsetWidth,
+          height: el.offsetHeight,
+        });
+        const img = await loadImage(dataUrl);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const c = canvas.getContext('2d');
+        if (!c) throw new Error('Could not get 2d context');
+        c.drawImage(img, 0, 0);
+        const finalUrl = canvas.toDataURL('image/png');
+        return new Promise((resolve) => {
+          canvas.toBlob((blob) => resolve(blob ? { blob, dataUrl: finalUrl } : null), 'image/png');
+        });
+      }
+
 
       // Measure maximum height of active card containers to align them perfectly side-by-side!
       let maxCardHeight = 280;
@@ -687,6 +714,21 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           <Info size={16} className="text-neutral-500 dark:text-neutral-400" />
         </div>
         
+        {estiloCards.layout === 'unificado' ? (
+        <div className="w-full flex justify-center">
+          <UnifiedGlowCard
+            ref={cardUnifiedRef}
+            accentColor={accentColor}
+            title={activity?.nome || 'Sessão de Foco'}
+            minutes={minutesReal}
+            plannedMinutes={activity?.duracao_prevista ? Math.round(activity.duracao_prevista / 60) : minutesReal}
+            score={evaluation?.nota ?? activity?.nota ?? 0}
+            exits={activity?.saidas ?? 0}
+            streak={userStreak}
+            message={estiloCards.conteudo?.fraseIA !== false ? (evaluation?.mensagem_card || activity?.mensagem_card) : undefined}
+          />
+        </div>
+        ) : (
         <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch w-full">
           {/* Card 1 (Antes) */}
           {estiloCards.conteudo?.textoAntes && (
@@ -1085,6 +1127,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* Action Buttons Wrapper */}
