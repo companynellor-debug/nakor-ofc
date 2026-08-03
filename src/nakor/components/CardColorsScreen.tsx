@@ -154,6 +154,7 @@ useEffect(() => {
         if (parsed.accentColor) setAccentColor(parsed.accentColor);
         if (parsed.bgStyle) setBgStyle(parsed.bgStyle);
         if (parsed.scoreStyle) setScoreStyle(parsed.scoreStyle);
+        if (parsed.layout) setLayout(parsed.layout);
         if (parsed.bgOpacity !== undefined) setBgOpacity(parsed.bgOpacity);
         if (parsed.conteudo) setConteudo(parsed.conteudo);
       }
