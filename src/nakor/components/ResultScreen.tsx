@@ -365,6 +365,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
 
   const cardDepoisRef = useRef<HTMLDivElement>(null);
   const cardScoreRef = useRef<HTMLDivElement>(null);
+  const cardUnifiedRef = useRef<HTMLDivElement>(null);
 
   const userStreak = useMemo(() => {
     try {
