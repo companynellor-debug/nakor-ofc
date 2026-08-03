@@ -407,13 +407,24 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
       // Layout unificado: captura apenas o card único
       if (estiloCards.layout === 'unificado' && cardUnifiedRef.current) {
         const el = cardUnifiedRef.current;
-        const dataUrl = await toPng(el, {
-          cacheBust: true,
-          pixelRatio: 3,
-          width: el.offsetWidth,
-          height: el.offsetHeight,
-        });
+        // Remove a sombra externa durante a captura: ela aparece recortada nos
+        // cantos arredondados e cria um "quadrado" translúcido em volta do card.
+        const prevShadow = el.style.boxShadow;
+        el.style.boxShadow = 'none';
+        let dataUrl: string;
+        try {
+          dataUrl = await toPng(el, {
+            cacheBust: true,
+            pixelRatio: 3,
+            width: el.offsetWidth,
+            height: el.offsetHeight,
+            backgroundColor: undefined,
+          });
+        } finally {
+          el.style.boxShadow = prevShadow;
+        }
         const img = await loadImage(dataUrl);
+
         const canvas = document.createElement('canvas');
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
