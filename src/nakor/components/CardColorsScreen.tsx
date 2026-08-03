@@ -236,7 +236,19 @@ useEffect(() => {
         <div className="px-5 mt-2 flex flex-col gap-6">
           
           {/* Preview */}
+          {layout === 'unificado' ? (
+            <UnifiedGlowCard
+              accentColor={accentColor}
+              title={lastActivity?.nome || 'Sessão de Foco'}
+              minutes={lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 45}
+              plannedMinutes={lastActivity?.duracao_prevista ? Math.round(lastActivity.duracao_prevista / 60) : 60}
+              score={lastActivity?.nota ?? 8.7}
+              exits={lastActivity?.saidas ?? 0}
+              message={conteudo.fraseIA ? (lastActivity?.mensagem_card || 'isso aí 😎') : undefined}
+            />
+          ) : (
           <div 
+
             className="w-full h-auto min-h-[380px] relative overflow-hidden shadow-xl transition-all duration-300" 
             style={{
               ...getCardBgStyle(bgStyle, accentColor, bgOpacity),
