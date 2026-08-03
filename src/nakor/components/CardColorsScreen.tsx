@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Check, Clock } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
+import { UnifiedGlowCard } from './UnifiedGlowCard';
 
 interface CardColorsScreenProps {
   onBack: () => void;
