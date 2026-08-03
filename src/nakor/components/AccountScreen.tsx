@@ -263,7 +263,19 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
           {/* Zona de Perigo */}
           <div className="flex flex-col gap-2 mt-4">
             <span className="text-[#FF4444] text-[10px] font-bold uppercase tracking-wider pl-4">Zona de perigo</span>
-            <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#FF4444]/25 shadow-md-layered">
+            <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#FF4444]/25 shadow-md-layered flex flex-col gap-5">
+              <button
+                onClick={handleClearTestData}
+                className="flex items-center justify-between w-full text-left cursor-pointer"
+              >
+                <span className="flex items-center gap-2 text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">
+                  <Trash2 size={16} className="text-[#8B8D98]" />
+                  Limpar dados de teste
+                </span>
+                <ChevronRight size={18} className="text-[#8B8D98]" />
+              </button>
+              <div className="h-px w-full bg-[#DBDBE5]/60 dark:bg-[#2A2B3D]/60" />
+
               <button 
                 onClick={() => setShowDeleteModal(true)}
                 className="flex items-center justify-between w-full text-left cursor-pointer"
