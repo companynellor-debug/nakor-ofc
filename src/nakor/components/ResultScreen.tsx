@@ -260,10 +260,11 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
     return currentStreak;
   }, []);
 
-  const [estiloCards, setEstiloCards] = useState({
+  const [estiloCards, setEstiloCards] = useState<any>({
     accentColor: '#A5CE00',
     bgStyle: 'gradient',
     scoreStyle: 'large',
+    layout: 'trio',
     bgOpacity: 80,
     conteudo: {
       textoAntes: true,
