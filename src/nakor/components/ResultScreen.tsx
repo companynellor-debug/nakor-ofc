@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { CheckCircle2, Home, Clock, User, Info } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { NakorLogo } from './NakorLogo';
+import { UnifiedGlowCard } from './UnifiedGlowCard';
 
 interface ResultScreenProps {
   onNavigate: (view: string) => void;
