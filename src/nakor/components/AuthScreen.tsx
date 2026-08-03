@@ -10,6 +10,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
+import { registerAccount, loginAccount, setActiveAccount } from '../lib/localStore';
 
 interface AuthScreenProps {
   onAuthSuccess: (email: string, name?: string) => void;
