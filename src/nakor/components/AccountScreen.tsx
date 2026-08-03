@@ -93,15 +93,29 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
       return;
     }
 
+    const previousEmail = localStorage.getItem('nakor_user_email');
     localStorage.setItem('nakor_user', name);
-    localStorage.setItem('nakor_user_email', email);
+    localStorage.setItem('nakor_user_email', email.trim().toLowerCase());
+    if (previousEmail) {
+      updateAccount(previousEmail, {
+        name,
+        email: email.trim().toLowerCase(),
+        ...(showPasswordChange && newPassword ? { password: newPassword } : {}),
+      });
+    }
     triggerToast('✅ Dados atualizados!');
   };
 
   const handleDeleteAccount = () => {
-    localStorage.clear();
+    wipeEverything();
     window.location.reload(); // Redireciona para /login (landing no nosso caso)
   };
+
+  const handleClearTestData = () => {
+    clearAppData();
+    window.location.reload();
+  };
+
 
   const initials = name.trim().split(/\s+/).map(p => p[0]).join('').substring(0, 2).toUpperCase() || 'U';
 
