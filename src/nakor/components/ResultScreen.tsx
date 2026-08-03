@@ -1127,6 +1127,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* Action Buttons Wrapper */}
