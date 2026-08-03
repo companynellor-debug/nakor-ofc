@@ -62,10 +62,18 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-    } else {
-      setErrors({});
-      onAuthSuccess(email);
+      return;
     }
+
+    const result = loginAccount(email, password);
+    if (!result.ok) {
+      setErrors({ [result.field]: result.message });
+      return;
+    }
+
+    setErrors({});
+    setActiveAccount(result.account);
+    onAuthSuccess(result.account.email);
   };
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
