@@ -95,19 +95,20 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
               </div>
               <div className="min-w-0">
                 <p
-                  className="text-white font-bold text-[19px] leading-tight truncate m-0"
+                  className="text-white font-bold text-[19px] leading-tight truncate m-0 whitespace-nowrap"
                   style={{ textShadow: '0 1px 4px rgba(0,0,0,0.55)' }}
                 >
                   {title}
                 </p>
-                <p className="text-white/60 text-[12px] leading-tight m-0 mt-0.5">
+                <p className="text-white/60 text-[12px] leading-tight m-0 mt-0.5 truncate whitespace-nowrap">
                   {streak ? `${streak} ${Number(streak) === 1 ? 'dia' : 'dias'} de foco` : 'Sessão de foco'}
                 </p>
               </div>
             </div>
-            <span className="text-white/70 text-[12px] font-medium shrink-0 mt-1">
+            <span className="text-white/70 text-[12px] font-medium shrink-0 mt-1 whitespace-nowrap">
               {timeLabel || ''}
             </span>
+
           </div>
 
           {/* Stats row */}
