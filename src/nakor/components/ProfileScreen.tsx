@@ -211,9 +211,9 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
   };
 
   const handleSair = () => {
+    // Mantém a conta e os dados salvos: apenas encerra a sessão local
     localStorage.removeItem('nakor_user_email');
-    localStorage.removeItem('nakor_user');
-    localStorage.removeItem('nakor_tarefas');
+
     // Call props or reset view
     if (onLogout) {
       onLogout();

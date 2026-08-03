@@ -43,9 +43,9 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
   // Load Coins from localStorage
   const [coins, setCoins] = useState<number>(() => {
     const saved = localStorage.getItem('nakor_coins');
-    if (saved) return parseInt(saved, 10);
-    localStorage.setItem('nakor_coins', '1240');
-    return 1240;
+    if (saved !== null) return parseInt(saved, 10) || 0;
+    localStorage.setItem('nakor_coins', '0');
+    return 0;
   });
 
   // Load redeemed products from localStorage

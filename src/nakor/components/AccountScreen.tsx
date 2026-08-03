@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle, Trash2 } from 'lucide-react';
+import { updateAccount, wipeEverything, clearAppData } from '../lib/localStore';
 
 interface AccountScreenProps {
   onBack: () => void;
@@ -92,15 +93,29 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
       return;
     }
 
+    const previousEmail = localStorage.getItem('nakor_user_email');
     localStorage.setItem('nakor_user', name);
-    localStorage.setItem('nakor_user_email', email);
+    localStorage.setItem('nakor_user_email', email.trim().toLowerCase());
+    if (previousEmail) {
+      updateAccount(previousEmail, {
+        name,
+        email: email.trim().toLowerCase(),
+        ...(showPasswordChange && newPassword ? { password: newPassword } : {}),
+      });
+    }
     triggerToast('✅ Dados atualizados!');
   };
 
   const handleDeleteAccount = () => {
-    localStorage.clear();
+    wipeEverything();
     window.location.reload(); // Redireciona para /login (landing no nosso caso)
   };
+
+  const handleClearTestData = () => {
+    clearAppData();
+    window.location.reload();
+  };
+
 
   const initials = name.trim().split(/\s+/).map(p => p[0]).join('').substring(0, 2).toUpperCase() || 'U';
 
@@ -248,7 +263,19 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
           {/* Zona de Perigo */}
           <div className="flex flex-col gap-2 mt-4">
             <span className="text-[#FF4444] text-[10px] font-bold uppercase tracking-wider pl-4">Zona de perigo</span>
-            <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#FF4444]/25 shadow-md-layered">
+            <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#FF4444]/25 shadow-md-layered flex flex-col gap-5">
+              <button
+                onClick={handleClearTestData}
+                className="flex items-center justify-between w-full text-left cursor-pointer"
+              >
+                <span className="flex items-center gap-2 text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">
+                  <Trash2 size={16} className="text-[#8B8D98]" />
+                  Limpar dados de teste
+                </span>
+                <ChevronRight size={18} className="text-[#8B8D98]" />
+              </button>
+              <div className="h-px w-full bg-[#DBDBE5]/60 dark:bg-[#2A2B3D]/60" />
+
               <button 
                 onClick={() => setShowDeleteModal(true)}
                 className="flex items-center justify-between w-full text-left cursor-pointer"

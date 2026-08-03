@@ -331,6 +331,10 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                             Date.now() - history[0].timestamp < 60000; // Less than 1 minute ago
 
         if (!isDuplicate) {
+          const durationHours = (currentActivity.duracao_real || 0) / 3600;
+          let earnedCoins = Math.floor(durationHours * 50);
+          if ((currentEvaluation.nota || 0) > 9) earnedCoins += 150;
+
           const newHistoryItem = {
             id: Date.now().toString(),
             nome: currentActivity.nome || 'Sessão de Foco',
@@ -340,10 +344,15 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             texto_antes: currentActivity.texto_antes || '',
             texto_depois: currentActivity.texto_depois || '',
             mensagem_card: currentEvaluation.mensagem_card || '',
+            moedas: earnedCoins,
             timestamp: Date.now()
           };
           history.unshift(newHistoryItem);
           localStorage.setItem('nakor_historico', JSON.stringify(history));
+
+          // Credita as moedas ganhas na sessão
+          const currentCoins = parseInt(localStorage.getItem('nakor_coins') || '0', 10) || 0;
+          localStorage.setItem('nakor_coins', String(currentCoins + earnedCoins));
         }
       } catch (err) {
         console.error('Failed to save history', err);
