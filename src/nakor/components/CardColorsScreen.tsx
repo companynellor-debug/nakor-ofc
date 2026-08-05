@@ -248,232 +248,179 @@ useEffect(() => {
               message={conteudo.fraseIA ? (lastActivity?.mensagem_card || 'isso aí 😎') : undefined}
             />
           ) : (
-          <div 
-
-            className="w-full h-auto min-h-[380px] relative overflow-hidden shadow-xl transition-all duration-300" 
-            style={{
-              ...getCardBgStyle(bgStyle, accentColor, bgOpacity),
-              borderRadius: '28px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              padding: '24px',
-            }}
-          >
-            {/* Localized scrim to protect content from extremely bright backgrounds */}
-            <div 
-              className="absolute inset-0 pointer-events-none" 
-              style={{
-                backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.35) 0%, transparent 80%)',
-                borderRadius: 'inherit',
-                zIndex: 1,
-              }}
-            />
-
-            {/* Another general scrim to ensure baseline legibility */}
-            <div 
-              className="absolute inset-0 pointer-events-none" 
-              style={{
-                backgroundImage: 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.40) 100%)',
-                borderRadius: 'inherit',
-                zIndex: 1,
-              }}
-            />
-
-            {bgStyle === 'grain' && (
-              <div 
-                className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-                style={{ 
-                  backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                  zIndex: 2,
-                }}
-              />
-            )}
-            
-            {/* Layer 3: Content */}
-            <div className="relative z-10 h-full w-full flex flex-col justify-between flex-1 gap-5">
-              
-              {/* Discrete Product Branding */}
-              <div className="flex items-center justify-between w-full opacity-60">
-                <span 
-                  className="text-[9px] font-mono tracking-widest text-white uppercase"
-                  style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
+          <div className="w-full">
+            <div className="flex gap-2.5 items-stretch">
+              {[
+                conteudo.textoAntes ? 'antes' : null,
+                conteudo.textoDepois ? 'depois' : null,
+                (conteudo.notaIA || conteudo.fraseIA) ? 'nota' : null,
+              ].filter(Boolean).map((kind) => (
+                <div
+                  key={kind as string}
+                  className="flex-1 relative overflow-hidden shadow-xl transition-all duration-300"
+                  style={{
+                    ...getCardBgStyle(bgStyle, accentColor, bgOpacity),
+                    borderRadius: '18px',
+                    aspectRatio: '4 / 5',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '10px',
+                  }}
                 >
-                  SESSÃO FOCO
-                </span>
-                <div className="flex items-center gap-1">
-                  <NakorLogo size={12} color="#FFFFFF" />
-                  <span 
-                    className="text-[10px] font-display font-bold tracking-tight text-white"
-                    style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                  >
-                    Nakor
-                  </span>
-                </div>
-              </div>
-
-              {/* Narrativa Antes -> Depois */}
-              {(conteudo.textoAntes || conteudo.textoDepois) && (
-                <div className="flex flex-col gap-3 items-center text-center my-auto w-full">
-                  {conteudo.textoAntes && (
-                    <div 
-                      className="flex flex-col items-center p-3 w-full"
+                  {/* Scrims */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.35) 0%, transparent 80%)',
+                      borderRadius: 'inherit',
+                      zIndex: 1,
+                    }}
+                  />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      backgroundImage: 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.40) 100%)',
+                      borderRadius: 'inherit',
+                      zIndex: 1,
+                    }}
+                  />
+                  {bgStyle === 'grain' && (
+                    <div
+                      className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
                       style={{
-                        backgroundColor: 'rgba(0,0,0,0.28)',
-                        backdropFilter: 'blur(4px)',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255,255,255,0.10)',
+                        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
+                        zIndex: 2,
                       }}
-                    >
-                      {/* Pílula ANTES com vidro neutro */}
-                      <span 
-                        className="text-[9px] font-mono tracking-widest text-white/50 uppercase mb-1.5 px-2 py-0.5 rounded-full"
-                        style={{
-                          backgroundColor: 'rgba(0,0,0,0.30)',
-                          border: '1px solid rgba(255,255,255,0.14)',
-                          textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
-                        }}
-                      >
-                        ANTES
-                      </span>
-                      <p 
-                        className="text-white text-[12.5px] font-medium italic leading-relaxed m-0"
-                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                      >
-                        "{lastActivity?.texto_antes || 'Estava com pouca energia...'}"
-                      </p>
-                    </div>
+                    />
                   )}
 
-                  {conteudo.textoAntes && conteudo.textoDepois && (
-                    <div className="flex flex-col items-center text-white/40 my-0.5">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                  )}
-
-                  {conteudo.textoDepois && (
-                    <div 
-                      className="flex flex-col items-center p-3 w-full"
-                      style={{
-                        backgroundColor: 'rgba(0,0,0,0.28)',
-                        backdropFilter: 'blur(4px)',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255,255,255,0.10)',
-                      }}
-                    >
-                      {/* Pílula DEPOIS com vidro neutro */}
-                      <span 
-                        className="text-[9px] font-mono tracking-widest text-white/50 uppercase mb-1.5 px-2 py-0.5 rounded-full"
-                        style={{
-                          backgroundColor: 'rgba(0,0,0,0.30)',
-                          border: '1px solid rgba(255,255,255,0.14)',
-                          textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
-                        }}
+                  <div className="relative z-10 flex flex-col justify-between flex-1 gap-2">
+                    {/* Branding */}
+                    <div className="flex items-center justify-between w-full opacity-60">
+                      <span
+                        className="text-[5px] font-mono tracking-widest text-white uppercase"
+                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55)' }}
                       >
-                        DEPOIS
+                        SESSÃO FOCO
                       </span>
-                      <p 
-                        className="text-white text-[12.5px] font-medium italic leading-relaxed m-0"
-                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                      >
-                        "{lastActivity?.texto_depois || 'Me senti muito melhor...'}"
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Badges/Chips */}
-              {(conteudo.streak || conteudo.selo) && (
-                 <div className="flex items-center gap-2.5 justify-center z-10">
-                   {conteudo.streak && (
-                     <div 
-                       className="flex items-center gap-1 px-3 h-6 rounded-full text-white text-[10px] font-bold"
-                       style={{
-                         backgroundColor: 'rgba(0, 0, 0, 0.30)',
-                         border: '1px solid rgba(255, 255, 255, 0.14)',
-                         backdropFilter: 'blur(4px)',
-                         textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
-                       }}
-                     >
-                       <span className="text-[11px]">🔥</span>
-                       <span>{lastActivity?.streak || 1} {lastActivity?.streak === 1 ? 'dia' : 'dias'}</span>
-                     </div>
-                   )}
-                   {conteudo.selo && (
-                     <div 
-                       className="flex items-center gap-1.5 px-3 h-6 rounded-full text-white text-[10px] font-bold"
-                       style={{
-                         backgroundColor: 'rgba(0, 0, 0, 0.30)',
-                         border: '1px solid rgba(255, 255, 255, 0.14)',
-                         backdropFilter: 'blur(4px)',
-                         textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
-                       }}
-                     >
-                       <span>Nível {lastActivity?.nivel || 'Iniciante'}</span>
-                     </div>
-                   )}
-                 </div>
-              )}
-
-              {/* Score Block (Hero with hierarchical styling) */}
-              {(conteudo.notaIA || conteudo.fraseIA) && (
-                <div className="mt-auto pt-2 flex flex-col items-center justify-center text-center z-10">
-                  {conteudo.notaIA && (
-                    <div className="flex flex-col items-center">
-                      <span 
-                        className="text-[9px] font-mono tracking-widest text-white/60 uppercase mb-1"
-                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                      >
-                        NOTA DA SESSÃO
-                      </span>
-                      <div 
-                        className="font-extrabold tracking-tighter"
-                        style={{ 
-                          color: '#FFFFFF', 
-                          fontSize: scoreStyle === 'large' ? '56px' : '40px',
-                          textShadow: `0 2px 8px rgba(0,0,0,0.6), 0 0 15px ${hexToRgba(accentColor, 0.65)}`,
-                          lineHeight: 1
-                        }}
-                      >
-                        {lastActivity?.nota ? lastActivity.nota.toFixed(1) : '8.7'}
+                      <div className="flex items-center gap-0.5">
+                        <NakorLogo size={7} color="#FFFFFF" />
+                        <span className="text-[6px] font-display font-bold tracking-tight text-white">Nakor</span>
                       </div>
                     </div>
-                  )}
-                  {conteudo.fraseIA && (
-                    <div 
-                      className="text-white font-medium text-[12px] mt-1.5 max-w-[240px] leading-snug"
-                      style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                    >
-                      {lastActivity?.mensagem_card || 'isso aí 😎'}
-                    </div>
-                  )}
-                </div>
-              )}
 
-              {/* Discrete Footer Metadata */}
-              {(conteudo.duracao || conteudo.horario) && (
-                <div 
-                  className="flex justify-between items-center mt-auto pt-3 border-t border-white/10 w-full text-[9px] text-white/75 tracking-wider font-mono"
-                  style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                >
-                  {conteudo.duracao ? (
-                    <div className="flex items-center gap-1 opacity-70">
-                      <Clock size={11} strokeWidth={1.75} />
-                      <span>{lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 25} MIN</span>
-                    </div>
-                  ) : <div />}
-                  {conteudo.horario ? (
-                    <span className="opacity-70">{lastActivity?.timestamp ? new Date(lastActivity.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '14:30'}</span>
-                  ) : <div />}
-                </div>
-              )}
+                    {/* Conteúdo central */}
+                    {kind === 'nota' ? (
+                      <div className="flex flex-col items-center justify-center text-center my-auto">
+                        {conteudo.notaIA && (
+                          <>
+                            <span className="text-[5px] font-mono tracking-widest text-white/60 uppercase mb-0.5">
+                              NOTA
+                            </span>
+                            <div
+                              className="font-extrabold tracking-tighter text-white"
+                              style={{
+                                fontSize: scoreStyle === 'large' ? '30px' : '22px',
+                                lineHeight: 1,
+                                textShadow: `0 2px 8px rgba(0,0,0,0.6), 0 0 12px ${hexToRgba(accentColor, 0.65)}`,
+                              }}
+                            >
+                              {lastActivity?.nota ? lastActivity.nota.toFixed(1) : '8.7'}
+                            </div>
+                          </>
+                        )}
+                        {conteudo.fraseIA && (
+                          <p
+                            className="text-white font-medium text-[6.5px] mt-1 leading-snug m-0 overflow-hidden"
+                            style={{
+                              display: '-webkit-box',
+                              WebkitBoxOrient: 'vertical',
+                              WebkitLineClamp: 3,
+                              textShadow: '0 1px 3px rgba(0,0,0,0.55)',
+                            }}
+                          >
+                            {lastActivity?.mensagem_card || 'isso aí 😎'}
+                          </p>
+                        )}
+                        {(conteudo.streak || conteudo.selo) && (
+                          <div className="flex items-center gap-1 justify-center mt-1.5 flex-wrap">
+                            {conteudo.streak && (
+                              <span
+                                className="px-1.5 py-0.5 rounded-full text-white text-[5.5px] font-bold"
+                                style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
+                              >
+                                🔥 {lastActivity?.streak || 1} {lastActivity?.streak === 1 ? 'dia' : 'dias'}
+                              </span>
+                            )}
+                            {conteudo.selo && (
+                              <span
+                                className="px-1.5 py-0.5 rounded-full text-white text-[5.5px] font-bold"
+                                style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
+                              >
+                                {lastActivity?.nivel || 'Iniciante'}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center text-center my-auto w-full">
+                        <div
+                          className="flex flex-col items-center p-1.5 w-full"
+                          style={{
+                            backgroundColor: 'rgba(0,0,0,0.28)',
+                            borderRadius: '8px',
+                            border: '1px solid rgba(255,255,255,0.10)',
+                          }}
+                        >
+                          <span
+                            className="text-[5px] font-mono tracking-widest text-white/50 uppercase mb-1 px-1.5 py-[1px] rounded-full"
+                            style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
+                          >
+                            {kind === 'antes' ? 'ANTES' : 'DEPOIS'}
+                          </span>
+                          <p
+                            className="text-white text-[6.5px] font-medium italic leading-snug m-0 overflow-hidden"
+                            style={{
+                              display: '-webkit-box',
+                              WebkitBoxOrient: 'vertical',
+                              WebkitLineClamp: 4,
+                              textShadow: '0 1px 3px rgba(0,0,0,0.55)',
+                            }}
+                          >
+                            "{kind === 'antes'
+                              ? (lastActivity?.texto_antes || 'Estava com pouca energia...')
+                              : (lastActivity?.texto_depois || 'Me senti muito melhor...')}"
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
+                    {/* Footer */}
+                    {(conteudo.duracao || conteudo.horario) && (
+                      <div className="flex justify-between items-center mt-auto pt-1 border-t border-white/10 w-full text-[5px] text-white/75 tracking-wider font-mono">
+                        {conteudo.duracao ? (
+                          <div className="flex items-center gap-0.5 opacity-70">
+                            <Clock size={6} strokeWidth={1.75} />
+                            <span>{lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 25}MIN</span>
+                          </div>
+                        ) : <div />}
+                        {conteudo.horario ? (
+                          <span className="opacity-70">{lastActivity?.timestamp ? new Date(lastActivity.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '14:30'}</span>
+                        ) : <div />}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[10px] text-center mt-2">
+              Prévia real: os 3 cards são gerados lado a lado
+            </p>
           </div>
           )}
+
 
           {/* Formato do Card */}
           <div className="flex flex-col gap-2">
