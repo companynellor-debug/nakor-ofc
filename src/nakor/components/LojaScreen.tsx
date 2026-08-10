@@ -255,7 +255,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
             </div>
 
             {/* WALLET CARD */}
-            <div className="w-full bg-gradient-to-br from-[#111827] to-[#1E1B4B] rounded-[20px] p-5 shadow-lg relative overflow-hidden">
+            <div data-tour="coins-balance" className="w-full bg-gradient-to-br from-[#111827] to-[#1E1B4B] rounded-[20px] p-5 shadow-lg relative overflow-hidden">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="text-[#9CA3AF] dark:text-neutral-400 text-[10px] font-mono tracking-[2px] uppercase mb-1">
