@@ -253,6 +253,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
     { id: 'Varia muito', label: 'Varia muito', desc: 'Sem horário fixo', emoji: '🔀' }
   ];
 
+  const cardColors = [
+    { name: 'Roxo', hex: '#7C3AED' },
+    { name: 'Azul', hex: '#2563EB' },
+    { name: 'Verde Limão', hex: '#A5CE00' },
+    { name: 'Azul Metálico', hex: '#0CB6D7' },
+    { name: 'Rosa Vibrante', hex: '#EC4899' },
+    { name: 'Branco', hex: '#FFFFFF' }
+  ];
+
+
+
   return (
     <div className="w-full h-screen bg-brand-bg text-text-primary font-sans overflow-hidden flex flex-col relative select-none">
       
