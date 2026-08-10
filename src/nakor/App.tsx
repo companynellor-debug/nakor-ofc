@@ -509,8 +509,10 @@ export default function App() {
                       <button
                         key={tab.id}
                         onClick={() => handleNavigate(tab.id)}
+                        data-tour={`nav-${tab.id}`}
                         className="group flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] h-full active:scale-95 transition-transform gap-1"
                       >
+
                         <span className="relative flex items-center justify-center w-10 h-8">
                           {isActive && (
                             <motion.span
