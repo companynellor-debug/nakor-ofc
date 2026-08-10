@@ -68,20 +68,19 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           <div className="absolute top-[12%] left-1/2 -translate-x-1/2 w-[80%] h-[55%] rounded-full bg-[#7C3AED]/40 blur-[60px] pointer-events-none" />
 
           {/* Horizontal carousel: current mockup centered, neighbours peeking */}
-          <div className="relative z-10 w-full h-full max-h-[640px] flex items-center justify-center overflow-hidden">
+          <div ref={trackRef} className="relative z-10 w-full h-full max-h-[640px] flex items-center overflow-hidden">
             <motion.div
-              className="flex items-center"
-              animate={{ x: `calc(50% - ${currentSlide * 74 + 37}%)` }}
+              className="flex items-center h-full"
+              animate={{ x: offset }}
               transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-              style={{ width: `${slides.length * 74}%` }}
             >
               {slides.map((slide, idx) => {
                 const active = idx === currentSlide;
                 return (
                   <motion.div
                     key={slide.title}
-                    className="shrink-0 flex items-center justify-center px-2"
-                    style={{ width: `${100 / slides.length}%` }}
+                    className="shrink-0 h-full flex items-center justify-center px-2"
+                    style={{ width: slideWidth || undefined }}
                     animate={{
                       scale: active ? 1 : 0.86,
                       opacity: active ? 1 : 0.45,
@@ -89,6 +88,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
                     }}
                     transition={{ duration: 0.4 }}
                   >
+
                     <img
                       src={slide.image}
                       alt={slide.title}
