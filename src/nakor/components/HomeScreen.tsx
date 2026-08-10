@@ -372,7 +372,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           <DailyProgressBar tasks={tasks} onNavigate={onNavigate} activeDays={weeklyStats.activeDays} />
 
           {/* Hero Chronometer Card */}
-          <div className="w-full flex flex-col items-center mb-12 relative overflow-visible">
+          <div data-tour="focus-circle" className="w-full flex flex-col items-center mb-12 relative overflow-visible">
             <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-mono uppercase tracking-widest mb-6 z-10 font-bold">tempo focado hoje</span>
             
             <FocusCircle
