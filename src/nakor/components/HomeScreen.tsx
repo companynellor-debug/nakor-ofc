@@ -387,7 +387,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           </div>
 
           {/* Weekly Goal Card */}
-          <div className="bg-[#34117E] rounded-[28px] p-7 mb-10 shadow-lg-layered text-white relative overflow-hidden">
+          <div data-tour="weekly-goal" className="bg-[#34117E] rounded-[28px] p-7 mb-10 shadow-lg-layered text-white relative overflow-hidden">
             <div className="flex justify-between items-baseline mb-4">
               <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">Meta semanal</h3>
               <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
