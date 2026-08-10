@@ -563,7 +563,16 @@ export default function App() {
             </div>
           );
         })()}
+
+        {showTour && (
+          <GuidedTour
+            currentView={view}
+            onNavigate={(v) => setView(v)}
+            onFinish={finishTour}
+          />
+        )}
       </div>
+
     );
   }
 
