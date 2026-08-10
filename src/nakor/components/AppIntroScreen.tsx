@@ -31,6 +31,18 @@ const slides = [
 
 export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const update = () => setContainerWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,34 +51,57 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
     return () => clearInterval(timer);
   }, []);
 
+  const slideWidth = containerWidth * 0.55;
+  const offset = containerWidth / 2 - (currentSlide * slideWidth + slideWidth / 2);
+
+
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-[#0D0F14] font-sans overflow-hidden">
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        <div className="flex-1 relative flex items-center justify-center pt-6 pb-8 px-4 overflow-hidden">
+        <div className="flex-1 relative flex items-center justify-center pt-6 pb-8 overflow-hidden">
           {/* Glow effects */}
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#34117E]/40 blur-[120px] mix-blend-overlay" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#ACD1FD]/20 blur-[100px] mix-blend-overlay" />
           <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[95%] h-[75%] rounded-full bg-[#4C1D95]/70 blur-[90px] pointer-events-none" />
           <div className="absolute top-[12%] left-1/2 -translate-x-1/2 w-[80%] h-[55%] rounded-full bg-[#7C3AED]/40 blur-[60px] pointer-events-none" />
 
-          <div className="relative z-10 w-full max-w-[360px] h-full max-h-[640px] flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentSlide}
-                src={slides[currentSlide].image}
-                alt={slides[currentSlide].title}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-              />
-            </AnimatePresence>
+          {/* Horizontal carousel: current mockup centered, neighbours peeking */}
+          <div ref={trackRef} className="relative z-10 w-full h-full max-h-[640px] flex items-center overflow-hidden">
+            <motion.div
+              className="flex items-center h-full"
+              animate={{ x: offset }}
+              transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+            >
+              {slides.map((slide, idx) => {
+                const active = idx === currentSlide;
+                return (
+                  <motion.div
+                    key={slide.title}
+                    className="shrink-0 h-full flex items-center justify-center px-2"
+                    style={{ width: slideWidth || undefined }}
+                    animate={{
+                      scale: active ? 1 : 0.86,
+                      opacity: active ? 1 : 0.45,
+                      filter: active ? 'blur(0px)' : 'blur(1.5px)',
+                    }}
+                    transition={{ duration: 0.4 }}
+                  >
+
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      className="h-full w-auto max-w-none mx-auto max-h-[560px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                    />
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </div>
 
         </div>
+
 
 
         {/* Bottom Part: Glass Card with Info */}
