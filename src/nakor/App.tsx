@@ -488,8 +488,10 @@ export default function App() {
                           <button
                             onClick={() => handleNavigate(tab.id)}
                             aria-label="Iniciar atividade"
+                            data-tour={`nav-${tab.id}`}
                             className="absolute -top-7 flex flex-col items-center justify-center cursor-pointer outline-none select-none active:scale-95 transition-transform"
                           >
+
                             <span className="absolute inset-0 rounded-full bg-[#4F46E5]/35 blur-[18px]" />
                             <div className="relative w-[58px] h-[58px] rounded-full flex items-center justify-center shadow-[0_10px_24px_-4px_rgba(79,70,229,0.55)] bg-gradient-to-br from-[#6D5BF5] to-[#3A26C4] ring-[3px] ring-white dark:ring-[#161724] text-white">
                               {isLoading ? (
