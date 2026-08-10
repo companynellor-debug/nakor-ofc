@@ -11,7 +11,7 @@ import {
   Flame,
   Sun,
   Clock,
-  Check,
+  
   ArrowLeft
 } from 'lucide-react';
 
