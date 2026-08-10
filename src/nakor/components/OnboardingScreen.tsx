@@ -662,7 +662,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
                   Prévia
                 </p>
-                <div className="rounded-[22px] p-3.5 bg-[#0B0B12] border border-brand-border/60 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.5)]">
+                <div className="rounded-[22px] p-4 bg-brand-card border border-brand-border/60 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.12)] flex items-center justify-center">
                   <ResultCardPreview layout={cardLayout} color={cardColor} />
                 </div>
                 <p className="text-[10.5px] text-text-secondary text-center">
