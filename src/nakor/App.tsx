@@ -20,6 +20,8 @@ import { AppIntroScreen } from "./components/AppIntroScreen";
 import { HeroVisual } from './components/HeroVisual';
 import { PhoneMockups } from './components/PhoneMockups';
 import { NakorLogo } from './components/NakorLogo';
+import { GuidedTour } from './components/GuidedTour';
+
 import {
   initStore,
   getActiveEmail,
