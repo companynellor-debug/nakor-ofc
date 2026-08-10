@@ -372,7 +372,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           <DailyProgressBar tasks={tasks} onNavigate={onNavigate} activeDays={weeklyStats.activeDays} />
 
           {/* Hero Chronometer Card */}
-          <div className="w-full flex flex-col items-center mb-12 relative overflow-visible">
+          <div data-tour="focus-circle" className="w-full flex flex-col items-center mb-12 relative overflow-visible">
             <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-mono uppercase tracking-widest mb-6 z-10 font-bold">tempo focado hoje</span>
             
             <FocusCircle
@@ -387,7 +387,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           </div>
 
           {/* Weekly Goal Card */}
-          <div className="bg-[#34117E] rounded-[28px] p-7 mb-10 shadow-lg-layered text-white relative overflow-hidden">
+          <div data-tour="weekly-goal" className="bg-[#34117E] rounded-[28px] p-7 mb-10 shadow-lg-layered text-white relative overflow-hidden">
             <div className="flex justify-between items-baseline mb-4">
               <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">Meta semanal</h3>
               <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>

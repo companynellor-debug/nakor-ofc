@@ -20,6 +20,8 @@ import { AppIntroScreen } from "./components/AppIntroScreen";
 import { HeroVisual } from './components/HeroVisual';
 import { PhoneMockups } from './components/PhoneMockups';
 import { NakorLogo } from './components/NakorLogo';
+import { GuidedTour } from './components/GuidedTour';
+
 import {
   initStore,
   getActiveEmail,
@@ -158,6 +160,9 @@ export default function App() {
     }
   }, []);
 
+  const [showTour, setShowTour] = useState(false);
+  const tourKey = (email: string | null) => `nakor_tour_done_${email || 'guest'}`;
+
   const handleCompleteOnboarding = (data: any) => {
     setOnboardingData(data);
     setIsOnboardingComplete(true);
@@ -165,7 +170,18 @@ export default function App() {
       completeOnboarding(userEmail, data);
     }
     setView('home');
+    // Tutorial guiado logo após escolher o modelo do card (fim do questionário)
+    if (localStorage.getItem(tourKey(userEmail)) !== '1') {
+      setShowTour(true);
+    }
   };
+
+  const finishTour = () => {
+    localStorage.setItem(tourKey(userEmail), '1');
+    setShowTour(false);
+    setView('home');
+  };
+
 
   const handleResetOnboarding = () => {
     if (userEmail) {
@@ -488,8 +504,10 @@ export default function App() {
                           <button
                             onClick={() => handleNavigate(tab.id)}
                             aria-label="Iniciar atividade"
+                            data-tour={`nav-${tab.id}`}
                             className="absolute -top-7 flex flex-col items-center justify-center cursor-pointer outline-none select-none active:scale-95 transition-transform"
                           >
+
                             <span className="absolute inset-0 rounded-full bg-[#4F46E5]/35 blur-[18px]" />
                             <div className="relative w-[58px] h-[58px] rounded-full flex items-center justify-center shadow-[0_10px_24px_-4px_rgba(79,70,229,0.55)] bg-gradient-to-br from-[#6D5BF5] to-[#3A26C4] ring-[3px] ring-white dark:ring-[#161724] text-white">
                               {isLoading ? (
@@ -507,8 +525,10 @@ export default function App() {
                       <button
                         key={tab.id}
                         onClick={() => handleNavigate(tab.id)}
+                        data-tour={`nav-${tab.id}`}
                         className="group flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] h-full active:scale-95 transition-transform gap-1"
                       >
+
                         <span className="relative flex items-center justify-center w-10 h-8">
                           {isActive && (
                             <motion.span
@@ -543,7 +563,16 @@ export default function App() {
             </div>
           );
         })()}
+
+        {showTour && (
+          <GuidedTour
+            currentView={view}
+            onNavigate={(v) => setView(v)}
+            onFinish={finishTour}
+          />
+        )}
       </div>
+
     );
   }
 
