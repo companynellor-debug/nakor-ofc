@@ -123,11 +123,15 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   const [productiveTime, setProductiveTime] = useState<string>(''); // Step 4: Singleselect
   const [hour, setHour] = useState(8); // Step 5: Drum picker hours (0-23)
   const [minute, setMinute] = useState(0); // Step 5: Drum picker minutes (0-59)
+  const [cardLayout, setCardLayout] = useState<'trio' | 'unificado'>('trio'); // Step 6
+  const [cardColor, setCardColor] = useState('#7C3AED'); // Step 6
+
+  const TOTAL_STEPS = 6;
 
   // Auto-advance with a slight delay so they can see their selection feedback beautifully
   const autoAdvance = () => {
     setTimeout(() => {
-      setCurrentStep(prev => Math.min(prev + 1, 4));
+      setCurrentStep(prev => Math.min(prev + 1, TOTAL_STEPS - 1));
     }, 400);
   };
 
@@ -146,13 +150,32 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
       focusHours,
       productiveTime,
       reminderTime: `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`,
+      cardLayout,
+      cardColor,
       userEmail: userEmail || 'anonymous',
       completedAt: new Date().toISOString()
     };
-    
+
     localStorage.setItem('nakor_onboarding', JSON.stringify(answers));
+
+    // Salva o estilo dos cards escolhido aqui, para já ficar na conta do usuário
+    try {
+      const savedRaw = localStorage.getItem('nakor_estilo_cards');
+      const saved = savedRaw ? JSON.parse(savedRaw) : {};
+      localStorage.setItem(
+        'nakor_estilo_cards',
+        JSON.stringify({ ...saved, layout: cardLayout, accentColor: cardColor }),
+      );
+    } catch {
+      localStorage.setItem(
+        'nakor_estilo_cards',
+        JSON.stringify({ layout: cardLayout, accentColor: cardColor }),
+      );
+    }
+
     onComplete(answers);
   };
+
 
   // Selection handlers with auto-advance for single-select steps
   const handleSelectUseCase = (optionId: string) => {
