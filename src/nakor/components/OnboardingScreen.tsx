@@ -222,11 +222,11 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
     { id: '20h+', label: '20h ou mais', desc: 'Foco intenso diário', badge: '20h+' }
   ];
 
-  const step4Options = [
-    { id: 'Manhã', label: 'Manhã', desc: 'Antes do meio-dia, mente descansada', emoji: '🌅' },
-    { id: 'Tarde', label: 'Tarde', desc: 'Entre 12h e 18h, jornada padrão', emoji: '☀️' },
-    { id: 'Noite', label: 'Noite', desc: 'Após as 18h, silêncio e calma', emoji: '🌙' },
-    { id: 'Varia muito', label: 'Varia muito', desc: 'Não tenho um horário fixo definido', emoji: '🔀' }
+  const step4Options: GridOption[] = [
+    { id: 'Manhã', label: 'Manhã', desc: 'Antes do meio-dia', emoji: '🌅' },
+    { id: 'Tarde', label: 'Tarde', desc: 'Entre 12h e 18h', emoji: '☀️' },
+    { id: 'Noite', label: 'Noite', desc: 'Após as 18h', emoji: '🌙' },
+    { id: 'Varia muito', label: 'Varia muito', desc: 'Sem horário fixo', emoji: '🔀' }
   ];
 
   return (
