@@ -288,7 +288,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         {/* Progress Bar */}
         <div className="flex min-w-0 gap-1.5">
-          {[0, 1, 2, 3, 4].map((stepIdx) => (
+          {[0, 1, 2, 3, 4, 5].map((stepIdx) => (
             <div 
               key={stepIdx} 
               className={`h-1.5 flex-1 min-w-0 rounded-full transition-all duration-300 ${
@@ -299,7 +299,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </div>
         {/* Step Indicator */}
         <span className="text-xs font-medium text-text-secondary shrink-0 tabular-nums">
-          {currentStep + 1} de 5
+          {currentStep + 1} de 6
         </span>
       </div>
 
