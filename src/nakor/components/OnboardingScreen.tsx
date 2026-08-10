@@ -11,9 +11,10 @@ import {
   Flame,
   Sun,
   Clock,
-  
+  Sparkles,
   ArrowLeft
 } from 'lucide-react';
+
 
 interface OnboardingScreenProps {
   onComplete: (data: any) => void;
