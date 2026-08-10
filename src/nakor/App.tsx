@@ -160,6 +160,9 @@ export default function App() {
     }
   }, []);
 
+  const [showTour, setShowTour] = useState(false);
+  const tourKey = (email: string | null) => `nakor_tour_done_${email || 'guest'}`;
+
   const handleCompleteOnboarding = (data: any) => {
     setOnboardingData(data);
     setIsOnboardingComplete(true);
@@ -167,7 +170,18 @@ export default function App() {
       completeOnboarding(userEmail, data);
     }
     setView('home');
+    // Tutorial guiado logo após escolher o modelo do card (fim do questionário)
+    if (localStorage.getItem(tourKey(userEmail)) !== '1') {
+      setShowTour(true);
+    }
   };
+
+  const finishTour = () => {
+    localStorage.setItem(tourKey(userEmail), '1');
+    setShowTour(false);
+    setView('home');
+  };
+
 
   const handleResetOnboarding = () => {
     if (userEmail) {
