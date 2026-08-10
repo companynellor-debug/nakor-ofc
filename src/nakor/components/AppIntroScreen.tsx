@@ -134,19 +134,19 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="mb-8 w-full max-w-sm"
+              className="mb-4 w-full max-w-sm"
             >
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-black mb-3">
+              <h2 className="text-xl sm:text-3xl font-display font-bold text-black mb-1.5">
                 {slides[currentSlide].title}
               </h2>
-              <p className="text-sm text-neutral-700 leading-relaxed font-sans px-4">
+              <p className="text-[13px] sm:text-sm text-neutral-700 leading-snug font-sans px-2">
                 {slides[currentSlide].description}
               </p>
             </motion.div>
           </AnimatePresence>
 
           {/* Pagination Dots */}
-          <div className="flex gap-2 mb-8">
+          <div className="flex gap-2 mb-4">
             {slides.map((_, idx) => (
               <div 
                 key={idx} 
@@ -160,7 +160,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           {/* Primary CTA */}
           <button 
             onClick={onStart}
-            className="w-full max-w-xs bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-[0.98] text-white font-bold py-4 px-8 rounded-full text-[15px] transition-all shadow-[0_4px_20px_rgba(52,17,126,0.3)] mb-4"
+            className="w-full max-w-xs bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.98] text-white font-bold py-3.5 px-8 rounded-full text-[15px] transition-all mb-3"
           >
             Criar conta
           </button>
@@ -174,10 +174,11 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
           </button>
 
           {/* Footer links */}
-          <div className="flex gap-4 mt-8 text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">
+          <div className="flex gap-4 mt-4 text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">
             <span className="cursor-pointer hover:text-neutral-800 transition-colors">Termos de Uso</span>
             <span className="cursor-pointer hover:text-neutral-800 transition-colors">Privacidade</span>
           </div>
+
         </div>
       </div>
     </div>
