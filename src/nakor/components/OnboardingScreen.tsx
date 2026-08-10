@@ -12,7 +12,9 @@ import {
   Sun,
   Clock,
   Sparkles,
-  ArrowLeft
+  ArrowLeft,
+  Check
+
 } from 'lucide-react';
 
 
