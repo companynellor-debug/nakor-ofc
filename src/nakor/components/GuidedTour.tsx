@@ -205,7 +205,7 @@ export function GuidedTour({
   }
 
   // Posição do cartão de texto
-  const cardH = 210;
+  const cardH = 265;
   let cardTop = 0;
   if (rect) {
     const below = rect.top + rect.height + PAD + 16;
