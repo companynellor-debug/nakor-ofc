@@ -655,6 +655,21 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 </p>
               </div>
 
+              {/* Prévia real do card */}
+              <div className="space-y-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
+                  Prévia
+                </p>
+                <div className="rounded-[22px] p-3.5 bg-[#0B0B12] border border-brand-border/60 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.5)]">
+                  <ResultCardPreview layout={cardLayout} color={cardColor} />
+                </div>
+                <p className="text-[10.5px] text-text-secondary text-center">
+                  {cardLayout === 'trio'
+                    ? 'Assim: 3 cards gerados lado a lado'
+                    : 'Assim: um card único com glow'}
+                </p>
+              </div>
+
               {/* Modelo */}
               <div className="space-y-2.5">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
@@ -668,12 +683,24 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                         key={model}
                         onClick={() => setCardLayout(model)}
                         whileTap={{ scale: 0.97 }}
-                        className={`relative overflow-hidden text-left rounded-[22px] p-3 transition-all duration-300 cursor-pointer border ${
-                          isSelected
-                            ? 'bg-white border-brand-purple-300/80 shadow-[0_0_0_2px_rgba(91,52,199,0.12),0_18px_40px_-14px_rgba(91,52,199,0.35)]'
-                            : 'bg-white/60 border-brand-purple-200/50 backdrop-blur-xl hover:bg-white/85 hover:border-brand-purple-300/70'
-                        }`}
+                        animate={{ scale: isSelected ? 1.02 : 1 }}
+                        transition={{ type: 'spring', stiffness: 340, damping: 24 }}
+                        className="relative overflow-hidden text-left rounded-[22px] p-3 pt-3 transition-all duration-300 cursor-pointer bg-white"
+                        style={{
+                          border: `2px solid ${isSelected ? cardColor : 'rgba(219,219,229,0.7)'}`,
+                          boxShadow: isSelected
+                            ? `0 0 0 4px ${hexToRgba(cardColor, 0.14)}, 0 18px 36px -16px ${hexToRgba(cardColor, 0.5)}`
+                            : '0 1px 2px rgba(0,0,0,0.04)',
+                        }}
                       >
+                        {isSelected && (
+                          <div
+                            className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center z-10"
+                            style={{ backgroundColor: cardColor, border: '1px solid rgba(255,255,255,0.6)' }}
+                          >
+                            <Check size={12} strokeWidth={3.5} color={cardColor === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
+                          </div>
+                        )}
                         {model === 'trio' ? (
                           <div className="flex gap-1.5 mb-2.5">
                             {[0, 1, 2].map((i) => (
@@ -683,6 +710,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                                 style={{
                                   aspectRatio: '4 / 5',
                                   background: `linear-gradient(180deg, ${cardColor} 0%, #0D0F14 75%)`,
+                                  opacity: isSelected ? 1 : 0.5,
                                 }}
                               />
                             ))}
@@ -693,10 +721,15 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                             style={{
                               aspectRatio: '5 / 4',
                               background: `radial-gradient(circle at 50% 110%, ${cardColor} 0%, #0D0F14 70%)`,
+                              opacity: isSelected ? 1 : 0.5,
                             }}
                           />
                         )}
-                        <p className="text-[13px] font-semibold leading-tight text-text-primary">
+                        <p
+                          className={`text-[13px] font-semibold leading-tight ${
+                            isSelected ? 'text-text-primary' : 'text-text-primary/60'
+                          }`}
+                        >
                           {model === 'trio' ? '3 cards alinhados' : 'Card único'}
                         </p>
                         <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
@@ -721,17 +754,23 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                         key={c.hex}
                         onClick={() => setCardColor(c.hex)}
                         aria-label={c.name}
-                        className={`w-10 h-10 rounded-full cursor-pointer transition-all border ${
-                          isSelected
-                            ? 'border-brand-purple-400 scale-110 shadow-[0_0_0_3px_rgba(91,52,199,0.18)]'
-                            : 'border-brand-border hover:scale-105'
-                        }`}
-                        style={{ backgroundColor: c.hex }}
-                      />
+                        className="w-10 h-10 rounded-full cursor-pointer transition-all flex items-center justify-center hover:scale-105"
+                        style={{
+                          backgroundColor: c.hex,
+                          border: isSelected ? '3px solid #21222D' : '1px solid rgba(219,219,229,0.9)',
+                          transform: isSelected ? 'scale(1.1)' : 'scale(1)',
+                          boxShadow: isSelected ? `0 0 0 4px ${hexToRgba(c.hex, 0.22)}` : 'none',
+                        }}
+                      >
+                        {isSelected && (
+                          <Check size={14} strokeWidth={3.5} color={c.hex === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
+                        )}
+                      </button>
                     );
                   })}
                 </div>
               </div>
+
             </div>
 
             <button
