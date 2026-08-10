@@ -51,7 +51,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
     return () => clearInterval(timer);
   }, []);
 
-  const slideWidth = containerWidth * 0.72;
+  const slideWidth = containerWidth * 0.55;
   const offset = containerWidth / 2 - (currentSlide * slideWidth + slideWidth / 2);
 
 
@@ -92,7 +92,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
                     <img
                       src={slide.image}
                       alt={slide.title}
-                      className="w-full h-full max-h-[560px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                      className="h-full w-auto max-w-none mx-auto max-h-[560px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
                     />
                   </motion.div>
                 );
