@@ -21,6 +21,98 @@ interface OnboardingScreenProps {
   userEmail?: string;
 }
 
+type GridOption = {
+  id: string;
+  label: string;
+  desc: string;
+  icon?: React.ReactNode;
+  emoji?: string;
+  badge?: string;
+};
+
+function OptionGrid({
+  options,
+  selected,
+  onSelect,
+}: {
+  options: GridOption[];
+  selected: string;
+  onSelect: (id: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {options.map((opt) => {
+        const isSelected = selected === opt.id;
+        return (
+          <motion.button
+            key={opt.id}
+            onClick={() => onSelect(opt.id)}
+            whileTap={{ scale: 0.97 }}
+            className={`relative overflow-hidden text-left rounded-[22px] p-4 min-h-[150px] flex flex-col justify-between transition-all duration-300 cursor-pointer border ${
+              isSelected
+                ? 'bg-white border-white shadow-[0_0_0_1.5px_rgba(46,46,184,0.35),0_20px_45px_-18px_rgba(46,46,184,0.45)]'
+                : 'bg-white/55 border-white/70 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_28px_-16px_rgba(46,46,184,0.25)] hover:bg-white/80'
+            }`}
+          >
+            {/* soft inner sheen */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/70 via-transparent to-brand-purple-100/30" />
+            {isSelected && (
+              <div className="pointer-events-none absolute -top-8 -right-8 w-28 h-28 rounded-full bg-brand-purple-100/70 blur-2xl" />
+            )}
+
+            <div className="relative z-10">
+              {opt.icon ? (
+                <div
+                  className={`transition-all ${
+                    isSelected
+                      ? 'text-brand-purple-500 drop-shadow-[0_0_12px_rgba(46,46,184,0.55)]'
+                      : 'text-brand-purple-500/70 drop-shadow-[0_0_8px_rgba(46,46,184,0.3)]'
+                  }`}
+                >
+                  {opt.icon}
+                </div>
+              ) : opt.emoji ? (
+                <span
+                  className={`text-[26px] leading-none block transition-all ${
+                    isSelected
+                      ? 'drop-shadow-[0_0_12px_rgba(46,46,184,0.45)]'
+                      : 'opacity-80'
+                  }`}
+                >
+                  {opt.emoji}
+                </span>
+              ) : (
+                <span
+                  className={`font-display font-extrabold text-[24px] leading-none block transition-all ${
+                    isSelected
+                      ? 'text-brand-purple-500 drop-shadow-[0_0_12px_rgba(46,46,184,0.5)]'
+                      : 'text-brand-purple-500/70'
+                  }`}
+                >
+                  {opt.badge}
+                </span>
+              )}
+            </div>
+
+            <div className="relative z-10">
+              <p
+                className={`text-[14px] font-semibold leading-tight ${
+                  isSelected ? 'text-text-primary' : 'text-text-primary/85'
+                }`}
+              >
+                {opt.label}
+              </p>
+              <p className="text-[11px] text-text-secondary mt-1 leading-snug">
+                {opt.desc}
+              </p>
+            </div>
+          </motion.button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: OnboardingScreenProps) {
   const [currentStep, setCurrentStep] = useState(0);
   
