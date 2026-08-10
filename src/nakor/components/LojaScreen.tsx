@@ -368,7 +368,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
           )}
 
           {/* GRID OF PRODUCTS (CARDS FORMAT) */}
-          <div id="products-grid" className="w-full grid grid-cols-2 gap-3 mb-12">
+          <div id="products-grid" data-tour="products-grid" className="w-full grid grid-cols-2 gap-3 mb-12">
             {filteredProducts.map((product) => {
               const isRedeemed = redeemedIds.includes(product.id);
               const canAfford = coins >= product.price;
