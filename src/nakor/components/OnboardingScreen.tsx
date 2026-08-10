@@ -114,6 +114,147 @@ function OptionGrid({
   );
 }
 
+function hexToRgba(hex: string, alpha: number): string {
+  let c = (hex || '#7C3AED').replace('#', '');
+  if (c.length === 3) c = c.split('').map((x) => x + x).join('');
+  const r = parseInt(c.substring(0, 2), 16) || 0;
+  const g = parseInt(c.substring(2, 4), 16) || 0;
+  const b = parseInt(c.substring(4, 6), 16) || 0;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/** Prévia real do card de resultado (mesma ideia da tela de Cores dos cards). */
+function ResultCardPreview({ layout, color }: { layout: 'trio' | 'unificado'; color: string }) {
+  if (layout === 'trio') {
+    const cards: Array<{ tag: string; text?: string; nota?: string }> = [
+      { tag: 'ANTES', text: 'Estava cansado e sem foco...' },
+      { tag: 'DEPOIS', text: 'Consegui terminar tudo!' },
+      { tag: 'NOTA', nota: '8.7' },
+    ];
+    return (
+      <div className="flex gap-2 items-stretch w-full">
+        {cards.map((c) => (
+          <div
+            key={c.tag}
+            className="flex-1 relative overflow-hidden flex flex-col justify-between p-2"
+            style={{
+              borderRadius: '14px',
+              aspectRatio: '4 / 5',
+              backgroundColor: '#0D0F14',
+              backgroundImage: `linear-gradient(180deg, ${hexToRgba(color, 0.85)} 0%, ${hexToRgba(color, 0.25)} 45%, #0D0F14 100%)`,
+              boxShadow: `0 10px 24px -12px ${hexToRgba(color, 0.55)}`,
+            }}
+          >
+            <div className="flex items-center justify-between opacity-70">
+              <span className="text-[4.5px] font-mono tracking-widest text-white uppercase">SESSÃO FOCO</span>
+              <span className="text-[5.5px] font-bold tracking-tight text-white">Nakor</span>
+            </div>
+            {c.nota ? (
+              <div className="flex flex-col items-center my-auto">
+                <span className="text-[4.5px] font-mono tracking-widest text-white/60">NOTA</span>
+                <span className="text-white font-extrabold text-[26px] leading-none tracking-tighter">{c.nota}</span>
+                <span className="text-white/75 text-[6px] mt-1">isso aí 😎</span>
+              </div>
+            ) : (
+              <div
+                className="my-auto w-full p-1.5 flex flex-col items-center"
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0.30)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                }}
+              >
+                <span className="text-[4.5px] font-mono tracking-widest text-white/60 mb-1">{c.tag}</span>
+                <p className="text-white text-[6px] italic leading-snug m-0 text-center">"{c.text}"</p>
+              </div>
+            )}
+            <div className="flex justify-between text-[4.5px] font-mono text-white/70 pt-1 border-t border-white/10">
+              <span>25MIN</span>
+              <span>14:30</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="relative overflow-hidden w-full max-w-[210px] mx-auto p-3.5 flex flex-col justify-between"
+      style={{
+        aspectRatio: '1 / 1',
+        borderRadius: '32px',
+        backgroundColor: '#0A0A0C',
+        backgroundImage: `radial-gradient(120% 85% at 50% 108%, ${hexToRgba(color, 0.95)} 0%, ${hexToRgba(color, 0.5)} 38%, ${hexToRgba(color, 0.1)} 66%, rgba(10,10,12,0) 85%)`,
+        boxShadow: `0 18px 40px -16px ${hexToRgba(color, 0.5)}, inset 0 0 0 1px rgba(255,255,255,0.07)`,
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <div
+          className="w-6 h-6 rounded-full"
+          style={{ backgroundColor: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.16)' }}
+        />
+        <div>
+          <p className="text-white font-bold text-[10px] leading-none m-0">Estudar</p>
+          <p className="text-white/60 text-[7px] leading-none m-0 mt-1">3 dias de foco</p>
+        </div>
+      </div>
+      <div className="flex gap-4 mt-2">
+        {[
+          { v: '25', l: 'min' },
+          { v: '8.7', l: 'nota' },
+          { v: '0', l: 'saídas' },
+        ].map((s) => (
+          <div key={s.l} className="flex flex-col">
+            <span className="text-white font-bold text-[13px] leading-none">{s.v}</span>
+            <span className="text-white/55 text-[7px] mt-0.5">{s.l}</span>
+          </div>
+        ))}
+      </div>
+      <div
+        className="w-full mt-2 relative overflow-hidden"
+        style={{ height: '22px', borderRadius: '9px', backgroundColor: 'rgba(255,255,255,0.16)' }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '78%',
+            borderRadius: '9px',
+            backgroundColor: hexToRgba(color, 0.95),
+            backgroundImage:
+              'repeating-linear-gradient(115deg, rgba(255,255,255,0.26) 0px, rgba(255,255,255,0.26) 6px, rgba(255,255,255,0.02) 6px, rgba(255,255,255,0.02) 14px)',
+          }}
+        />
+      </div>
+      <div className="flex items-end justify-between mt-2">
+        <div className="flex items-baseline gap-1">
+          <span className="text-white font-extrabold text-[30px] leading-none tracking-tight">25</span>
+          <span className="text-white/70 text-[8px] font-medium">min focados</span>
+        </div>
+        <div
+          className="flex flex-col items-center justify-center"
+          style={{
+            width: '34px',
+            height: '34px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(255,255,255,0.22)',
+            border: '1px solid rgba(255,255,255,0.28)',
+          }}
+        >
+          <span className="text-white font-extrabold text-[12px] leading-none">8.7</span>
+          <span className="text-white/75 text-[5.5px] mt-0.5 font-semibold uppercase">nota</span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between mt-1.5 text-[5.5px] font-mono tracking-wider text-white/70">
+        <span>nakor.com.br</span>
+        <span>SESSÃO FOCO</span>
+      </div>
+    </div>
+  );
+}
+
+
 export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: OnboardingScreenProps) {
   const [currentStep, setCurrentStep] = useState(0);
   
