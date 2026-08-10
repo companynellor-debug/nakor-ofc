@@ -11,9 +11,10 @@ import {
   Flame,
   Sun,
   Clock,
-  
+  Sparkles,
   ArrowLeft
 } from 'lucide-react';
+
 
 interface OnboardingScreenProps {
   onComplete: (data: any) => void;
@@ -123,11 +124,15 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   const [productiveTime, setProductiveTime] = useState<string>(''); // Step 4: Singleselect
   const [hour, setHour] = useState(8); // Step 5: Drum picker hours (0-23)
   const [minute, setMinute] = useState(0); // Step 5: Drum picker minutes (0-59)
+  const [cardLayout, setCardLayout] = useState<'trio' | 'unificado'>('trio'); // Step 6
+  const [cardColor, setCardColor] = useState('#7C3AED'); // Step 6
+
+  const TOTAL_STEPS = 6;
 
   // Auto-advance with a slight delay so they can see their selection feedback beautifully
   const autoAdvance = () => {
     setTimeout(() => {
-      setCurrentStep(prev => Math.min(prev + 1, 4));
+      setCurrentStep(prev => Math.min(prev + 1, TOTAL_STEPS - 1));
     }, 400);
   };
 
@@ -146,13 +151,32 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
       focusHours,
       productiveTime,
       reminderTime: `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`,
+      cardLayout,
+      cardColor,
       userEmail: userEmail || 'anonymous',
       completedAt: new Date().toISOString()
     };
-    
+
     localStorage.setItem('nakor_onboarding', JSON.stringify(answers));
+
+    // Salva o estilo dos cards escolhido aqui, para já ficar na conta do usuário
+    try {
+      const savedRaw = localStorage.getItem('nakor_estilo_cards');
+      const saved = savedRaw ? JSON.parse(savedRaw) : {};
+      localStorage.setItem(
+        'nakor_estilo_cards',
+        JSON.stringify({ ...saved, layout: cardLayout, accentColor: cardColor }),
+      );
+    } catch {
+      localStorage.setItem(
+        'nakor_estilo_cards',
+        JSON.stringify({ layout: cardLayout, accentColor: cardColor }),
+      );
+    }
+
     onComplete(answers);
   };
+
 
   // Selection handlers with auto-advance for single-select steps
   const handleSelectUseCase = (optionId: string) => {
@@ -229,6 +253,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
     { id: 'Varia muito', label: 'Varia muito', desc: 'Sem horário fixo', emoji: '🔀' }
   ];
 
+  const cardColors = [
+    { name: 'Roxo', hex: '#7C3AED' },
+    { name: 'Azul', hex: '#2563EB' },
+    { name: 'Verde Limão', hex: '#A5CE00' },
+    { name: 'Azul Metálico', hex: '#0CB6D7' },
+    { name: 'Rosa Vibrante', hex: '#EC4899' },
+    { name: 'Branco', hex: '#FFFFFF' }
+  ];
+
+
+
   return (
     <div className="w-full h-screen bg-brand-bg text-text-primary font-sans overflow-hidden flex flex-col relative select-none">
       
@@ -253,7 +288,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
         {/* Progress Bar */}
         <div className="flex min-w-0 gap-1.5">
-          {[0, 1, 2, 3, 4].map((stepIdx) => (
+          {[0, 1, 2, 3, 4, 5].map((stepIdx) => (
             <div 
               key={stepIdx} 
               className={`h-1.5 flex-1 min-w-0 rounded-full transition-all duration-300 ${
@@ -264,7 +299,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </div>
         {/* Step Indicator */}
         <span className="text-xs font-medium text-text-secondary shrink-0 tabular-nums">
-          {currentStep + 1} de 5
+          {currentStep + 1} de 6
         </span>
       </div>
 
@@ -454,13 +489,119 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
             </div>
 
             <button
-              onClick={handleComplete}
+              onClick={() => setCurrentStep(5)}
               className="w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
+            >
+              Continuar
+            </button>
+          </div>
+        </section>
+
+        {/* --- ETAPA 6: PERSONALIZAR O CARD --- */}
+        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
+          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
+            <div className="space-y-5">
+              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
+                <Sparkles size={22} className="text-brand-purple-500" />
+              </div>
+
+              <div>
+                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
+                  Personalize o seu <br /><span className="text-brand-purple-500">card</span> de resultado
+                </h2>
+                <p className="text-[13px] text-text-secondary mt-2 font-medium leading-normal">
+                  Escolha o modelo e a cor — pode mudar depois nas configurações
+                </p>
+              </div>
+
+              {/* Modelo */}
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
+                  Modelo
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {(['trio', 'unificado'] as const).map((model) => {
+                    const isSelected = cardLayout === model;
+                    return (
+                      <motion.button
+                        key={model}
+                        onClick={() => setCardLayout(model)}
+                        whileTap={{ scale: 0.97 }}
+                        className={`relative overflow-hidden text-left rounded-[22px] p-3 transition-all duration-300 cursor-pointer border ${
+                          isSelected
+                            ? 'bg-white border-brand-purple-300/80 shadow-[0_0_0_2px_rgba(91,52,199,0.12),0_18px_40px_-14px_rgba(91,52,199,0.35)]'
+                            : 'bg-white/60 border-brand-purple-200/50 backdrop-blur-xl hover:bg-white/85 hover:border-brand-purple-300/70'
+                        }`}
+                      >
+                        {model === 'trio' ? (
+                          <div className="flex gap-1.5 mb-2.5">
+                            {[0, 1, 2].map((i) => (
+                              <div
+                                key={i}
+                                className="flex-1 rounded-[6px]"
+                                style={{
+                                  aspectRatio: '4 / 5',
+                                  background: `linear-gradient(180deg, ${cardColor} 0%, #0D0F14 75%)`,
+                                }}
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <div
+                            className="w-full rounded-[10px] mb-2.5"
+                            style={{
+                              aspectRatio: '5 / 4',
+                              background: `radial-gradient(circle at 50% 110%, ${cardColor} 0%, #0D0F14 70%)`,
+                            }}
+                          />
+                        )}
+                        <p className="text-[13px] font-semibold leading-tight text-text-primary">
+                          {model === 'trio' ? '3 cards alinhados' : 'Card único'}
+                        </p>
+                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
+                          {model === 'trio' ? 'Antes • Depois • Nota' : 'Fundo escuro com glow'}
+                        </p>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Cor */}
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
+                  Cor de destaque
+                </p>
+                <div className="flex flex-wrap gap-2.5">
+                  {cardColors.map((c) => {
+                    const isSelected = cardColor === c.hex;
+                    return (
+                      <button
+                        key={c.hex}
+                        onClick={() => setCardColor(c.hex)}
+                        aria-label={c.name}
+                        className={`w-10 h-10 rounded-full cursor-pointer transition-all border ${
+                          isSelected
+                            ? 'border-brand-purple-400 scale-110 shadow-[0_0_0_3px_rgba(91,52,199,0.18)]'
+                            : 'border-brand-border hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: c.hex }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleComplete}
+              className="mt-6 w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
             >
               Começar agora
             </button>
           </div>
         </section>
+
 
       </div>
       </div>
