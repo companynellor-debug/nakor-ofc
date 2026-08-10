@@ -467,43 +467,8 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 </p>
               </div>
 
-              <div className="space-y-2.5">
-                {step4Options.map((opt) => {
-                  const isSelected = productiveTime === opt.id;
-                  return (
-                    <motion.button
-                      key={opt.id}
-                      onClick={() => handleSelectProductiveTime(opt.id)}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
-                        isSelected 
-                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
-                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className={`w-11 h-11 rounded-full flex items-center justify-center text-[18px] transition-colors ${
-                          isSelected ? 'bg-brand-purple-500' : 'bg-brand-purple-50'
-                        }`}>
-                          {opt.emoji}
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
-                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
-                        </div>
-                      </div>
+              <OptionGrid options={step4Options} selected={productiveTime} onSelect={handleSelectProductiveTime} />
 
-                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected 
-                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
-                          : 'border-brand-border bg-transparent'
-                      }`}>
-                        {isSelected && <Check size={12} strokeWidth={3} />}
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </section>
