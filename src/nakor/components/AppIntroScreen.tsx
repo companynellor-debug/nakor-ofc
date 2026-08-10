@@ -31,6 +31,18 @@ const slides = [
 
 export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const update = () => setContainerWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,6 +50,10 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
     }, 4000);
     return () => clearInterval(timer);
   }, []);
+
+  const slideWidth = containerWidth * 0.72;
+  const offset = containerWidth / 2 - (currentSlide * slideWidth + slideWidth / 2);
+
 
 
   return (
