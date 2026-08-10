@@ -201,25 +201,25 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   };
 
   // Options Definitions with specific layout descriptions matching the exact style
-  const step1Options = [
-    { id: 'Estudos', label: 'Estudos', desc: 'Organizar meus estudos e materiais', icon: <BookOpen size={18} /> },
-    { id: 'Trabalho', label: 'Trabalho', desc: 'Gerenciar tarefas e projetos', icon: <Briefcase size={18} /> },
-    { id: 'Leitura', label: 'Leitura', desc: 'Acompanhar minhas leituras', icon: <BookOpenText size={18} /> },
-    { id: 'Múltiplos objetivos', label: 'Múltiplos objetivos', desc: 'Usar para diferentes áreas da vida', icon: <Target size={18} /> }
+  const step1Options: GridOption[] = [
+    { id: 'Estudos', label: 'Estudos', desc: 'Organizar meus estudos e materiais', icon: <BookOpen size={26} strokeWidth={2} /> },
+    { id: 'Trabalho', label: 'Trabalho', desc: 'Gerenciar tarefas e projetos', icon: <Briefcase size={26} strokeWidth={2} /> },
+    { id: 'Leitura', label: 'Leitura', desc: 'Acompanhar minhas leituras', icon: <BookOpenText size={26} strokeWidth={2} /> },
+    { id: 'Múltiplos objetivos', label: 'Múltiplos objetivos', desc: 'Diferentes áreas da vida', icon: <Target size={26} strokeWidth={2} /> }
   ];
 
-  const step2Options = [
-    { id: 'Fico no celular sem querer', label: 'Fico no celular sem querer', desc: 'Perder tempo em redes sociais e apps', emoji: '📱' },
-    { id: 'Procrastino muito', label: 'Procrastino muito', desc: 'Adiar tarefas importantes para depois', emoji: '😵' },
-    { id: 'Perco o foco rápido', label: 'Perco o foco rápido', desc: 'Dificuldade de concentração profunda', emoji: '🧠' },
-    { id: 'Não consigo manter uma rotina', label: 'Não consigo manter uma rotina', desc: 'Falta de constância no dia a dia', emoji: '🕐' }
+  const step2Options: GridOption[] = [
+    { id: 'Fico no celular sem querer', label: 'Fico no celular', desc: 'Perco tempo em redes sociais', emoji: '📱' },
+    { id: 'Procrastino muito', label: 'Procrastino muito', desc: 'Adio tarefas importantes', emoji: '😵' },
+    { id: 'Perco o foco rápido', label: 'Perco o foco', desc: 'Difícil concentrar profundo', emoji: '🧠' },
+    { id: 'Não consigo manter uma rotina', label: 'Sem rotina', desc: 'Falta de constância no dia', emoji: '🕐' }
   ];
 
-  const step3Options = [
-    { id: '5h', label: '5 horas', desc: 'Menos de 1h por dia, super tranquilo' },
-    { id: '10h', label: '10 horas', desc: 'Cerca de 1.5h por dia, ritmo moderado' },
-    { id: '15h', label: '15 horas', desc: 'Cerca de 2h por dia, focado e consistente' },
-    { id: '20h+', label: '20h ou mais', desc: 'Foco intenso diário, nível profissional' }
+  const step3Options: GridOption[] = [
+    { id: '5h', label: '5 horas', desc: 'Menos de 1h por dia', badge: '5h' },
+    { id: '10h', label: '10 horas', desc: 'Cerca de 1.5h por dia', badge: '10h' },
+    { id: '15h', label: '15 horas', desc: 'Cerca de 2h por dia', badge: '15h' },
+    { id: '20h+', label: '20h ou mais', desc: 'Foco intenso diário', badge: '20h+' }
   ];
 
   const step4Options = [
