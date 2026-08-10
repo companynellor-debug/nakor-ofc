@@ -50,8 +50,8 @@ function OptionGrid({
             whileTap={{ scale: 0.97 }}
             className={`relative overflow-hidden text-left rounded-[22px] p-4 min-h-[150px] flex flex-col justify-between transition-all duration-300 cursor-pointer border ${
               isSelected
-                ? 'bg-white border-white shadow-[0_0_0_1.5px_rgba(46,46,184,0.35),0_20px_45px_-18px_rgba(46,46,184,0.45)]'
-                : 'bg-white/55 border-white/70 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_28px_-16px_rgba(46,46,184,0.25)] hover:bg-white/80'
+                ? 'bg-white border-brand-purple-300/80 shadow-[0_0_0_2px_rgba(91,52,199,0.12),0_18px_40px_-14px_rgba(91,52,199,0.35)]'
+                : 'bg-white/60 border-brand-purple-200/50 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_22px_-14px_rgba(91,52,199,0.18)] hover:bg-white/85 hover:border-brand-purple-300/70'
             }`}
           >
             {/* soft inner sheen */}
