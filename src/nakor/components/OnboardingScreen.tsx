@@ -11,7 +11,7 @@ import {
   Flame,
   Sun,
   Clock,
-  Check,
+  
   ArrowLeft
 } from 'lucide-react';
 
@@ -19,6 +19,98 @@ interface OnboardingScreenProps {
   onComplete: (data: any) => void;
   onBackToLanding?: () => void;
   userEmail?: string;
+}
+
+type GridOption = {
+  id: string;
+  label: string;
+  desc: string;
+  icon?: React.ReactNode;
+  emoji?: string;
+  badge?: string;
+};
+
+function OptionGrid({
+  options,
+  selected,
+  onSelect,
+}: {
+  options: GridOption[];
+  selected: string;
+  onSelect: (id: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {options.map((opt) => {
+        const isSelected = selected === opt.id;
+        return (
+          <motion.button
+            key={opt.id}
+            onClick={() => onSelect(opt.id)}
+            whileTap={{ scale: 0.97 }}
+            className={`relative overflow-hidden text-left rounded-[22px] p-4 min-h-[150px] flex flex-col justify-between transition-all duration-300 cursor-pointer border ${
+              isSelected
+                ? 'bg-white border-white shadow-[0_0_0_1.5px_rgba(46,46,184,0.35),0_20px_45px_-18px_rgba(46,46,184,0.45)]'
+                : 'bg-white/55 border-white/70 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_28px_-16px_rgba(46,46,184,0.25)] hover:bg-white/80'
+            }`}
+          >
+            {/* soft inner sheen */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/70 via-transparent to-brand-purple-100/30" />
+            {isSelected && (
+              <div className="pointer-events-none absolute -top-8 -right-8 w-28 h-28 rounded-full bg-brand-purple-100/70 blur-2xl" />
+            )}
+
+            <div className="relative z-10">
+              {opt.icon ? (
+                <div
+                  className={`transition-all ${
+                    isSelected
+                      ? 'text-brand-purple-500 drop-shadow-[0_0_12px_rgba(46,46,184,0.55)]'
+                      : 'text-brand-purple-500/70 drop-shadow-[0_0_8px_rgba(46,46,184,0.3)]'
+                  }`}
+                >
+                  {opt.icon}
+                </div>
+              ) : opt.emoji ? (
+                <span
+                  className={`text-[26px] leading-none block transition-all ${
+                    isSelected
+                      ? 'drop-shadow-[0_0_12px_rgba(46,46,184,0.45)]'
+                      : 'opacity-80'
+                  }`}
+                >
+                  {opt.emoji}
+                </span>
+              ) : (
+                <span
+                  className={`font-display font-extrabold text-[24px] leading-none block transition-all ${
+                    isSelected
+                      ? 'text-brand-purple-500 drop-shadow-[0_0_12px_rgba(46,46,184,0.5)]'
+                      : 'text-brand-purple-500/70'
+                  }`}
+                >
+                  {opt.badge}
+                </span>
+              )}
+            </div>
+
+            <div className="relative z-10">
+              <p
+                className={`text-[14px] font-semibold leading-tight ${
+                  isSelected ? 'text-text-primary' : 'text-text-primary/85'
+                }`}
+              >
+                {opt.label}
+              </p>
+              <p className="text-[11px] text-text-secondary mt-1 leading-snug">
+                {opt.desc}
+              </p>
+            </div>
+          </motion.button>
+        );
+      })}
+    </div>
+  );
 }
 
 export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: OnboardingScreenProps) {
@@ -109,32 +201,32 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   };
 
   // Options Definitions with specific layout descriptions matching the exact style
-  const step1Options = [
-    { id: 'Estudos', label: 'Estudos', desc: 'Organizar meus estudos e materiais', icon: <BookOpen size={18} /> },
-    { id: 'Trabalho', label: 'Trabalho', desc: 'Gerenciar tarefas e projetos', icon: <Briefcase size={18} /> },
-    { id: 'Leitura', label: 'Leitura', desc: 'Acompanhar minhas leituras', icon: <BookOpenText size={18} /> },
-    { id: 'Múltiplos objetivos', label: 'Múltiplos objetivos', desc: 'Usar para diferentes áreas da vida', icon: <Target size={18} /> }
+  const step1Options: GridOption[] = [
+    { id: 'Estudos', label: 'Estudos', desc: 'Organizar meus estudos e materiais', icon: <BookOpen size={26} strokeWidth={2} /> },
+    { id: 'Trabalho', label: 'Trabalho', desc: 'Gerenciar tarefas e projetos', icon: <Briefcase size={26} strokeWidth={2} /> },
+    { id: 'Leitura', label: 'Leitura', desc: 'Acompanhar minhas leituras', icon: <BookOpenText size={26} strokeWidth={2} /> },
+    { id: 'Múltiplos objetivos', label: 'Múltiplos objetivos', desc: 'Diferentes áreas da vida', icon: <Target size={26} strokeWidth={2} /> }
   ];
 
-  const step2Options = [
-    { id: 'Fico no celular sem querer', label: 'Fico no celular sem querer', desc: 'Perder tempo em redes sociais e apps', emoji: '📱' },
-    { id: 'Procrastino muito', label: 'Procrastino muito', desc: 'Adiar tarefas importantes para depois', emoji: '😵' },
-    { id: 'Perco o foco rápido', label: 'Perco o foco rápido', desc: 'Dificuldade de concentração profunda', emoji: '🧠' },
-    { id: 'Não consigo manter uma rotina', label: 'Não consigo manter uma rotina', desc: 'Falta de constância no dia a dia', emoji: '🕐' }
+  const step2Options: GridOption[] = [
+    { id: 'Fico no celular sem querer', label: 'Fico no celular', desc: 'Perco tempo em redes sociais', emoji: '📱' },
+    { id: 'Procrastino muito', label: 'Procrastino muito', desc: 'Adio tarefas importantes', emoji: '😵' },
+    { id: 'Perco o foco rápido', label: 'Perco o foco', desc: 'Difícil concentrar profundo', emoji: '🧠' },
+    { id: 'Não consigo manter uma rotina', label: 'Sem rotina', desc: 'Falta de constância no dia', emoji: '🕐' }
   ];
 
-  const step3Options = [
-    { id: '5h', label: '5 horas', desc: 'Menos de 1h por dia, super tranquilo' },
-    { id: '10h', label: '10 horas', desc: 'Cerca de 1.5h por dia, ritmo moderado' },
-    { id: '15h', label: '15 horas', desc: 'Cerca de 2h por dia, focado e consistente' },
-    { id: '20h+', label: '20h ou mais', desc: 'Foco intenso diário, nível profissional' }
+  const step3Options: GridOption[] = [
+    { id: '5h', label: '5 horas', desc: 'Menos de 1h por dia', badge: '5h' },
+    { id: '10h', label: '10 horas', desc: 'Cerca de 1.5h por dia', badge: '10h' },
+    { id: '15h', label: '15 horas', desc: 'Cerca de 2h por dia', badge: '15h' },
+    { id: '20h+', label: '20h ou mais', desc: 'Foco intenso diário', badge: '20h+' }
   ];
 
-  const step4Options = [
-    { id: 'Manhã', label: 'Manhã', desc: 'Antes do meio-dia, mente descansada', emoji: '🌅' },
-    { id: 'Tarde', label: 'Tarde', desc: 'Entre 12h e 18h, jornada padrão', emoji: '☀️' },
-    { id: 'Noite', label: 'Noite', desc: 'Após as 18h, silêncio e calma', emoji: '🌙' },
-    { id: 'Varia muito', label: 'Varia muito', desc: 'Não tenho um horário fixo definido', emoji: '🔀' }
+  const step4Options: GridOption[] = [
+    { id: 'Manhã', label: 'Manhã', desc: 'Antes do meio-dia', emoji: '🌅' },
+    { id: 'Tarde', label: 'Tarde', desc: 'Entre 12h e 18h', emoji: '☀️' },
+    { id: 'Noite', label: 'Noite', desc: 'Após as 18h', emoji: '🌙' },
+    { id: 'Varia muito', label: 'Varia muito', desc: 'Sem horário fixo', emoji: '🔀' }
   ];
 
   return (
@@ -201,43 +293,8 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 </p>
               </div>
 
-              <div className="space-y-2.5">
-                {step1Options.map((opt) => {
-                  const isSelected = useCase === opt.id;
-                  return (
-                    <motion.button
-                      key={opt.id}
-                      onClick={() => handleSelectUseCase(opt.id)}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
-                        isSelected 
-                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
-                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${
-                          isSelected ? 'bg-brand-purple-500 text-white' : 'bg-brand-purple-50 text-brand-purple-500'
-                        }`}>
-                          {opt.icon}
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
-                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
-                        </div>
-                      </div>
+              <OptionGrid options={step1Options} selected={useCase} onSelect={handleSelectUseCase} />
 
-                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected 
-                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
-                          : 'border-brand-border bg-transparent'
-                      }`}>
-                        {isSelected && <Check size={12} strokeWidth={3} />}
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </section>
@@ -259,43 +316,8 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 </p>
               </div>
 
-              <div className="space-y-2.5">
-                {step2Options.map((opt) => {
-                  const isSelected = biggestChallenge === opt.id;
-                  return (
-                    <motion.button
-                      key={opt.id}
-                      onClick={() => handleSelectChallenge(opt.id)}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
-                        isSelected 
-                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
-                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className={`w-11 h-11 rounded-full flex items-center justify-center text-[18px] transition-colors ${
-                          isSelected ? 'bg-brand-purple-500' : 'bg-brand-purple-50'
-                        }`}>
-                          {opt.emoji}
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
-                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
-                        </div>
-                      </div>
+              <OptionGrid options={step2Options} selected={biggestChallenge} onSelect={handleSelectChallenge} />
 
-                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected 
-                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
-                          : 'border-brand-border bg-transparent'
-                      }`}>
-                        {isSelected && <Check size={12} strokeWidth={3} />}
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </section>
@@ -317,43 +339,8 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 </p>
               </div>
 
-              <div className="space-y-2.5">
-                {step3Options.map((opt) => {
-                  const isSelected = focusHours === opt.id;
-                  return (
-                    <motion.button
-                      key={opt.id}
-                      onClick={() => handleSelectHours(opt.id)}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
-                        isSelected 
-                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
-                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className={`w-11 h-11 rounded-full flex items-center justify-center font-display font-bold text-[15px] transition-colors ${
-                          isSelected ? 'bg-brand-purple-500 text-white' : 'bg-brand-purple-50 text-brand-purple-500'
-                        }`}>
-                          {opt.id}
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
-                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
-                        </div>
-                      </div>
+              <OptionGrid options={step3Options} selected={focusHours} onSelect={handleSelectHours} />
 
-                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected 
-                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
-                          : 'border-brand-border bg-transparent'
-                      }`}>
-                        {isSelected && <Check size={12} strokeWidth={3} />}
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </section>
@@ -375,43 +362,8 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                 </p>
               </div>
 
-              <div className="space-y-2.5">
-                {step4Options.map((opt) => {
-                  const isSelected = productiveTime === opt.id;
-                  return (
-                    <motion.button
-                      key={opt.id}
-                      onClick={() => handleSelectProductiveTime(opt.id)}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex items-center justify-between p-4 rounded-[20px] text-left transition-all duration-300 cursor-pointer group ${
-                        isSelected 
-                          ? 'bg-brand-purple-50 border-brand-purple-500/30 shadow-[0_0_24px_rgba(46,46,184,0.10)]' 
-                          : 'bg-white border border-brand-border hover:bg-brand-purple-50 hover:border-brand-purple-100'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className={`w-11 h-11 rounded-full flex items-center justify-center text-[18px] transition-colors ${
-                          isSelected ? 'bg-brand-purple-500' : 'bg-brand-purple-50'
-                        }`}>
-                          {opt.emoji}
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-text-primary">{opt.label}</p>
-                          <p className="text-[12px] text-text-secondary mt-0.5 leading-snug">{opt.desc}</p>
-                        </div>
-                      </div>
+              <OptionGrid options={step4Options} selected={productiveTime} onSelect={handleSelectProductiveTime} />
 
-                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected 
-                          ? 'bg-brand-purple-500 border-brand-purple-500 text-white' 
-                          : 'border-brand-border bg-transparent'
-                      }`}>
-                        {isSelected && <Check size={12} strokeWidth={3} />}
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </section>
