@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { CheckCircle2, Home, Clock, User, Info } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { UnifiedGlowCard } from './UnifiedGlowCard';
+import { AuraDomeCard } from './AuraDomeCard';
+import { WidgetStackCard } from './WidgetStackCard';
 
 interface ResultScreenProps {
   onNavigate: (view: string) => void;
@@ -403,8 +405,8 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
         });
       };
 
-      // Layout unificado: captura apenas o card único
-      if (estiloCards.layout === 'unificado' && cardUnifiedRef.current) {
+      // Layouts de card único: captura apenas o card
+      if (['unificado', 'aura', 'widget'].includes(estiloCards.layout) && cardUnifiedRef.current) {
         const el = cardUnifiedRef.current;
         // Remove a sombra externa durante a captura: ela aparece recortada nos
         // cantos arredondados e cria um "quadrado" translúcido em volta do card.
@@ -724,20 +726,32 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           <Info size={16} className="text-neutral-500 dark:text-neutral-400" />
         </div>
         
-        {estiloCards.layout === 'unificado' ? (
+        {['unificado', 'aura', 'widget'].includes(estiloCards.layout) ? (
         <div className="w-full flex justify-center">
-          <UnifiedGlowCard
-            ref={cardUnifiedRef}
-            accentColor={accentColor}
-            title={activity?.nome || 'Sessão de Foco'}
-            minutes={minutesReal}
-            plannedMinutes={activity?.duracao_prevista ? Math.round(activity.duracao_prevista / 60) : minutesReal}
-            score={evaluation?.nota ?? activity?.nota ?? 0}
-            exits={activity?.saidas ?? 0}
-            streak={userStreak}
-            message={estiloCards.conteudo?.fraseIA !== false ? (evaluation?.mensagem_card || activity?.mensagem_card) : undefined}
-          />
+          {(() => {
+            const singleProps = {
+              accentColor,
+              title: activity?.nome || 'Sessão de Foco',
+              minutes: minutesReal,
+              plannedMinutes: activity?.duracao_prevista ? Math.round(activity.duracao_prevista / 60) : minutesReal,
+              score: evaluation?.nota ?? activity?.nota ?? 0,
+              exits: activity?.saidas ?? 0,
+              streak: userStreak,
+              message:
+                estiloCards.conteudo?.fraseIA !== false
+                  ? evaluation?.mensagem_card || activity?.mensagem_card
+                  : undefined,
+            };
+            if (estiloCards.layout === 'aura') {
+              return <AuraDomeCard ref={cardUnifiedRef} {...singleProps} />;
+            }
+            if (estiloCards.layout === 'widget') {
+              return <WidgetStackCard ref={cardUnifiedRef} {...singleProps} />;
+            }
+            return <UnifiedGlowCard ref={cardUnifiedRef} {...singleProps} />;
+          })()}
         </div>
+
         ) : (
         <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch w-full">
           {/* Card 1 (Antes) */}

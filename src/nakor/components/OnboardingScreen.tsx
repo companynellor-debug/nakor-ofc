@@ -16,6 +16,9 @@ import {
   Check
 
 } from 'lucide-react';
+import { AuraDomeCard } from './AuraDomeCard';
+import { WidgetStackCard } from './WidgetStackCard';
+import { CARD_LAYOUTS, LayoutThumb, type CardLayoutId } from './CardLayoutThumbs';
 
 
 interface OnboardingScreenProps {
@@ -126,7 +129,25 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 /** Prévia real do card de resultado (mesma ideia da tela de Cores dos cards). */
-function ResultCardPreview({ layout, color }: { layout: 'trio' | 'unificado'; color: string }) {
+function ResultCardPreview({ layout, color }: { layout: CardLayoutId; color: string }) {
+  if (layout === 'aura' || layout === 'widget') {
+    const props = {
+      accentColor: color,
+      title: 'Estudar',
+      minutes: 25,
+      plannedMinutes: 30,
+      score: 8.7,
+      exits: 0,
+      streak: 3,
+      message: 'isso aí 😎',
+    };
+    return (
+      <div className="w-full max-w-[210px] mx-auto">
+        {layout === 'aura' ? <AuraDomeCard {...props} /> : <WidgetStackCard {...props} />}
+      </div>
+    );
+  }
+
   if (layout === 'trio') {
     const cards: Array<{ tag: string; text?: string; nota?: string }> = [
       { tag: 'ANTES', text: 'Estava cansado e sem foco...' },
@@ -267,7 +288,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   const [productiveTime, setProductiveTime] = useState<string>(''); // Step 4: Singleselect
   const [hour, setHour] = useState(8); // Step 5: Drum picker hours (0-23)
   const [minute, setMinute] = useState(0); // Step 5: Drum picker minutes (0-59)
-  const [cardLayout, setCardLayout] = useState<'trio' | 'unificado'>('trio'); // Step 6
+  const [cardLayout, setCardLayout] = useState<CardLayoutId>('trio'); // Step 6
   const [cardColor, setCardColor] = useState('#7C3AED'); // Step 6
 
   const TOTAL_STEPS = 6;
@@ -666,9 +687,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   <ResultCardPreview layout={cardLayout} color={cardColor} />
                 </div>
                 <p className="text-[10.5px] text-text-secondary text-center">
-                  {cardLayout === 'trio'
-                    ? 'Assim: 3 cards gerados lado a lado'
-                    : 'Assim: um card único com glow'}
+                  {CARD_LAYOUTS.find((l) => l.id === cardLayout)?.hint}
                 </p>
               </div>
 
@@ -678,12 +697,12 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   Modelo
                 </p>
                 <div className="grid grid-cols-2 gap-3">
-                  {(['trio', 'unificado'] as const).map((model) => {
-                    const isSelected = cardLayout === model;
+                  {CARD_LAYOUTS.map((opt) => {
+                    const isSelected = cardLayout === opt.id;
                     return (
                       <motion.button
-                        key={model}
-                        onClick={() => setCardLayout(model)}
+                        key={opt.id}
+                        onClick={() => setCardLayout(opt.id)}
                         whileTap={{ scale: 0.97 }}
                         animate={{ scale: isSelected ? 1.02 : 1 }}
                         transition={{ type: 'spring', stiffness: 340, damping: 24 }}
@@ -703,40 +722,20 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                             <Check size={12} strokeWidth={3.5} color={cardColor === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
                           </div>
                         )}
-                        {model === 'trio' ? (
-                          <div className="flex gap-1.5 mb-2.5">
-                            {[0, 1, 2].map((i) => (
-                              <div
-                                key={i}
-                                className="flex-1 rounded-[6px]"
-                                style={{
-                                  aspectRatio: '4 / 5',
-                                  background: `linear-gradient(180deg, ${cardColor} 0%, #0D0F14 75%)`,
-                                  opacity: isSelected ? 1 : 0.5,
-                                }}
-                              />
-                            ))}
-                          </div>
-                        ) : (
-                          <div
-                            className="w-full rounded-[10px] mb-2.5"
-                            style={{
-                              aspectRatio: '5 / 4',
-                              background: `radial-gradient(circle at 50% 110%, ${cardColor} 0%, #0D0F14 70%)`,
-                              opacity: isSelected ? 1 : 0.5,
-                            }}
-                          />
-                        )}
+                        <div
+                          className="w-full flex items-center justify-center mb-2.5"
+                          style={{ opacity: isSelected ? 1 : 0.55 }}
+                        >
+                          <LayoutThumb id={opt.id} accentColor={cardColor} />
+                        </div>
                         <p
                           className={`text-[13px] font-semibold leading-tight ${
                             isSelected ? 'text-text-primary' : 'text-text-primary/60'
                           }`}
                         >
-                          {model === 'trio' ? '3 cards alinhados' : 'Card único'}
+                          {opt.label}
                         </p>
-                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
-                          {model === 'trio' ? 'Antes • Depois • Nota' : 'Fundo escuro com glow'}
-                        </p>
+                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">{opt.hint}</p>
                       </motion.button>
                     );
                   })}
