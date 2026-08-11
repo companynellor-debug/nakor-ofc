@@ -436,10 +436,7 @@ useEffect(() => {
           <div className="flex flex-col gap-2">
             <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Formato dos cards</span>
             <div className="grid grid-cols-2 gap-3">
-              {[
-                { id: 'trio', label: '3 cards alinhados', hint: 'Antes • Depois • Nota' },
-                { id: 'unificado', label: 'Card único glow', hint: 'Tudo em um só card' },
-              ].map((opt) => {
+              {CARD_LAYOUTS.map((opt) => {
                 const isSelected = layout === opt.id;
                 return (
                   <motion.button
@@ -453,22 +450,9 @@ useEffect(() => {
                     }}
                   >
                     <div className="w-full h-14 flex items-center justify-center gap-1.5">
-                      {opt.id === 'trio' ? (
-                        <>
-                          <div className="w-4 h-11 rounded-md" style={{ backgroundColor: hexToRgba(accentColor, 0.35) }} />
-                          <div className="w-4 h-11 rounded-md" style={{ backgroundColor: hexToRgba(accentColor, 0.6) }} />
-                          <div className="w-4 h-11 rounded-md" style={{ backgroundColor: hexToRgba(accentColor, 0.9) }} />
-                        </>
-                      ) : (
-                        <div
-                          className="w-14 h-14 rounded-2xl"
-                          style={{
-                            backgroundColor: '#0A0A0C',
-                            backgroundImage: `radial-gradient(120% 85% at 50% 110%, ${hexToRgba(accentColor, 0.95)} 0%, transparent 75%)`,
-                          }}
-                        />
-                      )}
+                      <LayoutThumb id={opt.id} accentColor={accentColor} />
                     </div>
+
                     <div>
                       <p className={`text-[13px] font-bold m-0 ${isSelected ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-neutral-500 dark:text-neutral-400'}`}>
                         {opt.label}
