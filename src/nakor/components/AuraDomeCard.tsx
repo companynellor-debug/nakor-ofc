@@ -117,7 +117,10 @@ export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
                 lineHeight: 0.9,
                 fontWeight: 800,
                 letterSpacing: '-0.04em',
-                backgroundImage: 'linear-gradient(180deg, #FFFFFF 12%, #FFE9BD 52%, #FFC濃)'.replace('#FFC濃)', '#F6C76A 100%)'),
+                backgroundImage: `linear-gradient(180deg, #FFFFFF 10%, rgba(255,255,255,0.92) 46%, ${hexToRgba(
+                  accentColor,
+                  0.45
+                )} 100%)`,
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent',
