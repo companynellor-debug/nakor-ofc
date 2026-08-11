@@ -16,6 +16,9 @@ import {
   Check
 
 } from 'lucide-react';
+import { AuraDomeCard } from './AuraDomeCard';
+import { WidgetStackCard } from './WidgetStackCard';
+import { CARD_LAYOUTS, LayoutThumb, type CardLayoutId } from './CardLayoutThumbs';
 
 
 interface OnboardingScreenProps {
