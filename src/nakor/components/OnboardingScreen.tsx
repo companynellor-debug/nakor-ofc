@@ -687,9 +687,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   <ResultCardPreview layout={cardLayout} color={cardColor} />
                 </div>
                 <p className="text-[10.5px] text-text-secondary text-center">
-                  {cardLayout === 'trio'
-                    ? 'Assim: 3 cards gerados lado a lado'
-                    : 'Assim: um card único com glow'}
+                  {CARD_LAYOUTS.find((l) => l.id === cardLayout)?.hint}
                 </p>
               </div>
 
