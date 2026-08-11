@@ -726,20 +726,32 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           <Info size={16} className="text-neutral-500 dark:text-neutral-400" />
         </div>
         
-        {estiloCards.layout === 'unificado' ? (
+        {['unificado', 'aura', 'widget'].includes(estiloCards.layout) ? (
         <div className="w-full flex justify-center">
-          <UnifiedGlowCard
-            ref={cardUnifiedRef}
-            accentColor={accentColor}
-            title={activity?.nome || 'Sessão de Foco'}
-            minutes={minutesReal}
-            plannedMinutes={activity?.duracao_prevista ? Math.round(activity.duracao_prevista / 60) : minutesReal}
-            score={evaluation?.nota ?? activity?.nota ?? 0}
-            exits={activity?.saidas ?? 0}
-            streak={userStreak}
-            message={estiloCards.conteudo?.fraseIA !== false ? (evaluation?.mensagem_card || activity?.mensagem_card) : undefined}
-          />
+          {(() => {
+            const singleProps = {
+              accentColor,
+              title: activity?.nome || 'Sessão de Foco',
+              minutes: minutesReal,
+              plannedMinutes: activity?.duracao_prevista ? Math.round(activity.duracao_prevista / 60) : minutesReal,
+              score: evaluation?.nota ?? activity?.nota ?? 0,
+              exits: activity?.saidas ?? 0,
+              streak: userStreak,
+              message:
+                estiloCards.conteudo?.fraseIA !== false
+                  ? evaluation?.mensagem_card || activity?.mensagem_card
+                  : undefined,
+            };
+            if (estiloCards.layout === 'aura') {
+              return <AuraDomeCard ref={cardUnifiedRef} {...singleProps} />;
+            }
+            if (estiloCards.layout === 'widget') {
+              return <WidgetStackCard ref={cardUnifiedRef} {...singleProps} />;
+            }
+            return <UnifiedGlowCard ref={cardUnifiedRef} {...singleProps} />;
+          })()}
         </div>
+
         ) : (
         <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch w-full">
           {/* Card 1 (Antes) */}
