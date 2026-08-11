@@ -405,8 +405,8 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
         });
       };
 
-      // Layout unificado: captura apenas o card único
-      if (estiloCards.layout === 'unificado' && cardUnifiedRef.current) {
+      // Layouts de card único: captura apenas o card
+      if (['unificado', 'aura', 'widget'].includes(estiloCards.layout) && cardUnifiedRef.current) {
         const el = cardUnifiedRef.current;
         // Remove a sombra externa durante a captura: ela aparece recortada nos
         // cantos arredondados e cria um "quadrado" translúcido em volta do card.
