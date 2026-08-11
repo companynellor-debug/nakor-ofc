@@ -126,7 +126,25 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 /** Prévia real do card de resultado (mesma ideia da tela de Cores dos cards). */
-function ResultCardPreview({ layout, color }: { layout: 'trio' | 'unificado'; color: string }) {
+function ResultCardPreview({ layout, color }: { layout: CardLayoutId; color: string }) {
+  if (layout === 'aura' || layout === 'widget') {
+    const props = {
+      accentColor: color,
+      title: 'Estudar',
+      minutes: 25,
+      plannedMinutes: 30,
+      score: 8.7,
+      exits: 0,
+      streak: 3,
+      message: 'isso aí 😎',
+    };
+    return (
+      <div className="w-full max-w-[210px] mx-auto">
+        {layout === 'aura' ? <AuraDomeCard {...props} /> : <WidgetStackCard {...props} />}
+      </div>
+    );
+  }
+
   if (layout === 'trio') {
     const cards: Array<{ tag: string; text?: string; nota?: string }> = [
       { tag: 'ANTES', text: 'Estava cansado e sem foco...' },
