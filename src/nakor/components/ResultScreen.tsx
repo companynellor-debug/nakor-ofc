@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { CheckCircle2, Home, Clock, User, Info } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { UnifiedGlowCard } from './UnifiedGlowCard';
+import { AuraDomeCard } from './AuraDomeCard';
+import { WidgetStackCard } from './WidgetStackCard';
 
 interface ResultScreenProps {
   onNavigate: (view: string) => void;
