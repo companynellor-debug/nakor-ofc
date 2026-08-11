@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import { Timer, Zap, LogOut } from 'lucide-react';
-import { NakorLogo } from './NakorLogo';
 
 function hexToRgba(hex: string, alpha: number): string {
   if (!hex) return `rgba(255, 255, 255, ${alpha})`;
