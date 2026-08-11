@@ -239,17 +239,25 @@ useEffect(() => {
         <div className="px-5 mt-2 flex flex-col gap-6">
           
           {/* Preview */}
-          {layout === 'unificado' ? (
-            <UnifiedGlowCard
-              accentColor={accentColor}
-              title={lastActivity?.nome || 'Sessão de Foco'}
-              minutes={lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 45}
-              plannedMinutes={lastActivity?.duracao_prevista ? Math.round(lastActivity.duracao_prevista / 60) : 60}
-              score={lastActivity?.nota ?? 8.7}
-              exits={lastActivity?.saidas ?? 0}
-              message={conteudo.fraseIA ? (lastActivity?.mensagem_card || 'isso aí 😎') : undefined}
-            />
+          {['unificado', 'aura', 'widget'].includes(layout) ? (
+            (() => {
+              const previewProps = {
+                accentColor,
+                title: lastActivity?.nome || 'Sessão de Foco',
+                minutes: lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 45,
+                plannedMinutes: lastActivity?.duracao_prevista
+                  ? Math.round(lastActivity.duracao_prevista / 60)
+                  : 60,
+                score: lastActivity?.nota ?? 8.7,
+                exits: lastActivity?.saidas ?? 0,
+                message: conteudo.fraseIA ? lastActivity?.mensagem_card || 'isso aí 😎' : undefined,
+              };
+              if (layout === 'aura') return <AuraDomeCard {...previewProps} />;
+              if (layout === 'widget') return <WidgetStackCard {...previewProps} />;
+              return <UnifiedGlowCard {...previewProps} />;
+            })()
           ) : (
+
           <div className="w-full">
             <div className="flex gap-2.5 items-stretch">
               {[
