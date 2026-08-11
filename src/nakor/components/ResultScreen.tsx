@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { CheckCircle2, Home, Clock, User, Info } from 'lucide-react';
 import { toPng } from 'html-to-image';
-import { NakorLogo } from './NakorLogo';
 import { UnifiedGlowCard } from './UnifiedGlowCard';
 
 interface ResultScreenProps {
@@ -797,15 +796,6 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                   >
                     SESSÃO FOCO
                   </span>
-                  <div className="flex items-center gap-1">
-                    <NakorLogo size={12} color="#FFFFFF" />
-                    <span 
-                      className="text-[10px] font-display font-bold tracking-tight text-white"
-                      style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                    >
-                      Nakor
-                    </span>
-                  </div>
                 </div>
 
                 {/* Narrative Antes (Plaque) */}
@@ -848,7 +838,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                     <Clock size={11} strokeWidth={1.75} />
                     <span>{activity?.duracao_real ? Math.floor(activity.duracao_real / 60) : 25} MIN</span>
                   </div>
-                  <span className="opacity-70">nakor.com.br</span>
+                  
                 </div>
               </div>
             </div>
@@ -910,15 +900,6 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                   >
                     SESSÃO FOCO
                   </span>
-                  <div className="flex items-center gap-1">
-                    <NakorLogo size={12} color="#FFFFFF" />
-                    <span 
-                      className="text-[10px] font-display font-bold tracking-tight text-white"
-                      style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                    >
-                      Nakor
-                    </span>
-                  </div>
                 </div>
 
                 {/* Narrative Depois (Plaque) */}
@@ -961,7 +942,6 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                     <Clock size={11} strokeWidth={1.75} />
                     <span>{activity?.duracao_real ? Math.floor(activity.duracao_real / 60) : 25} MIN</span>
                   </div>
-                  <span className="opacity-70">nakor.com.br</span>
                 </div>
               </div>
             </div>
@@ -1022,15 +1002,6 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                 >
                   AVALIAÇÃO IA
                 </span>
-                <div className="flex items-center gap-1">
-                  <NakorLogo size={12} color="#FFFFFF" />
-                  <span 
-                    className="text-[10px] font-display font-bold tracking-tight text-white"
-                    style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
-                  >
-                    Nakor
-                  </span>
-                </div>
               </div>
 
               {/* Score Block */}

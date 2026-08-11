@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import { Timer, Zap, LogOut } from 'lucide-react';
-import { NakorLogo } from './NakorLogo';
 
 function hexToRgba(hex: string, alpha: number): string {
   if (!hex) return `rgba(255, 255, 255, ${alpha})`;
@@ -84,15 +83,6 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
           {/* Header */}
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div
-                className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
-                style={{
-                  backgroundColor: 'rgba(255,255,255,0.10)',
-                  border: '1px solid rgba(255,255,255,0.14)',
-                }}
-              >
-                <NakorLogo size={18} color="#FFFFFF" />
-              </div>
               <div className="min-w-0">
                 <p
                   className="text-white font-bold text-[19px] leading-tight truncate m-0 whitespace-nowrap"
