@@ -288,7 +288,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   const [productiveTime, setProductiveTime] = useState<string>(''); // Step 4: Singleselect
   const [hour, setHour] = useState(8); // Step 5: Drum picker hours (0-23)
   const [minute, setMinute] = useState(0); // Step 5: Drum picker minutes (0-59)
-  const [cardLayout, setCardLayout] = useState<'trio' | 'unificado'>('trio'); // Step 6
+  const [cardLayout, setCardLayout] = useState<CardLayoutId>('trio'); // Step 6
   const [cardColor, setCardColor] = useState('#7C3AED'); // Step 6
 
   const TOTAL_STEPS = 6;
