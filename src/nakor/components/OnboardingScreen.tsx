@@ -697,12 +697,12 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   Modelo
                 </p>
                 <div className="grid grid-cols-2 gap-3">
-                  {(['trio', 'unificado'] as const).map((model) => {
-                    const isSelected = cardLayout === model;
+                  {CARD_LAYOUTS.map((opt) => {
+                    const isSelected = cardLayout === opt.id;
                     return (
                       <motion.button
-                        key={model}
-                        onClick={() => setCardLayout(model)}
+                        key={opt.id}
+                        onClick={() => setCardLayout(opt.id)}
                         whileTap={{ scale: 0.97 }}
                         animate={{ scale: isSelected ? 1.02 : 1 }}
                         transition={{ type: 'spring', stiffness: 340, damping: 24 }}
@@ -722,40 +722,20 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                             <Check size={12} strokeWidth={3.5} color={cardColor === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
                           </div>
                         )}
-                        {model === 'trio' ? (
-                          <div className="flex gap-1.5 mb-2.5">
-                            {[0, 1, 2].map((i) => (
-                              <div
-                                key={i}
-                                className="flex-1 rounded-[6px]"
-                                style={{
-                                  aspectRatio: '4 / 5',
-                                  background: `linear-gradient(180deg, ${cardColor} 0%, #0D0F14 75%)`,
-                                  opacity: isSelected ? 1 : 0.5,
-                                }}
-                              />
-                            ))}
-                          </div>
-                        ) : (
-                          <div
-                            className="w-full rounded-[10px] mb-2.5"
-                            style={{
-                              aspectRatio: '5 / 4',
-                              background: `radial-gradient(circle at 50% 110%, ${cardColor} 0%, #0D0F14 70%)`,
-                              opacity: isSelected ? 1 : 0.5,
-                            }}
-                          />
-                        )}
+                        <div
+                          className="w-full flex items-center justify-center mb-2.5"
+                          style={{ opacity: isSelected ? 1 : 0.55 }}
+                        >
+                          <LayoutThumb id={opt.id} accentColor={cardColor} />
+                        </div>
                         <p
                           className={`text-[13px] font-semibold leading-tight ${
                             isSelected ? 'text-text-primary' : 'text-text-primary/60'
                           }`}
                         >
-                          {model === 'trio' ? '3 cards alinhados' : 'Card único'}
+                          {opt.label}
                         </p>
-                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
-                          {model === 'trio' ? 'Antes • Depois • Nota' : 'Fundo escuro com glow'}
-                        </p>
+                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">{opt.hint}</p>
                       </motion.button>
                     );
                   })}
