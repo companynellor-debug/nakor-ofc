@@ -136,16 +136,13 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      await deleteMyAccount();
-    } catch {
-      triggerToast('Não foi possível excluir a conta');
-      return;
-    }
+    const { data: userData } = await supabase.auth.getUser();
+    if (userData.user) deleteLocalProfile(userData.user.id);
     clearLocalAppData();
-    await supabase.auth.signOut();
+    await supabase.auth.deleteCurrentUser();
     window.location.reload();
   };
+
 
   const handleClearTestData = async () => {
     clearLocalAppData();
