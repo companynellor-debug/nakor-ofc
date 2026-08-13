@@ -41,23 +41,19 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
   const [resetLoading, setResetLoading] = useState(false);
 
   const handleForgotPassword = async () => {
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setErrors({ email: 'Informe seu e-mail para receber o link' });
+    if (!email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) === false) {
+      setErrors({ email: 'Informe seu e-mail' });
       return;
     }
     setErrors({});
     setResetLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
     setResetLoading(false);
     setForgotPasswordMsg(
-      error
-        ? error.message
-        : 'Enviamos um link de recuperação para o seu e-mail.'
+      'A recuperação por e-mail ficará disponível quando o banco de dados definitivo for conectado.'
     );
     setTimeout(() => setForgotPasswordMsg(''), 6000);
   };
+
 
 
   // Simple email regex validation
