@@ -157,7 +157,7 @@ function ResultCardPreview({ layout, color }: { layout: CardLayoutId; color: str
             height: NATIVE,
             transform: `scale(${scale})`,
             transformOrigin: 'top left',
-—
+            pointerEvents: 'none',
           }}
         >
           {layout === 'aura' ? <AuraDomeCard {...props} /> : <WidgetStackCard {...props} />}
