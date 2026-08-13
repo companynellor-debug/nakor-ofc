@@ -305,21 +305,20 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                   <div className="flex flex-col items-end pt-1">
                     <button 
                       type="button"
-                      onClick={() => {
-                        setForgotPasswordMsg(true);
-                        setTimeout(() => setForgotPasswordMsg(false), 4000);
-                      }}
-                      className="text-xs text-[#6D28D9] hover:text-[#34117E] transition-colors font-medium cursor-pointer"
+                      disabled={resetLoading}
+                      onClick={handleForgotPassword}
+                      className="text-xs text-[#6D28D9] hover:text-[#34117E] transition-colors font-medium cursor-pointer disabled:opacity-60"
                     >
-                      Esqueci minha senha
+                      {resetLoading ? 'Enviando...' : 'Esqueci minha senha'}
                     </button>
                     
                     {forgotPasswordMsg && (
-                      <span className="text-[10px] text-[#5B5766] font-mono mt-1.5 transition-opacity duration-300">
-                        Em breve: envio de link de recuperação
+                      <span className="text-[10px] text-[#5B5766] font-mono mt-1.5 text-right transition-opacity duration-300">
+                        {forgotPasswordMsg}
                       </span>
                     )}
                   </div>
+
 
                   {/* Primary Button: Entrar (Purple gradient CTA) */}
                   <button 
