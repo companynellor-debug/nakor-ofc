@@ -10,7 +10,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
-import { supabase } from '@/integrations/supabase/client';
+import { localAuth as supabase } from '../lib/localAuth';
 import { lovable } from '@/integrations/lovable';
 
 interface AuthScreenProps {

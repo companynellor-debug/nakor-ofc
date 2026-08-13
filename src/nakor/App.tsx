@@ -22,7 +22,7 @@ import { PhoneMockups } from './components/PhoneMockups';
 import { NakorLogo } from './components/NakorLogo';
 import { GuidedTour } from './components/GuidedTour';
 
-import { supabase } from '@/integrations/supabase/client';
+import { localAuth as supabase } from './lib/localAuth';
 import {
   loadUserData,
   startAutoSync,

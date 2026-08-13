@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle, Trash2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { localAuth as supabase } from '../lib/localAuth';
 import { clearLocalAppData, flushSync } from '../lib/cloudSync';
 import { deleteMyAccount } from '@/lib/account.functions';
 
