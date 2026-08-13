@@ -141,9 +141,27 @@ function ResultCardPreview({ layout, color }: { layout: CardLayoutId; color: str
       streak: 3,
       message: 'isso aí 😎',
     };
+    // Os cards reais são desenhados para ~380px (fontes em px fixos).
+    // Renderizamos no tamanho nativo e reduzimos com scale para não cortar nada.
+    const NATIVE = 380;
+    const TARGET = 210;
+    const scale = TARGET / NATIVE;
     return (
-      <div className="w-full max-w-[210px] mx-auto">
-        {layout === 'aura' ? <AuraDomeCard {...props} /> : <WidgetStackCard {...props} />}
+      <div
+        className="mx-auto relative"
+        style={{ width: TARGET, height: TARGET }}
+      >
+        <div
+          style={{
+            width: NATIVE,
+            height: NATIVE,
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            pointerEvents: 'none',
+          }}
+        >
+          {layout === 'aura' ? <AuraDomeCard {...props} /> : <WidgetStackCard {...props} />}
+        </div>
       </div>
     );
   }
