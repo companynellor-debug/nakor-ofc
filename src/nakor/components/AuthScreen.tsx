@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
 import { localAuth as supabase } from '../lib/localAuth';
-import { lovable } from '@/integrations/lovable';
 
 interface AuthScreenProps {
   onAuthSuccess: (email: string, name?: string) => void;
@@ -147,7 +146,6 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
       password,
       options: {
         data: { name: name.trim() },
-        emailRedirectTo: window.location.origin,
       },
     });
     setLoading(false);
