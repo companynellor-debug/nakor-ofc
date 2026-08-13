@@ -109,15 +109,8 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
     const newEmail = email.trim().toLowerCase();
     localStorage.setItem('nakor_user', name);
 
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .update({ name, avatar_url: avatarUrl })
-      .eq('id', user.id);
+    await updateLocalProfile(user.id, { name, avatar_url: avatarUrl });
 
-    if (profileError) {
-      triggerToast('Erro ao salvar os dados');
-      return;
-    }
 
     const updates: { email?: string; password?: string } = {};
     if (newEmail && newEmail !== (user.email || '').toLowerCase()) updates.email = newEmail;
