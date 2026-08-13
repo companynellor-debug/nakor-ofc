@@ -37,7 +37,28 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
   const [errors, setErrors] = useState<Record<string, string>>({});
   
   // "Esqueci minha senha" notification state
-  const [forgotPasswordMsg, setForgotPasswordMsg] = useState(false);
+  const [forgotPasswordMsg, setForgotPasswordMsg] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handleForgotPassword = async () => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setErrors({ email: 'Informe seu e-mail para receber o link' });
+      return;
+    }
+    setErrors({});
+    setResetLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setResetLoading(false);
+    setForgotPasswordMsg(
+      error
+        ? error.message
+        : 'Enviamos um link de recuperação para o seu e-mail.'
+    );
+    setTimeout(() => setForgotPasswordMsg(''), 6000);
+  };
+
 
   // Simple email regex validation
   const validateEmail = (emailStr: string) => {
