@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle, Trash2 } from 'lucide-react';
-import { updateAccount, wipeEverything, clearAppData } from '../lib/localStore';
+import { supabase } from '@/integrations/supabase/client';
+import { clearLocalAppData, flushSync } from '../lib/cloudSync';
+import { deleteMyAccount } from '@/lib/account.functions';
 
 interface AccountScreenProps {
   onBack: () => void;
@@ -82,37 +84,79 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!name.trim() || !email.trim()) {
       triggerToast('Preencha os campos obrigatórios');
       return;
     }
-    
+
     if (showPasswordChange && (newPassword !== confirmPassword || !newPassword)) {
       triggerToast('As senhas não coincidem');
       return;
     }
-
-    const previousEmail = localStorage.getItem('nakor_user_email');
-    localStorage.setItem('nakor_user', name);
-    localStorage.setItem('nakor_user_email', email.trim().toLowerCase());
-    if (previousEmail) {
-      updateAccount(previousEmail, {
-        name,
-        email: email.trim().toLowerCase(),
-        ...(showPasswordChange && newPassword ? { password: newPassword } : {}),
-      });
+    if (showPasswordChange && newPassword.length < 6) {
+      triggerToast('A senha deve ter no mínimo 6 caracteres');
+      return;
     }
+
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData.user;
+    if (!user) {
+      triggerToast('Sessão expirada. Entre novamente.');
+      return;
+    }
+
+    const newEmail = email.trim().toLowerCase();
+    localStorage.setItem('nakor_user', name);
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({ name, avatar_url: avatarUrl })
+      .eq('id', user.id);
+
+    if (profileError) {
+      triggerToast('Erro ao salvar os dados');
+      return;
+    }
+
+    const updates: { email?: string; password?: string } = {};
+    if (newEmail && newEmail !== (user.email || '').toLowerCase()) updates.email = newEmail;
+    if (showPasswordChange && newPassword) updates.password = newPassword;
+
+    if (Object.keys(updates).length > 0) {
+      const { error } = await supabase.auth.updateUser(updates);
+      if (error) {
+        triggerToast(error.message);
+        return;
+      }
+      if (updates.email) {
+        triggerToast('Confirme o novo e-mail na sua caixa de entrada');
+        return;
+      }
+    }
+
+    setNewPassword('');
+    setConfirmPassword('');
+    setShowPasswordChange(false);
+    await flushSync();
     triggerToast('✅ Dados atualizados!');
   };
 
-  const handleDeleteAccount = () => {
-    wipeEverything();
-    window.location.reload(); // Redireciona para /login (landing no nosso caso)
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteMyAccount();
+    } catch {
+      triggerToast('Não foi possível excluir a conta');
+      return;
+    }
+    clearLocalAppData();
+    await supabase.auth.signOut();
+    window.location.reload();
   };
 
-  const handleClearTestData = () => {
-    clearAppData();
+  const handleClearTestData = async () => {
+    clearLocalAppData();
+    await flushSync();
     window.location.reload();
   };
 

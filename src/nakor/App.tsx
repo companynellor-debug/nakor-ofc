@@ -22,15 +22,16 @@ import { PhoneMockups } from './components/PhoneMockups';
 import { NakorLogo } from './components/NakorLogo';
 import { GuidedTour } from './components/GuidedTour';
 
+import { supabase } from '@/integrations/supabase/client';
 import {
-  initStore,
-  getActiveEmail,
-  getAccount,
-  clearActiveAccount,
-  ensureDataOwner,
-  completeOnboarding,
-  resetOnboarding,
-} from './lib/localStore';
+  loadUserData,
+  startAutoSync,
+  stopAutoSync,
+  flushSync,
+  clearLocalAppData,
+  saveOnboarding,
+  resetOnboardingCloud,
+} from './lib/cloudSync';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -129,35 +130,57 @@ export default function App() {
     }
   }, [view]);
 
-  // Check if onboarding completed or user logged in on mount
-  useEffect(() => {
-    initStore();
-    const savedEmail = getActiveEmail();
-    if (!savedEmail) {
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Aplica a sessão atual: carrega os dados do usuário da nuvem
+  const applySession = async (user: { id: string; email?: string | null; user_metadata?: any } | null) => {
+    if (!user) {
+      stopAutoSync();
+      setUserId(null);
+      setUserEmail(null);
+      setIsOnboardingComplete(false);
+      setOnboardingData(null);
       setView('landing');
       return;
     }
 
-    const account = getAccount(savedEmail);
-    if (!account) {
-      clearActiveAccount();
-      setView('landing');
-      return;
-    }
+    setUserId(user.id);
+    setUserEmail(user.email ?? null);
 
-    setUserEmail(account.email);
-    ensureDataOwner(account.email);
+    const profile = await loadUserData(user);
+    startAutoSync(user.id);
 
-    if (account.onboardingDone) {
-      setOnboardingData(account.onboardingData);
+    if (profile?.onboarding_done) {
+      setOnboardingData(profile.onboarding_data);
       setIsOnboardingComplete(true);
-      if (account.onboardingData) {
-        localStorage.setItem('nakor_onboarding', JSON.stringify(account.onboardingData));
-      }
       setView('home');
     } else {
+      setOnboardingData(null);
+      setIsOnboardingComplete(false);
       setView('onboarding');
     }
+  };
+
+  // Check if onboarding completed or user logged in on mount
+  useEffect(() => {
+    let mounted = true;
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      void applySession(data.session?.user ?? null);
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        clearLocalAppData();
+        void applySession(null);
+      }
+    });
+
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const [showTour, setShowTour] = useState(false);
@@ -166,8 +189,8 @@ export default function App() {
   const handleCompleteOnboarding = (data: any) => {
     setOnboardingData(data);
     setIsOnboardingComplete(true);
-    if (userEmail) {
-      completeOnboarding(userEmail, data);
+    if (userId) {
+      void saveOnboarding(userId, data);
     }
     setView('home');
     // Tutorial guiado logo após escolher o modelo do card (fim do questionário)
@@ -184,32 +207,25 @@ export default function App() {
 
 
   const handleResetOnboarding = () => {
-    if (userEmail) {
-      resetOnboarding(userEmail);
+    if (userId) {
+      void resetOnboardingCloud(userId);
     }
     setOnboardingData(null);
     setIsOnboardingComplete(false);
     setView('onboarding');
   };
 
-  const handleAuthSuccess = (email: string, name?: string) => {
-    setUserEmail(email);
-    const account = getAccount(email);
-
-    if (account?.onboardingDone) {
-      // Conta já respondeu o questionário: nunca mostrar de novo
-      setOnboardingData(account.onboardingData);
-      setIsOnboardingComplete(true);
-      setView('home');
-    } else {
-      setOnboardingData(null);
-      setIsOnboardingComplete(false);
-      setView('onboarding');
-    }
+  const handleAuthSuccess = async (_email: string, _name?: string) => {
+    const { data } = await supabase.auth.getUser();
+    await applySession(data.user ?? null);
   };
 
-  const handleLogout = () => {
-    clearActiveAccount();
+  const handleLogout = async () => {
+    await flushSync();
+    stopAutoSync();
+    await supabase.auth.signOut();
+    clearLocalAppData();
+    setUserId(null);
     setUserEmail(null);
     setIsOnboardingComplete(false);
     setOnboardingData(null);

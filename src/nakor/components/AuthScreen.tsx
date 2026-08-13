@@ -10,7 +10,8 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
-import { registerAccount, loginAccount, setActiveAccount } from '../lib/localStore';
+import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable';
 
 interface AuthScreenProps {
   onAuthSuccess: (email: string, name?: string) => void;
@@ -44,7 +45,10 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
     return re.test(emailStr);
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [info, setInfo] = useState('');
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
 
@@ -65,18 +69,29 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
       return;
     }
 
-    const result = loginAccount(email, password);
-    if (!result.ok) {
-      setErrors({ [result.field]: result.message });
+    setErrors({});
+    setInfo('');
+    setLoading(true);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setLoading(false);
+
+    if (error) {
+      const msg = /invalid login credentials/i.test(error.message)
+        ? 'E-mail ou senha incorretos'
+        : /email not confirmed/i.test(error.message)
+          ? 'Confirme seu e-mail antes de entrar'
+          : error.message;
+      setErrors({ password: msg });
       return;
     }
 
-    setErrors({});
-    setActiveAccount(result.account);
-    onAuthSuccess(result.account.email);
+    if (data.user) onAuthSuccess(data.user.email || email, undefined);
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
 
@@ -107,16 +122,68 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
       return;
     }
 
-    const result = registerAccount(email, name, password);
-    if (!result.ok) {
-      setErrors({ [result.field]: result.message });
+    setErrors({});
+    setInfo('');
+    setLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        data: { name: name.trim() },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    setLoading(false);
+
+    if (error) {
+      const msg = /already registered|already exists/i.test(error.message)
+        ? 'Já existe uma conta com esse e-mail'
+        : error.message;
+      setErrors({ email: msg });
       return;
     }
 
-    setErrors({});
-    setActiveAccount(result.account);
-    onAuthSuccess(result.account.email, result.account.name);
+    if (!data.session) {
+      setInfo('Enviamos um link de confirmação para o seu e-mail. Confirme para entrar.');
+      return;
+    }
+
+    onAuthSuccess(data.user?.email || email, name.trim());
   };
+
+  const handleGoogle = async () => {
+    setErrors({});
+    setInfo('');
+    setLoading(true);
+    const result = await lovable.auth.signInWithOAuth('google', {
+      redirect_uri: window.location.origin,
+    });
+    if ((result as any)?.error) {
+      setLoading(false);
+      setErrors({ email: 'Não foi possível entrar com o Google. Tente novamente.' });
+      return;
+    }
+    const { data } = await supabase.auth.getUser();
+    setLoading(false);
+    if (data.user) onAuthSuccess(data.user.email || '', undefined);
+  };
+
+  const GoogleButton = () => (
+    <button
+      type="button"
+      onClick={handleGoogle}
+      disabled={loading}
+      className="w-full py-4 bg-white hover:bg-[#FAFAFB] text-[#16131F] font-bold rounded-xl text-sm border border-[#ECECF1] shadow-sm-layered transition-all active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer disabled:opacity-60"
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+        <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.71-1.57 2.68-3.89 2.68-6.62z" />
+        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H1.96v2.33A8.99 8.99 0 0 0 9 18z" />
+        <path fill="#FBBC05" d="M3.97 10.72a5.41 5.41 0 0 1 0-3.44V4.95H1.96a8.99 8.99 0 0 0 0 8.1l2.01-2.33z" />
+        <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A8.99 8.99 0 0 0 1.96 4.95l2.01 2.33C4.68 5.16 6.66 3.58 9 3.58z" />
+      </svg>
+      Continuar com Google
+    </button>
+  );
 
   const handleFieldChange = (field: string, value: string) => {
     // Clear the error for this field as the user typing
@@ -166,10 +233,10 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
             </div>
 
             {/* Notification/Message Alert */}
-            {message && (
+            {(message || info) && (
               <div className="w-full mb-5 px-4 py-3 bg-[#F3EEFF] border border-[#E4DAFF] rounded-2xl text-center">
                 <p className="text-xs font-semibold text-[#34117E] leading-snug">
-                  {message}
+                  {info || message}
                 </p>
               </div>
             )}
@@ -257,9 +324,10 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                   {/* Primary Button: Entrar (Purple gradient CTA) */}
                   <button 
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#5B21B6] to-[#34117E] hover:from-[#6D28D9] hover:to-[#5B21B6] active:scale-[0.98] text-white font-bold py-4 rounded-xl text-sm transition-all shadow-md-layered flex items-center justify-center gap-2 cursor-pointer mt-2"
+                    disabled={loading}
+                    className="w-full bg-gradient-to-r from-[#5B21B6] to-[#34117E] hover:from-[#6D28D9] hover:to-[#5B21B6] active:scale-[0.98] text-white font-bold py-4 rounded-xl text-sm transition-all shadow-md-layered flex items-center justify-center gap-2 cursor-pointer mt-2 disabled:opacity-60"
                   >
-                    Entrar
+                    {loading ? 'Entrando...' : 'Entrar'}
                   </button>
                 </form>
               ) : (
@@ -370,10 +438,19 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                   {/* Primary Button: Criar conta */}
                   <button 
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#5B21B6] to-[#34117E] hover:from-[#6D28D9] hover:to-[#5B21B6] active:scale-[0.98] text-white font-bold py-4 rounded-xl text-sm transition-all shadow-md-layered flex items-center justify-center gap-2 cursor-pointer mt-2"
+                    disabled={loading}
+                    className="w-full bg-gradient-to-r from-[#5B21B6] to-[#34117E] hover:from-[#6D28D9] hover:to-[#5B21B6] active:scale-[0.98] text-white font-bold py-4 rounded-xl text-sm transition-all shadow-md-layered flex items-center justify-center gap-2 cursor-pointer mt-2 disabled:opacity-60"
                   >
-                    Criar conta
+                    {loading ? 'Criando conta...' : 'Criar conta'}
                   </button>
+
+                  <div className="w-full flex items-center justify-center gap-4 pt-1">
+                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
+                    <span className="text-xs font-mono font-bold text-[#9A96A6]">OU</span>
+                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
+                  </div>
+
+                  <GoogleButton />
                 </form>
               )}
             </div>
@@ -389,6 +466,9 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                     <span className="text-xs font-mono font-bold text-[#9A96A6]">OU</span>
                     <div className="h-[1px] flex-grow bg-[#ECECF1]" />
                   </div>
+
+                  <GoogleButton />
+
 
                   {/* Secondary Button: Criar Conta */}
                   <button 
