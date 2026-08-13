@@ -450,13 +450,8 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
               {view === 'login' ? (
                 <>
                   {/* Divider */}
-                  <div className="w-full flex items-center justify-center gap-4">
-                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
-                    <span className="text-xs font-mono font-bold text-[#9A96A6]">OU</span>
-                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
-                  </div>
 
-                  <GoogleButton />
+
 
 
                   {/* Secondary Button: Criar Conta */}
