@@ -10,8 +10,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
-import { supabase } from '@/integrations/supabase/client';
-import { lovable } from '@/integrations/lovable';
+import { localAuth as supabase } from '../lib/localAuth';
 
 interface AuthScreenProps {
   onAuthSuccess: (email: string, name?: string) => void;
@@ -41,23 +40,19 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
   const [resetLoading, setResetLoading] = useState(false);
 
   const handleForgotPassword = async () => {
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setErrors({ email: 'Informe seu e-mail para receber o link' });
+    if (!email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) === false) {
+      setErrors({ email: 'Informe seu e-mail' });
       return;
     }
     setErrors({});
     setResetLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
     setResetLoading(false);
     setForgotPasswordMsg(
-      error
-        ? error.message
-        : 'Enviamos um link de recuperação para o seu e-mail.'
+      'A recuperação por e-mail ficará disponível quando o banco de dados definitivo for conectado.'
     );
     setTimeout(() => setForgotPasswordMsg(''), 6000);
   };
+
 
 
   // Simple email regex validation
@@ -151,7 +146,6 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
       password,
       options: {
         data: { name: name.trim() },
-        emailRedirectTo: window.location.origin,
       },
     });
     setLoading(false);
@@ -172,39 +166,8 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
     onAuthSuccess(data.user?.email || email, name.trim());
   };
 
-  const handleGoogle = async () => {
-    setErrors({});
-    setInfo('');
-    setLoading(true);
-    const result = await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: window.location.origin,
-    });
-    if ((result as any)?.error) {
-      setLoading(false);
-      setErrors({ email: 'Não foi possível entrar com o Google. Tente novamente.' });
-      return;
-    }
-    const { data } = await supabase.auth.getUser();
-    setLoading(false);
-    if (data.user) onAuthSuccess(data.user.email || '', undefined);
-  };
 
-  const GoogleButton = () => (
-    <button
-      type="button"
-      onClick={handleGoogle}
-      disabled={loading}
-      className="w-full py-4 bg-white hover:bg-[#FAFAFB] text-[#16131F] font-bold rounded-xl text-sm border border-[#ECECF1] shadow-sm-layered transition-all active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer disabled:opacity-60"
-    >
-      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-        <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.71-1.57 2.68-3.89 2.68-6.62z" />
-        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H1.96v2.33A8.99 8.99 0 0 0 9 18z" />
-        <path fill="#FBBC05" d="M3.97 10.72a5.41 5.41 0 0 1 0-3.44V4.95H1.96a8.99 8.99 0 0 0 0 8.1l2.01-2.33z" />
-        <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A8.99 8.99 0 0 0 1.96 4.95l2.01 2.33C4.68 5.16 6.66 3.58 9 3.58z" />
-      </svg>
-      Continuar com Google
-    </button>
-  );
+
 
   const handleFieldChange = (field: string, value: string) => {
     // Clear the error for this field as the user typing
@@ -464,13 +427,8 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                     {loading ? 'Criando conta...' : 'Criar conta'}
                   </button>
 
-                  <div className="w-full flex items-center justify-center gap-4 pt-1">
-                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
-                    <span className="text-xs font-mono font-bold text-[#9A96A6]">OU</span>
-                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
-                  </div>
 
-                  <GoogleButton />
+
                 </form>
               )}
             </div>
@@ -481,13 +439,8 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
               {view === 'login' ? (
                 <>
                   {/* Divider */}
-                  <div className="w-full flex items-center justify-center gap-4">
-                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
-                    <span className="text-xs font-mono font-bold text-[#9A96A6]">OU</span>
-                    <div className="h-[1px] flex-grow bg-[#ECECF1]" />
-                  </div>
 
-                  <GoogleButton />
+
 
 
                   {/* Secondary Button: Criar Conta */}

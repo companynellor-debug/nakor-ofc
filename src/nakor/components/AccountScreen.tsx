@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ChevronRight, Eye, EyeOff, AlertTriangle, Trash2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { clearLocalAppData, flushSync } from '../lib/cloudSync';
-import { deleteMyAccount } from '@/lib/account.functions';
+import { localAuth as supabase } from '../lib/localAuth';
+import {
+  clearLocalAppData,
+  flushSync,
+  updateLocalProfile,
+  deleteLocalProfile,
+} from '../lib/cloudSync';
+
 
 interface AccountScreenProps {
   onBack: () => void;
@@ -109,15 +114,8 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
     const newEmail = email.trim().toLowerCase();
     localStorage.setItem('nakor_user', name);
 
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .update({ name, avatar_url: avatarUrl })
-      .eq('id', user.id);
+    await updateLocalProfile(user.id, { name, avatar_url: avatarUrl });
 
-    if (profileError) {
-      triggerToast('Erro ao salvar os dados');
-      return;
-    }
 
     const updates: { email?: string; password?: string } = {};
     if (newEmail && newEmail !== (user.email || '').toLowerCase()) updates.email = newEmail;
@@ -143,16 +141,13 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      await deleteMyAccount();
-    } catch {
-      triggerToast('Não foi possível excluir a conta');
-      return;
-    }
+    const { data: userData } = await supabase.auth.getUser();
+    if (userData.user) deleteLocalProfile(userData.user.id);
     clearLocalAppData();
-    await supabase.auth.signOut();
+    await supabase.auth.deleteCurrentUser();
     window.location.reload();
   };
+
 
   const handleClearTestData = async () => {
     clearLocalAppData();

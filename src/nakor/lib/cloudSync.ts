@@ -1,8 +1,6 @@
-// Sincronização dos dados do usuário com o backend (Lovable Cloud).
-// Estratégia: as telas continuam lendo/gravando no localStorage; esta camada
-// carrega o estado da nuvem no login e envia de volta (debounce) a cada mudança.
-
-import { supabase } from '@/integrations/supabase/client';
+// Persistência 100% local (sem banco de dados).
+// As telas continuam lendo/gravando no localStorage; esta camada só organiza
+// o perfil e o estado por usuário, mantendo a mesma API usada pelo app.
 
 /** Chaves do app que representam os dados do usuário. */
 export const SYNC_KEYS = [
@@ -30,82 +28,52 @@ export interface CloudProfile {
 }
 
 const hasStorage = () => typeof window !== 'undefined' && !!window.localStorage;
+const profileKey = (userId: string) => `nakor_profile_${userId}`;
 
-function snapshot(): Record<string, string> {
-  const out: Record<string, string> = {};
-  if (!hasStorage()) return out;
-  SYNC_KEYS.forEach((k) => {
-    const v = localStorage.getItem(k);
-    if (v !== null) out[k] = v;
-  });
-  return out;
+function readProfile(userId: string): CloudProfile | null {
+  if (!hasStorage()) return null;
+  try {
+    const raw = localStorage.getItem(profileKey(userId));
+    return raw ? (JSON.parse(raw) as CloudProfile) : null;
+  } catch {
+    return null;
+  }
 }
 
-function applySnapshot(state: Record<string, any> | null | undefined) {
-  if (!hasStorage()) return;
-  SYNC_KEYS.forEach((k) => localStorage.removeItem(k));
-  if (!state) return;
-  Object.entries(state).forEach(([k, v]) => {
-    if (!(SYNC_KEYS as readonly string[]).includes(k)) return;
-    if (v === null || v === undefined) return;
-    localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
-  });
+function writeProfile(profile: CloudProfile) {
+  if (hasStorage()) localStorage.setItem(profileKey(profile.id), JSON.stringify(profile));
 }
 
-/** Garante que o perfil e o estado existam e devolve o perfil. */
+/** Garante que o perfil exista localmente e devolve ele. */
 export async function ensureProfile(user: {
   id: string;
   email?: string | null;
   user_metadata?: any;
 }): Promise<CloudProfile | null> {
-  const { data } = await supabase
-    .from('profiles')
-    .select('id, email, name, avatar_url, onboarding_done, onboarding_data')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  if (data) return data as CloudProfile;
+  const existing = readProfile(user.id);
+  if (existing) return existing;
 
   const meta = user.user_metadata || {};
-  const fallbackName =
-    meta.name || meta.full_name || (user.email ? user.email.split('@')[0] : 'Usuário Nakor');
-
-  const { data: created } = await supabase
-    .from('profiles')
-    .insert({
-      id: user.id,
-      email: user.email ?? null,
-      name: fallbackName,
-      avatar_url: meta.avatar_url ?? null,
-    })
-    .select('id, email, name, avatar_url, onboarding_done, onboarding_data')
-    .maybeSingle();
-
-  return (created as CloudProfile) ?? null;
+  const created: CloudProfile = {
+    id: user.id,
+    email: user.email ?? null,
+    name:
+      meta.name || meta.full_name || (user.email ? user.email.split('@')[0] : 'Usuário Nakor'),
+    avatar_url: meta.avatar_url ?? null,
+    onboarding_done: false,
+    onboarding_data: null,
+  };
+  writeProfile(created);
+  return created;
 }
 
-/** Carrega perfil + estado da nuvem para o localStorage. */
+/** Carrega o perfil salvo e prepara o localStorage do app. */
 export async function loadUserData(user: {
   id: string;
   email?: string | null;
   user_metadata?: any;
 }): Promise<CloudProfile | null> {
   const profile = await ensureProfile(user);
-
-  const { data: row } = await supabase
-    .from('user_app_state')
-    .select('state')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (!row) {
-    // primeira vez neste backend: cria a linha com o que existir localmente
-    await supabase
-      .from('user_app_state')
-      .upsert({ user_id: user.id, state: snapshot() }, { onConflict: 'user_id' });
-  } else {
-    applySnapshot((row.state as Record<string, any>) ?? {});
-  }
 
   if (hasStorage()) {
     localStorage.setItem('nakor_user_email', profile?.email || user.email || '');
@@ -122,71 +90,22 @@ export async function loadUserData(user: {
 }
 
 let activeUserId: string | null = null;
-let timer: ReturnType<typeof setTimeout> | null = null;
-let patched = false;
-let originalSetItem: ((k: string, v: string) => void) | null = null;
-let originalRemoveItem: ((k: string) => void) | null = null;
-
-async function push() {
-  if (!activeUserId) return;
-  const uid = activeUserId;
-  try {
-    await supabase
-      .from('user_app_state')
-      .upsert({ user_id: uid, state: snapshot() }, { onConflict: 'user_id' });
-  } catch {
-    // silencioso: falha de rede não deve quebrar a UI
-  }
-}
 
 export function scheduleSync() {
-  if (!activeUserId) return;
-  if (timer) clearTimeout(timer);
-  timer = setTimeout(() => {
-    timer = null;
-    void push();
-  }, 700);
+  // sem backend: os dados já ficam salvos no localStorage
 }
 
-/** Envia imediatamente o estado atual. */
+/** Compatibilidade: nada para enviar, os dados já estão salvos localmente. */
 export async function flushSync() {
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
-  }
-  await push();
+  /* no-op */
 }
 
-/** Passa a observar o localStorage e sincronizar automaticamente. */
 export function startAutoSync(userId: string) {
   activeUserId = userId;
-  if (!hasStorage() || patched) return;
-
-  const storage = window.localStorage;
-  originalSetItem = storage.setItem.bind(storage);
-  originalRemoveItem = storage.removeItem.bind(storage);
-
-  storage.setItem = (key: string, value: string) => {
-    originalSetItem!(key, value);
-    if ((SYNC_KEYS as readonly string[]).includes(key)) scheduleSync();
-  };
-  storage.removeItem = (key: string) => {
-    originalRemoveItem!(key);
-    if ((SYNC_KEYS as readonly string[]).includes(key)) scheduleSync();
-  };
-  patched = true;
-
-  window.addEventListener('beforeunload', () => {
-    void flushSync();
-  });
 }
 
 export function stopAutoSync() {
   activeUserId = null;
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
-  }
 }
 
 /** Limpa os dados locais do app (usado no logout / troca de conta). */
@@ -196,28 +115,49 @@ export function clearLocalAppData() {
   localStorage.removeItem('nakor_user_email');
 }
 
-/** Salva o questionário inicial no perfil. */
+/** Salva o questionário inicial no perfil local. */
 export async function saveOnboarding(userId: string, data: any) {
   if (hasStorage()) {
     localStorage.setItem('nakor_onboarding', JSON.stringify(data));
     if (data?.name) localStorage.setItem('nakor_user', data.name);
   }
-  await supabase
-    .from('profiles')
-    .update({
-      onboarding_done: true,
-      onboarding_data: data,
-      ...(data?.name ? { name: data.name } : {}),
-    })
-    .eq('id', userId);
-  await flushSync();
+  const profile =
+    readProfile(userId) ??
+    ({
+      id: userId,
+      email: hasStorage() ? localStorage.getItem('nakor_user_email') : null,
+      name: data?.name ?? null,
+      avatar_url: null,
+      onboarding_done: false,
+      onboarding_data: null,
+    } as CloudProfile);
+
+  writeProfile({
+    ...profile,
+    onboarding_done: true,
+    onboarding_data: data,
+    ...(data?.name ? { name: data.name } : {}),
+  });
 }
 
 /** Marca o questionário como não respondido (refazer). */
 export async function resetOnboardingCloud(userId: string) {
   if (hasStorage()) localStorage.removeItem('nakor_onboarding');
-  await supabase
-    .from('profiles')
-    .update({ onboarding_done: false, onboarding_data: null })
-    .eq('id', userId);
+  const profile = readProfile(userId);
+  if (profile) writeProfile({ ...profile, onboarding_done: false, onboarding_data: null });
+}
+
+/** Atualiza nome/avatar do perfil local. */
+export async function updateLocalProfile(
+  userId: string,
+  patch: { name?: string; avatar_url?: string | null },
+) {
+  const profile = readProfile(userId);
+  if (profile) writeProfile({ ...profile, ...patch });
+}
+
+/** Remove o perfil e o estado local do usuário. */
+export function deleteLocalProfile(userId: string) {
+  if (hasStorage()) localStorage.removeItem(profileKey(userId));
+  clearLocalAppData();
 }
