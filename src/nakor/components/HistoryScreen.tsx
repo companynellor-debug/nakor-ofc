@@ -1,4 +1,5 @@
 import { DesktopSidebar } from './DesktopSidebar';
+import { useT } from '../lib/i18n';
 
 import React,
 
@@ -24,6 +25,7 @@ interface HistoryScreenProps {
 }
 
 export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivity }: HistoryScreenProps) {
+  const t = useT();
   const userName = onboardingData?.name || localStorage.getItem('nakor_user') || 'Alex';
   const userEmail = onboardingData?.email || localStorage.getItem('nakor_user_email') || 'alex@email.com';
 
@@ -102,13 +104,13 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
   // Process data for Weekly Chart (S M T Q Q S S - Sunday to Saturday)
   const weeklyData = useMemo(() => {
     const days = [
-      { label: 'S', name: 'Domingo', hours: 0 },
-      { label: 'M', name: 'Segunda', hours: 0 },
-      { label: 'T', name: 'Terça', hours: 0 },
-      { label: 'Q', name: 'Quarta', hours: 0 },
-      { label: 'Q', name: 'Quinta', hours: 0 },
-      { label: 'S', name: 'Sexta', hours: 0 },
-      { label: 'S', name: 'Sábado', hours: 0 },
+      { label: 'S', name: t('Domingo'), hours: 0 },
+      { label: 'M', name: t('Segunda'), hours: 0 },
+      { label: 'T', name: t('Terça'), hours: 0 },
+      { label: 'Q', name: t('Quarta'), hours: 0 },
+      { label: 'Q', name: t('Quinta'), hours: 0 },
+      { label: 'S', name: t('Sexta'), hours: 0 },
+      { label: 'S', name: t('Sábado'), hours: 0 },
     ];
 
     if (history.length === 0) {
@@ -117,7 +119,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         totalHours: 0,
         maxHours: 0,
         average: '0.0',
-        bestDayName: '-',
+        bestDayName: t('-'),
       };
     }
 
@@ -152,7 +154,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         bestDayObj = d;
       }
     });
-    const bestDayName = bestDayObj ? (bestDayObj as any).name : '-';
+    const bestDayName = bestDayObj ? (bestDayObj as any).name : t('-');
 
     // Average score of notes for entire history
     const sumScores = history.reduce((acc, item) => acc + (item.nota || 0), 0);
@@ -165,7 +167,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
       average,
       bestDayName,
     };
-  }, [history]);
+  }, [history, t]);
 
   // Heatmap Data (Last 30 Days)
   const heatmapData = useMemo(() => {
@@ -208,7 +210,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         
         {/* Header */}
         <div className="w-full flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-extrabold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">Suas atividades</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">{t('Suas atividades')}</h1>
           <button className="w-10 h-10 bg-white dark:bg-[#151622] rounded-[16px] flex items-center justify-center border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:bg-neutral-50 active:scale-95 transition-all cursor-pointer shadow-sm-layered">
             <SlidersHorizontal size={18} className="text-[#21222D] dark:text-[#F8F9FA]" />
           </button>
@@ -217,7 +219,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         {/* Card gráfico semanal */}
         <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-7 mb-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
           <div className="flex justify-between items-center mb-6">
-            <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold">Esta semana</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold">{t('Esta semana')}</span>
             <span className="text-2xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">
               {weeklyData.totalHours.toFixed(1)}h
             </span>
@@ -257,19 +259,19 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
           {/* 3 stats em colunas */}
           <div className="grid grid-cols-3 gap-2 text-center">
             <div className="flex flex-col items-center">
-              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mb-0.5">média</span>
+              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mb-0.5">{t('média')}</span>
               <span className="text-base font-bold text-[#21222D] dark:text-[#F8F9FA]">{weeklyData.average}</span>
             </div>
             
             <div className="border-l border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 flex flex-col items-center">
-              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mb-0.5">melhor dia</span>
+              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mb-0.5">{t('melhor dia')}</span>
               <span className="text-base font-bold text-[#21222D] dark:text-[#F8F9FA] truncate max-w-full px-1">{weeklyData.bestDayName}</span>
             </div>
 
             <div className="border-l border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 flex flex-col items-center">
-              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mb-0.5">sequência</span>
+              <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mb-0.5">{t('sequência')}</span>
               <span className="text-base font-bold text-[#21222D] dark:text-[#F8F9FA] flex items-center gap-1 justify-center">
-                {streak} dias {streak > 0 && <span className="text-sm">🔥</span>}
+                {t('{n} dias', { n: streak })} {streak > 0 && <span className="text-sm">🔥</span>}
               </span>
             </div>
           </div>
@@ -277,7 +279,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
 
         {/* Heatmap 30 dias */}
         <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-7 mb-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered text-left">
-          <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold block mb-4">Últimos 30 dias</span>
+          <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold block mb-4">{t('Últimos 30 dias')}</span>
           
           {/* Grid of 30 squares (10 cols x 3 rows) */}
           <div className="grid grid-cols-[repeat(10,minmax(0,1fr))] gap-2 mb-4">
@@ -301,7 +303,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
 
           {/* Legenda */}
           <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-500 dark:text-neutral-400 font-medium font-mono">
-            <span>menos</span>
+            <span>{t('menos')}</span>
             <div className="flex gap-1">
               <div className="w-2.5 h-2.5 rounded-[3px] bg-[#DBDBE5] dark:bg-[#2A2B3D]" />
               <div className="w-2.5 h-2.5 rounded-[3px] bg-[#7c6bc1]" />
@@ -309,14 +311,14 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
               <div className="w-2.5 h-2.5 rounded-[3px] bg-[#34117E]" />
               <div className="w-2.5 h-2.5 rounded-[3px] bg-[#210656]" />
             </div>
-            <span>mais</span>
+            <span>{t('mais')}</span>
           </div>
         </div>
 
         {/* Lista Recentes */}
         <div className="w-full text-left">
           <span className="text-neutral-400 text-xs font-bold uppercase tracking-wider mb-3.5 block pl-1">
-            Recentes
+            {t('Recentes')}
           </span>
 
           <div className="space-y-4">
@@ -325,7 +327,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
               <div className="w-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 rounded-[28px] py-14 px-6 flex flex-col items-center justify-center text-center shadow-sm-layered">
                 <ClipboardList className="text-neutral-300 mb-3.5 animate-pulse" size={40} strokeWidth={1.5} />
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 font-bold leading-relaxed max-w-[200px]">
-                  Nenhuma atividade recente registrada.
+                  {t('Nenhuma atividade recente registrada.')}
                 </p>
               </div>
             ) : (
@@ -333,7 +335,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
               history.map((item, i) => {
                 const date = new Date(item.timestamp);
                 const day = date.getDate();
-                const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+                const months = [t('jan'), t('fev'), t('mar'), t('abr'), t('mai'), t('jun'), t('jul'), t('ago'), t('set'), t('out'), t('nov'), t('dez')];
                 const month = months[date.getMonth()];
                 const formattedDate = `${day} ${month}`;
 
@@ -366,7 +368,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
 
                       <div className="flex flex-col min-w-0">
                         <span className="text-[15px] font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight truncate">
-                          {item.nome || 'Atividade'}
+                          {item.nome || t('Atividade')}
                         </span>
                         <span className="text-xs text-neutral-400 font-semibold mt-0.5">
                           {formattedDate} • {durationStr}
@@ -380,7 +382,7 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
                         {nota.toFixed(1)}
                       </span>
                       <span className="text-neutral-400 text-[10px] italic font-bold max-w-[120px] truncate">
-                        {item.mensagem_card || 'concluído'}
+                        {item.mensagem_card || t('concluído')}
                       </span>
                     </div>
 

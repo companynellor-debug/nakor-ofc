@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useT } from '../lib/i18n';
 import { motion, AnimatePresence } from 'motion/react';
 import intro1 from '../../assets/intro-1.png';
 import intro2 from '../../assets/intro-2.png';
@@ -10,7 +11,7 @@ interface AppIntroScreenProps {
   onLogin: () => void;
 }
 
-const slides = [
+const rawSlides = [
   {
     title: "Desbloqueie seu Foco",
     description: "Concentre-se no que realmente importa e atinja seus objetivos diários com eficiência.",
@@ -30,9 +31,11 @@ const slides = [
 
 
 const REPEATS = 20;
-const loopSlides = Array.from({ length: REPEATS }, () => slides).flat();
 
 export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
+  const t = useT();
+  const slides = rawSlides.map((s) => ({ ...s, title: t(s.title), description: t(s.description) }));
+  const loopSlides = Array.from({ length: REPEATS }, () => slides).flat();
   const [index, setIndex] = useState(0);
   const [animate, setAnimate] = useState(true);
   const trackRef = React.useRef<HTMLDivElement>(null);
@@ -162,7 +165,7 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
             onClick={onStart}
             className="w-full max-w-xs bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.98] text-white font-bold py-3.5 px-8 rounded-full text-[15px] transition-all mb-3"
           >
-            Criar conta
+            {t('Criar conta')}
           </button>
           
           {/* Secondary Link */}
@@ -170,13 +173,13 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
             onClick={onLogin}
             className="text-xs text-neutral-600 hover:text-neutral-900 font-bold transition-colors"
           >
-            Já tem uma conta? <span className="text-[#34117E]">Fazer login</span>
+            {t('Já tem uma conta?')} <span className="text-[#34117E]">{t('Fazer login')}</span>
           </button>
 
           {/* Footer links */}
           <div className="flex gap-4 mt-4 text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">
-            <span className="cursor-pointer hover:text-neutral-800 transition-colors">Termos de Uso</span>
-            <span className="cursor-pointer hover:text-neutral-800 transition-colors">Privacidade</span>
+            <span className="cursor-pointer hover:text-neutral-800 transition-colors">{t('Termos de Uso')}</span>
+            <span className="cursor-pointer hover:text-neutral-800 transition-colors">{t('Privacidade')}</span>
           </div>
 
         </div>

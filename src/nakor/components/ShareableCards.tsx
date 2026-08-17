@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Sparkles, Check, Play, AlertCircle, ArrowRight, Clock } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
+import { useT } from '../lib/i18n';
 
 interface SessionExample {
   id: string;
@@ -51,6 +52,7 @@ const EXAMPLES: SessionExample[] = [
 ];
 
 export function ShareableCards() {
+  const t = useT();
   const [selectedSession, setSelectedSession] = useState<SessionExample>(EXAMPLES[0]);
 
   return (
@@ -67,7 +69,7 @@ export function ShareableCards() {
                 : 'text-white/70 hover:text-white hover:bg-white/5'
             }`}
           >
-            {item.title} ({item.score.toFixed(1)})
+            {t(item.title)} ({item.score.toFixed(1)})
           </button>
         ))}
       </div>
@@ -134,7 +136,7 @@ export function ShareableCards() {
                 className="text-[9px] font-mono tracking-widest text-white uppercase"
                 style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
               >
-                SESSÃO FOCO
+                {t('SESSÃO FOCO')}
               </span>
               <div className="flex items-center gap-1">
                 <NakorLogo size={12} color="#FFFFFF" />
@@ -167,13 +169,13 @@ export function ShareableCards() {
                     textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
                   }}
                 >
-                  ANTES
+                  {t('ANTES')}
                 </span>
                 <p 
                   className="text-white text-[13px] font-medium italic leading-relaxed m-0"
                   style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                 >
-                  "{selectedSession.antes}"
+                  "{t(selectedSession.antes)}"
                 </p>
               </div>
             </div>
@@ -245,7 +247,7 @@ export function ShareableCards() {
                 className="text-[9px] font-mono tracking-widest text-white uppercase"
                 style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
               >
-                SESSÃO FOCO
+                {t('SESSÃO FOCO')}
               </span>
               <div className="flex items-center gap-1">
                 <NakorLogo size={12} color="#FFFFFF" />
@@ -278,13 +280,13 @@ export function ShareableCards() {
                     textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
                   }}
                 >
-                  DEPOIS
+                  {t('DEPOIS')}
                 </span>
                 <p 
                   className="text-white text-[13px] font-medium italic leading-relaxed m-0"
                   style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                 >
-                  "{selectedSession.depois}"
+                  "{t(selectedSession.depois)}"
                 </p>
               </div>
             </div>
@@ -296,7 +298,7 @@ export function ShareableCards() {
             >
               <div className="flex items-center gap-1 opacity-70">
                 <Clock size={11} strokeWidth={1.75} />
-                <span>RELATADO</span>
+                <span>{t('RELATADO')}</span>
               </div>
               <span className="opacity-70">nakor.com.br</span>
             </div>
@@ -356,7 +358,7 @@ export function ShareableCards() {
                 className="text-[9px] font-mono tracking-widest text-white uppercase"
                 style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
               >
-                AVALIAÇÃO IA
+                {t('AVALIAÇÃO IA')}
               </span>
               <div className="flex items-center gap-1">
                 <NakorLogo size={12} color="#FFFFFF" />
@@ -375,7 +377,7 @@ export function ShareableCards() {
                 className="text-[9px] font-mono tracking-widest text-white/60 uppercase mb-1"
                 style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
               >
-                NOTA DA SESSÃO
+                {t('NOTA DA SESSÃO')}
               </span>
               <span style={{ 
                 fontSize: '56px', 
@@ -397,7 +399,7 @@ export function ShareableCards() {
                 margin: 0,
                 textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)'
               }} className="max-w-[240px]">
-                {selectedSession.comment}
+                {t(selectedSession.comment)}
               </p>
             </div>
 
@@ -416,7 +418,7 @@ export function ShareableCards() {
                 textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
               }}>
                 <span style={{ fontSize: '10px', fontWeight: 700, color: '#FFFFFF' }}>
-                  Stories Ready 📸
+                  {t('Stories Ready 📸')}
                 </span>
               </div>
             </div>
@@ -440,7 +442,7 @@ export function ShareableCards() {
                 nakor.com.br
               </span>
               <span className="ml-auto opacity-70">
-                {selectedSession.tag}
+                {t(selectedSession.tag)}
               </span>
             </div>
           </div>
@@ -449,7 +451,7 @@ export function ShareableCards() {
       </div>
 
       <p className="text-sm font-sans text-neutral-400 text-center mt-4">
-        * Layout 100% responsivo e otimizado para postagem direta nas redes sociais.
+        {t('* Layout 100% responsivo e otimizado para postagem direta nas redes sociais.')}
       </p>
     </div>
   );

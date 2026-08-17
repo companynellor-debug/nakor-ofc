@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Timer, Zap, LogOut } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 function hexToRgba(hex: string, alpha: number): string {
   if (!hex) return `rgba(255, 255, 255, ${alpha})`;
@@ -32,6 +33,7 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
     { accentColor, title, minutes, plannedMinutes, score, exits, streak, message, timeLabel },
     ref
   ) {
+    const t = useT();
     const progress = plannedMinutes > 0 ? Math.min(1, minutes / plannedMinutes) : minutes > 0 ? 1 : 0;
     const isBright = accentColor.toUpperCase() === '#FFFFFF';
     const onAccent = isBright ? '#0B0B0F' : '#0B0B0F';
@@ -91,7 +93,7 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
                   {title}
                 </p>
                 <p className="text-white/60 text-[12px] leading-tight m-0 mt-0.5 truncate whitespace-nowrap">
-                  {streak ? `${streak} ${Number(streak) === 1 ? 'dia' : 'dias'} de foco` : 'Sessão de foco'}
+                  {streak ? (Number(streak) === 1 ? t('{n} dia de foco', { n: streak }) : t('{n} dias de foco', { n: streak })) : t('Sessão de foco')}
                 </p>
               </div>
             </div>
@@ -108,21 +110,21 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
                 <Timer size={15} strokeWidth={2.5} className="opacity-80" />
                 {minutes}
               </span>
-              <span className="text-white/55 text-[11px] mt-1">min</span>
+              <span className="text-white/55 text-[11px] mt-1">{t('min')}</span>
             </div>
             <div className="flex flex-col">
               <span className="flex items-center gap-1.5 text-white font-bold text-[24px] leading-none">
                 <Zap size={15} strokeWidth={2.5} className="opacity-80" />
                 {score ? score.toFixed(1) : '—'}
               </span>
-              <span className="text-white/55 text-[11px] mt-1">nota</span>
+              <span className="text-white/55 text-[11px] mt-1">{t('nota')}</span>
             </div>
             <div className="flex flex-col">
               <span className="flex items-center gap-1.5 text-white font-bold text-[24px] leading-none">
                 <LogOut size={15} strokeWidth={2.5} className="opacity-80" />
                 {exits}
               </span>
-              <span className="text-white/55 text-[11px] mt-1">saídas</span>
+              <span className="text-white/55 text-[11px] mt-1">{t('saídas')}</span>
             </div>
           </div>
 
@@ -160,7 +162,7 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
               >
                 {minutes}
               </span>
-              <span className="text-white/70 text-[14px] font-medium whitespace-nowrap">min focados</span>
+              <span className="text-white/70 text-[14px] font-medium whitespace-nowrap">{t('min focados')}</span>
             </div>
             <div
               className="shrink-0 flex flex-col items-center justify-center"
@@ -176,7 +178,7 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
               <span className="text-white font-extrabold text-[20px] leading-none">
                 {score ? score.toFixed(1) : '—'}
               </span>
-              <span className="text-white/75 text-[9px] mt-0.5 font-semibold uppercase tracking-wide">nota</span>
+              <span className="text-white/75 text-[9px] mt-0.5 font-semibold uppercase tracking-wide">{t('nota')}</span>
             </div>
           </div>
 
@@ -198,7 +200,7 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
 
           <div className="flex items-center justify-between mt-3 text-[9px] font-mono tracking-wider text-white/70">
             <span>nakor.com.br</span>
-            <span>SESSÃO FOCO</span>
+            <span>{t('SESSÃO FOCO')}</span>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { toPng } from 'html-to-image';
 import { UnifiedGlowCard } from './UnifiedGlowCard';
 import { AuraDomeCard } from './AuraDomeCard';
 import { WidgetStackCard } from './WidgetStackCard';
+import { useT } from '../lib/i18n';
 
 interface ResultScreenProps {
   onNavigate: (view: string) => void;
@@ -153,6 +154,7 @@ export function getCardBgStyle(styleId: string, accentColor: string, opacity: nu
 }
 
 export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps) {
+  const t = useT();
   const [activity, setActivity] = useState<any>(null);
   const [evaluation, setEvaluation] = useState<any>(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -291,8 +293,8 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
       setActivity(historicActivity);
       setEvaluation({
         nota: historicActivity.nota || 0,
-        mensagem_resultado: historicActivity.mensagem_resultado || 'Bom trabalho na sua sessão!',
-        mensagem_card: historicActivity.mensagem_card || 'Foco concluído com sucesso.'
+        mensagem_resultado: historicActivity.mensagem_resultado || t('Bom trabalho na sua sessão!'),
+        mensagem_card: historicActivity.mensagem_card || t('Foco concluído com sucesso.')
       });
       return;
     }
@@ -560,7 +562,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
 
   const handleCopyCardsImage = async () => {
     setIsCapturing(true);
-    setCopyFeedback('Gerando imagem... 📸');
+    setCopyFeedback(t('Gerando imagem... 📸'));
     try {
       // 1. Try modern clipboard write with raw Promise (fixes Safari user-gesture block)
       if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
@@ -576,7 +578,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           ]);
 
           setIsCopied(true);
-          setCopyFeedback('Cards copiados! ✅');
+          setCopyFeedback(t('Cards copiados! ✅'));
           setTimeout(() => {
             setIsCopied(false);
             setCopyFeedback('');
@@ -591,7 +593,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
       // 2. Generate standard blob if needed
       const result = await generateCombinedBlob();
       if (!result) {
-        setCopyFeedback('Erro ao gerar imagem ❌');
+        setCopyFeedback(t('Erro ao gerar imagem ❌'));
         setTimeout(() => setCopyFeedback(''), 3000);
         setIsCapturing(false);
         return;
@@ -605,7 +607,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           const data = [new ClipboardItem({ 'image/png': blob })];
           await navigator.clipboard.write(data);
           setIsCopied(true);
-          setCopyFeedback('Cards copiados! ✅');
+          setCopyFeedback(t('Cards copiados! ✅'));
           setTimeout(() => {
             setIsCopied(false);
             setCopyFeedback('');
@@ -624,10 +626,10 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           if (navigator.canShare({ files: [file] })) {
             await navigator.share({
               files: [file],
-              title: 'Nakor - Meus Cards de Foco',
-              text: 'Confira minha evolução focada de hoje no Nakor!',
+              title: t('Nakor - Meus Cards de Foco'),
+              text: t('Confira minha evolução focada de hoje no Nakor!'),
             });
-            setCopyFeedback('Compartilhado! ✅');
+            setCopyFeedback(t('Compartilhado! ✅'));
             setTimeout(() => setCopyFeedback(''), 3000);
             setIsCapturing(false);
             return;
@@ -643,7 +645,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
       setCopyFeedback('');
     } catch (err) {
       console.error('Error generating combined cards image:', err);
-      setCopyFeedback('Erro ao copiar imagem ❌');
+      setCopyFeedback(t('Erro ao copiar imagem ❌'));
       setTimeout(() => setCopyFeedback(''), 4000);
     } finally {
       setIsCapturing(false);
@@ -674,7 +676,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
         {/* Header */}
         <div className="w-full flex items-center justify-between mb-8 relative">
           <h1 className="text-[18px] font-bold w-full text-center text-white">
-            {historicActivity ? 'Detalhes da Atividade' : 'Atividade concluída'}
+            {historicActivity ? t('Detalhes da Atividade') : t('Atividade concluída')}
           </h1>
           <span className="text-xl absolute right-0">🎉</span>
         </div>
@@ -683,27 +685,27 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
         <div className="w-full bg-[#0d0f12]/60 backdrop-blur-md rounded-[24px] p-5 mb-6 flex justify-between items-center border border-white/[0.04] shadow-md">
           <div className="flex-1 flex flex-col items-center">
             <span className="text-xl font-bold text-white mb-0.5">{minutesReal}min</span>
-            <span className="text-neutral-400 text-[11px] font-medium">duração</span>
+            <span className="text-neutral-400 text-[11px] font-medium">{t('duração')}</span>
           </div>
           <div className="w-px h-10 bg-white/[0.08]" />
           <div className="flex-1 flex flex-col items-center">
             <span className="text-xl font-bold mb-0.5" style={{ color: accentColor }}>
               {evaluation ? evaluation.nota.toFixed(1) : '-'}
             </span>
-            <span className="text-neutral-400 text-[11px] font-medium">sua nota</span>
+            <span className="text-neutral-400 text-[11px] font-medium">{t('sua nota')}</span>
           </div>
           <div className="w-px h-10 bg-white/[0.08]" />
           <div className="flex-1 flex flex-col items-center">
             <span className="text-xl font-bold text-white mb-0.5">
-              {activity?.saidas === 1 ? '1 saída' : `${activity?.saidas || 0} saídas`}
+              {activity?.saidas === 1 ? t('1 saída') : t('{n} saídas', { n: activity?.saidas || 0 })}
             </span>
-            <span className="text-neutral-400 text-[11px] font-medium">distrações</span>
+            <span className="text-neutral-400 text-[11px] font-medium">{t('distrações')}</span>
           </div>
         </div>
 
         {/* Score & AI Message Card */}
         <div className="w-full bg-[#0d0f12]/60 backdrop-blur-md rounded-[24px] p-6 mb-8 flex flex-col items-center text-center border border-white/[0.04] shadow-md">
-          <span className="text-neutral-400 text-sm mb-2">sua nota</span>
+          <span className="text-neutral-400 text-sm mb-2">{t('sua nota')}</span>
           
           <div className="relative inline-block mb-4">
             <span className="text-[72px] font-bold text-white leading-none tracking-tighter">
@@ -712,17 +714,17 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             <div className="w-full h-1 mt-2 rounded-full opacity-50" style={{ backgroundImage: `linear-gradient(to right, transparent, ${accentColor}, transparent)` }} />
           </div>
           <p className="text-white italic text-[15px] mb-6 px-4">
-            {evaluation?.mensagem_resultado || '...'}
+            {evaluation?.mensagem_resultado || t('...')}
           </p>
 
-          <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">gerado por IA com base no seu relato</span>
+          <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">{t('gerado por IA com base no seu relato')}</span>
         </div>
       </div>
 
       {/* Your Cards Section (Responsive side-by-side or column layout) */}
       <div className="w-full max-w-4xl px-6 mb-8 mx-auto">
         <div className="flex justify-between items-center mb-6 max-w-[390px] mx-auto md:max-w-none">
-          <h3 className="text-white font-semibold text-[15px]">Seus cards de progresso</h3>
+          <h3 className="text-white font-semibold text-[15px]">{t('Seus cards de progresso')}</h3>
           <Info size={16} className="text-neutral-500 dark:text-neutral-400" />
         </div>
         
@@ -731,7 +733,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
           {(() => {
             const singleProps = {
               accentColor,
-              title: activity?.nome || 'Sessão de Foco',
+              title: activity?.nome || t('Sessão de Foco'),
               minutes: minutesReal,
               plannedMinutes: activity?.duracao_prevista ? Math.round(activity.duracao_prevista / 60) : minutesReal,
               score: evaluation?.nota ?? activity?.nota ?? 0,
@@ -808,7 +810,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                     className="text-[9px] font-mono tracking-widest text-white uppercase"
                     style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                   >
-                    SESSÃO FOCO
+                    {t('SESSÃO FOCO')}
                   </span>
                 </div>
 
@@ -832,13 +834,13 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                         textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
                       }}
                     >
-                      ANTES
+                      {t('ANTES')}
                     </span>
                     <p 
                       className="text-white text-[13px] font-medium italic leading-relaxed m-0"
                       style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                     >
-                      "{activity?.texto_antes ? activity.texto_antes : 'Estava com pouca energia...'}"
+                      "{activity?.texto_antes ? activity.texto_antes : t('Estava com pouca energia...')}"
                     </p>
                   </div>
                 </div>
@@ -850,7 +852,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                 >
                   <div className="flex items-center gap-1 opacity-70">
                     <Clock size={11} strokeWidth={1.75} />
-                    <span>{activity?.duracao_real ? Math.floor(activity.duracao_real / 60) : 25} MIN</span>
+                    <span>{activity?.duracao_real ? Math.floor(activity.duracao_real / 60) : 25} {t('MIN')}</span>
                   </div>
                   
                 </div>
@@ -912,7 +914,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                     className="text-[9px] font-mono tracking-widest text-white uppercase"
                     style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                   >
-                    SESSÃO FOCO
+                    {t('SESSÃO FOCO')}
                   </span>
                 </div>
 
@@ -936,13 +938,13 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                         textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
                       }}
                     >
-                      DEPOIS
+                      {t('DEPOIS')}
                     </span>
                     <p 
                       className="text-white text-[13px] font-medium italic leading-relaxed m-0"
                       style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                     >
-                      "{activity?.texto_depois ? activity.texto_depois : 'Sessão concluída com sucesso!'}"
+                      "{activity?.texto_depois ? activity.texto_depois : t('Sessão concluída com sucesso!')}"
                     </p>
                   </div>
                 </div>
@@ -954,7 +956,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                 >
                   <div className="flex items-center gap-1 opacity-70">
                     <Clock size={11} strokeWidth={1.75} />
-                    <span>{activity?.duracao_real ? Math.floor(activity.duracao_real / 60) : 25} MIN</span>
+                    <span>{activity?.duracao_real ? Math.floor(activity.duracao_real / 60) : 25} {t('MIN')}</span>
                   </div>
                 </div>
               </div>
@@ -1014,7 +1016,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                   className="text-[9px] font-mono tracking-widest text-white uppercase"
                   style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                 >
-                  AVALIAÇÃO IA
+                  {t('AVALIAÇÃO IA')}
                 </span>
               </div>
 
@@ -1026,7 +1028,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                       className="text-[9px] font-mono tracking-widest text-white/60 uppercase mb-1"
                       style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)' }}
                     >
-                      NOTA DA SESSÃO
+                      {t('NOTA DA SESSÃO')}
                     </span>
                     <span style={{ 
                       fontSize: estiloCards.scoreStyle === 'large' ? '56px' : '40px', 
@@ -1051,7 +1053,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                     margin: 0,
                     textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)'
                   }} className="max-w-[240px]">
-                    {evaluation?.mensagem_card || activity?.mensagem_card || "Mandou bem!"}
+                    {evaluation?.mensagem_card || activity?.mensagem_card || t('Mandou bem!')}
                   </p>
                 )}
               </div>
@@ -1073,7 +1075,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                       textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
                     }}>
                       <span style={{ fontSize: '10px', fontWeight: 700, color: '#FFFFFF', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <span>🔥</span> <span>{userStreak} {userStreak === 1 ? 'dia' : 'dias'}</span>
+                        <span>🔥</span> <span>{userStreak} {userStreak === 1 ? t('dia') : t('dias')}</span>
                       </span>
                     </div>
                   )}
@@ -1091,7 +1093,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                       textShadow: '0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.4)',
                     }}>
                       <span style={{ fontSize: '10px', fontWeight: 700, color: '#FFFFFF' }}>
-                        Nível {userSelo}
+                        {t('Nível {selo}', { selo: userSelo })}
                       </span>
                     </div>
                   )}
@@ -1117,7 +1119,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
                   nakor.com.br
                 </span>
                 <span className="ml-auto opacity-70">
-                  Stories Ready 📸
+                  {t('Stories Ready 📸')}
                 </span>
               </div>
             </div>
@@ -1139,10 +1141,10 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             {isCapturing ? (
               <>
                 <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                <span>Processando...</span>
+                <span>{t('Processando...')}</span>
               </>
             ) : (
-              <span>{copyFeedback || 'Copiar cards 📸'}</span>
+              <span>{copyFeedback || t('Copiar cards 📸')}</span>
             )}
           </button>
           
@@ -1150,11 +1152,11 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             onClick={() => onNavigate('home')}
             className="w-full h-[56px] bg-white/[0.04] border border-white/[0.05] hover:bg-white/[0.08] active:scale-95 text-white font-bold text-base rounded-full flex justify-center items-center transition-all cursor-pointer"
           >
-            Voltar para o Início
+            {t('Voltar para o Início')}
           </button>
         </div>
 
-        <span className="text-neutral-500 dark:text-neutral-400 text-[10px] text-center mt-6">compartilhe sua evolução</span>
+        <span className="text-neutral-500 dark:text-neutral-400 text-[10px] text-center mt-6">{t('compartilhe sua evolução')}</span>
       </div>
 
       {/* Modern Touch & Hold Fallback Share Modal */}
@@ -1166,24 +1168,24 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             </div>
             
             <h4 className="text-white text-lg font-bold tracking-tight">
-              Toque e segure para copiar
+              {t('Toque e segure para copiar')}
             </h4>
             
             <p className="text-neutral-400 text-xs leading-relaxed px-2">
-              Seu navegador não permite a cópia direta. <strong className="text-white font-semibold">Pressione e segure</strong> o card abaixo para <strong className="text-white font-semibold">Copiar</strong> ou <strong className="text-white font-semibold">Compartilhar</strong> nos Stories!
+              {t('Seu navegador não permite a cópia direta.')} <strong className="text-white font-semibold">{t('Pressione e segure')}</strong> {t('o card abaixo para')} <strong className="text-white font-semibold">{t('Copiar')}</strong> {t('ou')} <strong className="text-white font-semibold">{t('Compartilhar')}</strong> {t('nos Stories!')}
             </p>
 
             <div className="w-full bg-[#0d0f12] rounded-xl p-2 border border-white/[0.04] overflow-hidden flex items-center justify-center max-h-[300px]">
               {generatedImgUrl ? (
                 <img 
                   src={generatedImgUrl} 
-                  alt="Seus Cards Nakor" 
+                  alt={t('Seus Cards Nakor')} 
                   className="max-w-full max-h-[280px] object-contain rounded-lg shadow-md pointer-events-auto cursor-pointer"
                   style={{ WebkitTouchCallout: 'default' }} // Enable iOS/Android touch callout
                 />
               ) : (
                 <div className="w-full h-40 flex items-center justify-center text-neutral-600 text-xs">
-                  Carregando imagem...
+                  {t('Carregando imagem...')}
                 </div>
               )}
             </div>
@@ -1196,7 +1198,7 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
               style={{ backgroundColor: accentColor }}
               className="w-full h-[48px] hover:brightness-105 active:scale-95 text-[#000000] font-bold text-sm rounded-full flex justify-center items-center transition-all cursor-pointer mt-2"
             >
-              Concluído
+              {t('Concluído')}
             </button>
           </div>
         </div>

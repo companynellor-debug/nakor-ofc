@@ -3,6 +3,7 @@ import { Flame, Book, Briefcase, Dumbbell, Activity, Bell, Settings, Clock, Plus
 import { DesktopSidebar } from './DesktopSidebar';
 import { FocusCircle } from './FocusCircle';
 import { motion } from 'motion/react';
+import { useLanguage } from '../lib/i18n';
 
 function StatCard({ icon, value, label, bgColor, textColor, iconColor }: { icon: React.ReactNode; value: string; label: string; bgColor?: string; textColor?: string; iconColor?: string }) {
   return (
@@ -25,6 +26,7 @@ function DailyProgressBar({
   onNavigate?: (view: string) => void;
   activeDays?: Set<number>;
 }) {
+  const t = useLanguage().t;
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(t => t.concluida).length;
   const percent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -47,14 +49,14 @@ function DailyProgressBar({
             ))}
           </div>
           <div className="min-w-0">
-            <span className="text-xs font-bold text-[#21222D] dark:text-[#F8F9FA] block truncate leading-tight">Progresso do Dia</span>
+            <span className="text-xs font-bold text-[#21222D] dark:text-[#F8F9FA] block truncate leading-tight">{t('Progresso do Dia')}</span>
             {totalTasks > 0 ? (
               <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold mt-0.5 block truncate">
-                {completedTasks} de {totalTasks} tarefas concluídas
+                {t('{completed} de {total} tarefas concluídas', { completed: completedTasks, total: totalTasks })}
               </span>
             ) : (
               <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold mt-0.5 block truncate">
-                Nenhuma tarefa para hoje
+                {t('Nenhuma tarefa para hoje')}
               </span>
             )}
           </div>
@@ -73,7 +75,7 @@ function DailyProgressBar({
             onClick={() => onNavigate?.('tasks')}
             className="text-[10px] bg-[#34117E] hover:bg-[#2C0E6B] text-white font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 shadow-[0_4px_12px_rgba(79,70,229,0.3)]"
           >
-            <span>Criar tarefa</span>
+            <span>{t('Criar tarefa')}</span>
             <Plus size={11} strokeWidth={2.5} />
           </motion.button>
         )}
@@ -102,7 +104,7 @@ function DailyProgressBar({
               <div className="w-4.5 h-4.5 rounded-full bg-[#21C55D]/15 flex items-center justify-center shrink-0">
                 <Check size={10} strokeWidth={3} />
               </div>
-              <span>Sensacional! Todas as tarefas de hoje foram concluídas!</span>
+              <span>{t('Sensacional! Todas as tarefas de hoje foram concluídas!')}</span>
             </motion.div>
           )}
         </div>
@@ -118,20 +120,22 @@ interface HomeScreenProps {
 }
 
 export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity }: HomeScreenProps) {
+  const { t, lang } = useLanguage();
   const userName = onboardingData?.name || localStorage.getItem('nakor_user') || 'Alex';
   const userEmail = onboardingData?.email || localStorage.getItem('nakor_user_email') || 'alex@email.com';
 
   // Current time/date logic
   const date = new Date();
   const hours = date.getHours();
-  let greeting = 'Bom dia';
+  let greeting = t('Bom dia');
   if (hours >= 12 && hours < 18) {
-    greeting = 'Boa tarde';
+    greeting = t('Boa tarde');
   } else if (hours >= 18 || hours < 5) {
-    greeting = 'Boa noite';
+    greeting = t('Boa noite');
   }
 
-  const formatter = new Intl.DateTimeFormat('pt-BR', {
+  const dateLocale = lang === 'en' ? 'en-US' : lang === 'es' ? 'es-ES' : 'pt-BR';
+  const formatter = new Intl.DateTimeFormat(dateLocale, {
     day: '2-digit',
     month: 'short',
     weekday: 'long',
@@ -284,7 +288,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
   const goalHours = 15;
   const displayWeekHours = parseFloat(weeklyStats.totalHours.toFixed(1));
 
-  const daysOfWeek = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+  const daysOfWeek = [t('seg'), t('ter'), t('qua'), t('qui'), t('sex'), t('sáb'), t('dom')];
   const todayIndex = (date.getDay() + 6) % 7;
 
   const isDayActive = (idx: number) => {
@@ -314,16 +318,16 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
         
         let dateLabel = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
         if (d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear()) {
-          dateLabel = 'Hoje';
+          dateLabel = t('Hoje');
         } else if (d.getDate() === yesterday.getDate() && d.getMonth() === yesterday.getMonth() && d.getFullYear() === yesterday.getFullYear()) {
-          dateLabel = 'Ontem';
+          dateLabel = t('Ontem');
         }
         
         const timeLabel = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
         const dateTimeStr = `${dateLabel}, ${timeLabel}`;
 
         return {
-          name: item.nome || 'Foco',
+          name: item.nome || t('Foco'),
           duration: durationStr,
           score: item.nota || 0,
           dateTimeStr,
@@ -358,7 +362,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Header */}
           <div className="flex justify-between items-start mb-10">
             <div>
-              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">Início / Nakor</span>
+              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">{t('Início')} / Nakor</span>
               <h1 className="text-2xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">{greeting}, {userName}</h1>
               <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
             </div>
@@ -373,7 +377,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
 
           {/* Hero Chronometer Card */}
           <div data-tour="focus-circle" className="w-full flex flex-col items-center mb-12 relative overflow-visible">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-mono uppercase tracking-widest mb-6 z-10 font-bold">tempo focado hoje</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-mono uppercase tracking-widest mb-6 z-10 font-bold">{t('tempo focado hoje')}</span>
             
             <FocusCircle
               todaySeconds={todaySeconds}
@@ -389,7 +393,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Weekly Goal Card */}
           <div data-tour="weekly-goal" className="bg-[#34117E] rounded-[28px] p-7 mb-10 shadow-lg-layered text-white relative overflow-hidden">
             <div className="flex justify-between items-baseline mb-4">
-              <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">Meta semanal</h3>
+              <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">{t('Meta semanal')}</h3>
               <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
             </div>
             
@@ -429,19 +433,19 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
           {/* Recent Activities */}
           <div className="mb-10">
             <div className="flex justify-between items-baseline mb-4">
-              <h3 className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">Atividades recentes</h3>
+              <h3 className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-xs font-bold uppercase tracking-wider pl-1">{t('Atividades recentes')}</h3>
               <button 
                 onClick={() => onNavigate?.('history')}
                 className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
               >
-                Ver todas <ChevronRight size={12} strokeWidth={2} />
+                {t('Ver todas')} <ChevronRight size={12} strokeWidth={2} />
               </button>
             </div>
             
             <div className="space-y-4">
               {activitiesList.length === 0 ? (
                 <div className="w-full text-center py-10 bg-white dark:bg-[#151622] rounded-[28px] border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 text-xs text-neutral-500 dark:text-neutral-400 font-medium shadow-sm-layered">
-                  Nenhuma atividade registrada ainda.
+                  {t('Nenhuma atividade registrada ainda.')}
                 </div>
               ) : (
                 activitiesList.map((act, i) => (
@@ -477,7 +481,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             className="w-full h-[56px] bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 text-white font-bold text-[16px] rounded-[16px] flex justify-center items-center gap-2 transition-all cursor-pointer shadow-md-layered mb-8"
           >
             <Plus size={18} strokeWidth={2.5} />
-            <span>Nova Atividade</span>
+            <span>{t('Nova Atividade')}</span>
           </button>
 
         </div>
@@ -496,7 +500,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* Header */}
             <div className="flex justify-between items-start mb-12">
               <div>
-                <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">PAINEL DE EVOLUÇÃO</span>
+                <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">{t('PAINEL DE EVOLUÇÃO')}</span>
                 <h1 className="text-3xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">
                   {greeting}, <span className="text-[#21222D]/80 dark:text-[#F8F9FA]/80">{userName}</span>
                 </h1>
@@ -504,9 +508,9 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               </div>
               <div className="flex items-center gap-3">
                 <button 
-                  onClick={() => alert('Configurações da Conta no menu Perfil.')} 
+                  onClick={() => alert(t('Configurações da Conta no menu Perfil.'))} 
                   className="w-10 h-10 rounded-[16px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/60 dark:border-[#2A2B3D]/60 flex items-center justify-center text-[#21222D] dark:text-[#F8F9FA] hover:border-[#34117E]/40 hover:shadow-sm-layered transition-all cursor-pointer shadow-sm-layered"
-                  title="Configurações"
+                  title={t('Configurações')}
                 >
                   <Settings size={16} strokeWidth={2} />
                 </button>
@@ -524,7 +528,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             <div className="w-full flex flex-col items-center mb-10 relative overflow-hidden rounded-[32px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-md-layered py-10 px-8">
                <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[#34117E]/[0.07] blur-[80px]" />
 
-               <h3 className="relative text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">Tempo de foco hoje</h3>
+               <h3 className="relative text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-8 z-10">{t('Tempo de foco hoje')}</h3>
 
                <div className="relative z-10">
                  <FocusCircle
@@ -543,19 +547,19 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* Recent Activities (Desktop) */}
             <div className="w-full bg-transparent">
               <div className="flex justify-between items-baseline mb-6">
-                <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase pl-1">Atividades recentes</h3>
+                <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase pl-1">{t('Atividades recentes')}</h3>
                 <button 
                   onClick={() => onNavigate?.('history')} 
                   className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold hover:text-[#21222D] dark:hover:text-[#F8F9FA] transition-all cursor-pointer flex items-center gap-0.5"
                 >
-                  Ver todas <ChevronRight size={12} strokeWidth={2} />
+                  {t('Ver todas')} <ChevronRight size={12} strokeWidth={2} />
                 </button>
               </div>
               
               <div className="space-y-4">
                 {activitiesList.length === 0 ? (
                   <div className="w-full text-center py-14 bg-white dark:bg-[#151622] rounded-[28px] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 text-sm text-neutral-500 dark:text-neutral-400 font-medium shadow-sm-layered">
-                    Nenhuma atividade registrada ainda.
+                    {t('Nenhuma atividade registrada ainda.')}
                   </div>
                 ) : (
                   activitiesList.map((act, i) => (
@@ -593,7 +597,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
             {/* Meta semanal (Desktop) */}
             <div className="w-full bg-[#34117E] rounded-[28px] p-8 shadow-lg-layered text-white relative overflow-hidden">
               <div className="flex justify-between items-baseline mb-4">
-                <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">Meta semanal</h3>
+                <h3 className="text-xs font-bold tracking-wider text-white/80 uppercase">{t('Meta semanal')}</h3>
                 <span className="text-white text-xs font-bold font-mono">{displayWeekHours}h <span className="text-white/60">/ {goalHours}h</span></span>
               </div>
               
@@ -630,12 +634,12 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
 
             {/* Estatísticas (Desktop) */}
             <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
-              <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase mb-5">Estatísticas</h3>
+              <h3 className="text-xs font-bold tracking-wider text-[#21222D]/70 dark:text-[#F8F9FA]/70 uppercase mb-5">{t('Estatísticas')}</h3>
               <div className="grid grid-cols-2 gap-4.5">
                 <StatCard 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
                   value={`${displayHours}h ${displayMinutes}m`} 
-                  label="Hoje" 
+                  label={t('Hoje')} 
                   bgColor="bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
                   iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
@@ -643,7 +647,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <StatCard 
                   icon={<Flame size={16} strokeWidth={2.5} />} 
                   value={`${streak}`} 
-                  label="Sequência" 
+                  label={t('Sequência')} 
                   bgColor="bg-[#ACD1FD] dark:bg-[#2B2A48]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
                   iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
@@ -651,7 +655,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <StatCard 
                   icon={<Activity size={16} strokeWidth={2.5} />} 
                   value={`${avgToday}`} 
-                  label="Média" 
+                  label={t('Média')} 
                   bgColor="bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
                   iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
@@ -659,7 +663,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <StatCard 
                   icon={<Clock size={16} strokeWidth={2.5} />} 
                   value={`${displayTotalHistoryHours}h`} 
-                  label="Tempo Total" 
+                  label={t('Tempo Total')} 
                   bgColor="bg-[#ACD1FD] dark:bg-[#2B2A48]" 
                   textColor="text-[#21222D] dark:text-[#F8F9FA]" 
                   iconColor="text-[#21222D]/60 dark:text-[#F8F9FA]/60" 
@@ -673,7 +677,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               className="w-full h-[56px] bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 text-white font-bold text-[16px] rounded-[16px] flex justify-center items-center gap-2 transition-all cursor-pointer shadow-md-layered"
             >
               <Plus size={18} strokeWidth={2.5} />
-              <span>Nova Atividade</span>
+              <span>{t('Nova Atividade')}</span>
             </button>
 
           </div>

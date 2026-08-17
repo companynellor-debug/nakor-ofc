@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { TrendingUp, Zap } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 function hexToRgba(hex: string, alpha: number): string {
   if (!hex) return `rgba(255, 255, 255, ${alpha})`;
@@ -45,11 +46,12 @@ export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
     { accentColor, title, minutes, plannedMinutes, score, exits, streak, message, showDomain = true },
     ref
   ) {
+    const t = useT();
     const bars = buildBars(minutes, score, exits);
     const scoreLabel = score ? score.toFixed(1).replace('.0', '') : '0';
     const peakIndex = bars.indexOf(Math.max(...bars));
     const focusLabel =
-      score >= 8.5 ? 'FOCO PROFUNDO' : score >= 6.5 ? 'FOCO MODERADO' : score > 0 ? 'FOCO LEVE' : 'SEM NOTA';
+      score >= 8.5 ? t('FOCO PROFUNDO') : score >= 6.5 ? t('FOCO MODERADO') : score > 0 ? t('FOCO LEVE') : t('SEM NOTA');
     const delta = plannedMinutes > 0 ? minutes - plannedMinutes : 0;
 
     return (
@@ -164,7 +166,7 @@ export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
               <TrendingUp size={12} strokeWidth={3} />
             </span>
             <span className="text-white text-[12px] font-semibold whitespace-nowrap">
-              {minutes} min focados
+              {t('{n} min focados', { n: minutes })}
               {delta > 0 ? ` · +${delta}` : ''}
             </span>
           </div>
@@ -181,7 +183,7 @@ export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
               style={{ color: accentColor }}
             >
               <Zap size={13} strokeWidth={3} />
-              {exits} {exits === 1 ? 'saída' : 'saídas'}
+              {exits === 1 ? t('{n} saída', { n: exits }) : t('{n} saídas', { n: exits })}
             </span>
           </div>
 
@@ -225,7 +227,7 @@ export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
 
           <div className="flex items-center justify-between text-white/40 text-[10px] font-mono tracking-wider mt-2">
             <span className="truncate max-w-[150px]">{title}</span>
-            <span>{streak ? `${streak}d streak` : ''}</span>
+            <span>{streak ? t('{n}d streak', { n: streak }) : ''}</span>
           </div>
 
           {message ? (

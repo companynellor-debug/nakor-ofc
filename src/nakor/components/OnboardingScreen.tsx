@@ -16,6 +16,7 @@ import {
   Check
 
 } from 'lucide-react';
+import { useT } from '../lib/i18n';
 import { AuraDomeCard } from './AuraDomeCard';
 import { WidgetStackCard } from './WidgetStackCard';
 import { CARD_LAYOUTS, LayoutThumb, type CardLayoutId } from './CardLayoutThumbs';
@@ -297,6 +298,7 @@ function ResultCardPreview({ layout, color }: { layout: CardLayoutId; color: str
 
 
 export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: OnboardingScreenProps) {
+  const t = useT();
   const [currentStep, setCurrentStep] = useState(0);
   
   // Answers state
@@ -408,40 +410,40 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
   // Options Definitions with specific layout descriptions matching the exact style
   const step1Options: GridOption[] = [
-    { id: 'Estudos', label: 'Estudos', desc: 'Organizar meus estudos e materiais', icon: <BookOpen size={26} strokeWidth={2} /> },
-    { id: 'Trabalho', label: 'Trabalho', desc: 'Gerenciar tarefas e projetos', icon: <Briefcase size={26} strokeWidth={2} /> },
-    { id: 'Leitura', label: 'Leitura', desc: 'Acompanhar minhas leituras', icon: <BookOpenText size={26} strokeWidth={2} /> },
-    { id: 'Múltiplos objetivos', label: 'Múltiplos objetivos', desc: 'Diferentes áreas da vida', icon: <Target size={26} strokeWidth={2} /> }
+    { id: 'Estudos', label: t('Estudos'), desc: t('Organizar meus estudos e materiais'), icon: <BookOpen size={26} strokeWidth={2} /> },
+    { id: 'Trabalho', label: t('Trabalho'), desc: t('Gerenciar tarefas e projetos'), icon: <Briefcase size={26} strokeWidth={2} /> },
+    { id: 'Leitura', label: t('Leitura'), desc: t('Acompanhar minhas leituras'), icon: <BookOpenText size={26} strokeWidth={2} /> },
+    { id: 'Múltiplos objetivos', label: t('Múltiplos objetivos'), desc: t('Diferentes áreas da vida'), icon: <Target size={26} strokeWidth={2} /> }
   ];
 
   const step2Options: GridOption[] = [
-    { id: 'Fico no celular sem querer', label: 'Fico no celular', desc: 'Perco tempo em redes sociais', emoji: '📱' },
-    { id: 'Procrastino muito', label: 'Procrastino muito', desc: 'Adio tarefas importantes', emoji: '😵' },
-    { id: 'Perco o foco rápido', label: 'Perco o foco', desc: 'Difícil concentrar profundo', emoji: '🧠' },
-    { id: 'Não consigo manter uma rotina', label: 'Sem rotina', desc: 'Falta de constância no dia', emoji: '🕐' }
+    { id: 'Fico no celular sem querer', label: t('Fico no celular'), desc: t('Perco tempo em redes sociais'), emoji: '📱' },
+    { id: 'Procrastino muito', label: t('Procrastino muito'), desc: t('Adio tarefas importantes'), emoji: '😵' },
+    { id: 'Perco o foco rápido', label: t('Perco o foco'), desc: t('Difícil concentrar profundo'), emoji: '🧠' },
+    { id: 'Não consigo manter uma rotina', label: t('Sem rotina'), desc: t('Falta de constância no dia'), emoji: '🕐' }
   ];
 
   const step3Options: GridOption[] = [
-    { id: '5h', label: '5 horas', desc: 'Menos de 1h por dia', badge: '5h' },
-    { id: '10h', label: '10 horas', desc: 'Cerca de 1.5h por dia', badge: '10h' },
-    { id: '15h', label: '15 horas', desc: 'Cerca de 2h por dia', badge: '15h' },
-    { id: '20h+', label: '20h ou mais', desc: 'Foco intenso diário', badge: '20h+' }
+    { id: '5h', label: t('5 horas'), desc: t('Menos de 1h por dia'), badge: '5h' },
+    { id: '10h', label: t('10 horas'), desc: t('Cerca de 1.5h por dia'), badge: '10h' },
+    { id: '15h', label: t('15 horas'), desc: t('Cerca de 2h por dia'), badge: '15h' },
+    { id: '20h+', label: t('20h ou mais'), desc: t('Foco intenso diário'), badge: '20h+' }
   ];
 
   const step4Options: GridOption[] = [
-    { id: 'Manhã', label: 'Manhã', desc: 'Antes do meio-dia', emoji: '🌅' },
-    { id: 'Tarde', label: 'Tarde', desc: 'Entre 12h e 18h', emoji: '☀️' },
-    { id: 'Noite', label: 'Noite', desc: 'Após as 18h', emoji: '🌙' },
-    { id: 'Varia muito', label: 'Varia muito', desc: 'Sem horário fixo', emoji: '🔀' }
+    { id: 'Manhã', label: t('Manhã'), desc: t('Antes do meio-dia'), emoji: '🌅' },
+    { id: 'Tarde', label: t('Tarde'), desc: t('Entre 12h e 18h'), emoji: '☀️' },
+    { id: 'Noite', label: t('Noite'), desc: t('Após as 18h'), emoji: '🌙' },
+    { id: 'Varia muito', label: t('Varia muito'), desc: t('Sem horário fixo'), emoji: '🔀' }
   ];
 
   const cardColors = [
-    { name: 'Roxo', hex: '#7C3AED' },
-    { name: 'Azul', hex: '#2563EB' },
-    { name: 'Verde Limão', hex: '#A5CE00' },
-    { name: 'Azul Metálico', hex: '#0CB6D7' },
-    { name: 'Rosa Vibrante', hex: '#EC4899' },
-    { name: 'Branco', hex: '#FFFFFF' }
+    { name: t('Roxo'), hex: '#7C3AED' },
+    { name: t('Azul'), hex: '#2563EB' },
+    { name: t('Verde Limão'), hex: '#A5CE00' },
+    { name: t('Azul Metálico'), hex: '#0CB6D7' },
+    { name: t('Rosa Vibrante'), hex: '#EC4899' },
+    { name: t('Branco'), hex: '#FFFFFF' }
   ];
 
 
@@ -463,7 +465,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         <button 
           onClick={handleBack}
           className="p-2.5 bg-white/80 hover:bg-white text-text-primary rounded-full transition-all cursor-pointer shrink-0 border border-brand-border shadow-sm-layered backdrop-blur-md"
-          aria-label="Voltar"
+          aria-label={t('Voltar')}
         >
           <ArrowLeft size={18} />
         </button>
@@ -481,7 +483,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         </div>
         {/* Step Indicator */}
         <span className="text-xs font-medium text-text-secondary shrink-0 tabular-nums">
-          {currentStep + 1} de 6
+          {t('{n} de 6', { n: currentStep + 1 })}
         </span>
       </div>
 
@@ -503,10 +505,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div>
                 <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  Para que você <br />vai usar o <span className="text-brand-purple-500">Nakor?</span>
+                  {t('Para que você')} <br />{t('vai usar o')} <span className="text-brand-purple-500">Nakor?</span>
                 </h2>
                 <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  Selecione uma opção
+                  {t('Selecione uma opção')}
                 </p>
               </div>
 
@@ -526,10 +528,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div>
                 <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  Qual é o seu <br />maior <span className="text-brand-purple-500">desafio</span> hoje?
+                  {t('Qual é o seu')} <br />{t('maior')} <span className="text-brand-purple-500">{t('desafio')}</span> {t('hoje?')}
                 </h2>
                 <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  Selecione uma opção
+                  {t('Selecione uma opção')}
                 </p>
               </div>
 
@@ -549,10 +551,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div>
                 <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  Quantas horas por <br />semana quer <span className="text-brand-purple-500">focar?</span>
+                  {t('Quantas horas por')} <br />{t('semana quer')} <span className="text-brand-purple-500">{t('focar?')}</span>
                 </h2>
                 <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  Você pode ajustar isso depois
+                  {t('Você pode ajustar isso depois')}
                 </p>
               </div>
 
@@ -572,10 +574,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div>
                 <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  Quando você <br />costuma ser <span className="text-brand-purple-500">produtivo?</span>
+                  {t('Quando você')} <br />{t('costuma ser')} <span className="text-brand-purple-500">{t('produtivo?')}</span>
                 </h2>
                 <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  Selecione uma opção
+                  {t('Selecione uma opção')}
                 </p>
               </div>
 
@@ -595,10 +597,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div>
                 <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  Que horas quer <br />receber o <span className="text-brand-purple-500">lembrete?</span>
+                  {t('Que horas quer')} <br />{t('receber o')} <span className="text-brand-purple-500">{t('lembrete?')}</span>
                 </h2>
                 <p className="text-[13px] text-text-secondary mt-2 font-medium leading-normal">
-                  O Nakor vai te chamar pro foco todo dia nesse horário
+                  {t('O Nakor vai te chamar pro foco todo dia nesse horário')}
                 </p>
               </div>
 
@@ -665,7 +667,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div className="text-center">
                 <p className="text-[11px] font-medium text-text-secondary">
-                  você pode mudar isso quando quiser
+                  {t('você pode mudar isso quando quiser')}
                 </p>
               </div>
             </div>
@@ -674,7 +676,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
               onClick={() => setCurrentStep(5)}
               className="w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
             >
-              Continuar
+              {t('Continuar')}
             </button>
           </div>
         </section>
@@ -689,17 +691,17 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
 
               <div>
                 <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  Personalize o seu <br /><span className="text-brand-purple-500">card</span> de resultado
+                  {t('Personalize o seu')} <br /><span className="text-brand-purple-500">{t('card')}</span> {t('de resultado')}
                 </h2>
                 <p className="text-[13px] text-text-secondary mt-2 font-medium leading-normal">
-                  Escolha o modelo e a cor — pode mudar depois nas configurações
+                  {t('Escolha o modelo e a cor — pode mudar depois nas configurações')}
                 </p>
               </div>
 
               {/* Prévia real do card */}
               <div className="space-y-2">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-                  Prévia
+                  {t('Prévia')}
                 </p>
                 <div className="rounded-[22px] p-4 bg-brand-card border border-brand-border/60 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.12)] flex items-center justify-center">
                   <ResultCardPreview layout={cardLayout} color={cardColor} />
@@ -712,7 +714,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
               {/* Modelo */}
               <div className="space-y-2.5">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-                  Modelo
+                  {t('Modelo')}
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {CARD_LAYOUTS.map((opt) => {
@@ -763,7 +765,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
               {/* Cor */}
               <div className="space-y-2.5">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-                  Cor de destaque
+                  {t('Cor de destaque')}
                 </p>
                 <div className="flex flex-wrap gap-2.5">
                   {cardColors.map((c) => {
@@ -796,7 +798,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
               onClick={handleComplete}
               className="mt-6 w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
             >
-              Começar agora
+              {t('Começar agora')}
             </button>
           </div>
         </section>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Check, Sparkles, X } from 'lucide-react';
+import { t } from '../lib/i18n';
 
 export interface TourStep {
   /** Tela do app onde o passo acontece */
@@ -14,64 +15,64 @@ export interface TourStep {
 export const TOUR_STEPS: TourStep[] = [
   {
     view: 'home',
-    title: 'Bem-vindo ao Nakor',
+    title: t('Bem-vindo ao Nakor'),
     description:
-      'Em 30 segundos você conhece o essencial: seu foco do dia, as tarefas, os desafios e as coins que você ganha focando.',
+      t('Em 30 segundos você conhece o essencial: seu foco do dia, as tarefas, os desafios e as coins que você ganha focando.'),
   },
   {
     view: 'home',
     target: 'focus-circle',
-    title: 'Seu foco de hoje',
+    title: t('Seu foco de hoje'),
     description:
-      'Este círculo mostra quanto tempo você já focou hoje. Ele se enche conforme você conclui sessões e brilha ao bater a meta.',
+      t('Este círculo mostra quanto tempo você já focou hoje. Ele se enche conforme você conclui sessões e brilha ao bater a meta.'),
   },
   {
     view: 'home',
     target: 'weekly-goal',
-    title: 'Meta semanal',
+    title: t('Meta semanal'),
     description:
-      'Acompanhe o total de horas da semana e os dias em que você manteve o foco. Constância aqui vira ofensiva (streak).',
+      t('Acompanhe o total de horas da semana e os dias em que você manteve o foco. Constância aqui vira ofensiva (streak).'),
   },
   {
     view: 'home',
     target: 'nav-new_activity',
-    title: 'Iniciar uma sessão',
+    title: t('Iniciar uma sessão'),
     description:
-      'Toque no botão central para criar uma atividade, escolher a duração e entrar no modo foco.',
+      t('Toque no botão central para criar uma atividade, escolher a duração e entrar no modo foco.'),
   },
   {
     view: 'home',
     target: 'nav-tasks',
-    title: 'Tarefas e desafios',
+    title: t('Tarefas e desafios'),
     description:
-      'Organize suas tarefas do dia e avance nos desafios — cada desafio concluído rende coins extras.',
+      t('Organize suas tarefas do dia e avance nos desafios — cada desafio concluído rende coins extras.'),
   },
   {
     view: 'loja',
     target: 'coins-balance',
-    title: 'Sistema de coins',
+    title: t('Sistema de coins'),
     description:
-      'Cada sessão concluída te dá coins. Aqui está o seu saldo e o quanto falta para o próximo prêmio.',
+      t('Cada sessão concluída te dá coins. Aqui está o seu saldo e o quanto falta para o próximo prêmio.'),
   },
   {
     view: 'loja',
     target: 'products-grid',
-    title: 'Troque por recompensas',
+    title: t('Troque por recompensas'),
     description:
-      'Use suas coins para resgatar as recompensas disponíveis. Quanto mais foco, mais opções liberadas.',
+      t('Use suas coins para resgatar as recompensas disponíveis. Quanto mais foco, mais opções liberadas.'),
   },
   {
     view: 'profile',
     target: 'nav-profile',
-    title: 'Seu perfil',
+    title: t('Seu perfil'),
     description:
-      'No perfil você ajusta tema, tempo de foco, notificações e o estilo dos cards de resultado que acabou de escolher.',
+      t('No perfil você ajusta tema, tempo de foco, notificações e o estilo dos cards de resultado que acabou de escolher.'),
   },
   {
     view: 'home',
-    title: 'Tudo pronto!',
+    title: t('Tudo pronto!'),
     description:
-      'É só isso. Comece criando sua primeira atividade — o resto o Nakor cuida por você.',
+      t('É só isso. Comece criando sua primeira atividade — o resto o Nakor cuida por você.'),
   },
 ];
 
@@ -263,7 +264,7 @@ export function GuidedTour({
       {/* Botão fechar */}
       <button
         onClick={onFinish}
-        aria-label="Pular tutorial"
+        aria-label={t('Pular tutorial')}
         className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/12 border border-white/20 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white transition-colors"
       >
         <X size={16} />
@@ -286,7 +287,7 @@ export function GuidedTour({
                 <Sparkles size={14} />
               </span>
               <span className="text-[10px] font-mono uppercase tracking-[2px] text-[#34117E] dark:text-[#C4B5FD] font-bold">
-                Tutorial {index + 1}/{TOUR_STEPS.length}
+                {t('Tutorial {n}/{total}', { n: index + 1, total: TOUR_STEPS.length })}
               </span>
             </div>
 
@@ -319,14 +320,14 @@ export function GuidedTour({
                   onClick={back}
                   className="px-4 h-11 rounded-2xl text-[13px] font-semibold text-[#21222D] dark:text-[#F8F9FA] bg-black/[0.05] dark:bg-white/10 active:scale-95 transition-transform"
                 >
-                  Voltar
+                  {t('Voltar')}
                 </button>
               )}
               <button
                 onClick={onFinish}
                 className="px-3 h-11 rounded-2xl text-[13px] font-medium text-[#9CA3AF] dark:text-neutral-400 active:scale-95 transition-transform"
               >
-                Pular
+                {t('Pular')}
               </button>
               <button
                 onClick={next}
@@ -334,11 +335,11 @@ export function GuidedTour({
               >
                 {isLast ? (
                   <>
-                    Começar <Check size={16} />
+                    {t('Começar')} <Check size={16} />
                   </>
                 ) : (
                   <>
-                    Próximo <ArrowRight size={16} />
+                    {t('Próximo')} <ArrowRight size={16} />
                   </>
                 )}
               </button>

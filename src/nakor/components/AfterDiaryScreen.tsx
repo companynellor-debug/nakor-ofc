@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 interface AfterDiaryScreenProps {
   onNavigate: (view: string) => void;
 }
 
 export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
+  const t = useT();
   const [activity, setActivity] = useState<any>(null);
   const [afterText, setAfterText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -55,8 +57,8 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
       // Fallback
       localStorage.setItem('nakor_avaliacao', JSON.stringify({
         nota: 7.5,
-        mensagem_resultado: "Parece que os servidores estão focados em outra coisa. Mas você mandou bem!",
-        mensagem_card: "Focado e offline 😎"
+        mensagem_resultado: t("Parece que os servidores estão focados em outra coisa. Mas você mandou bem!"),
+        mensagem_card: t("Focado e offline 😎")
       }));
       onNavigate('resultado');
     } finally {
@@ -80,7 +82,7 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
           >
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-[18px] font-bold text-[#21222D] dark:text-[#F8F9FA]">Como foi?</h1>
+          <h1 className="text-[18px] font-bold text-[#21222D] dark:text-[#F8F9FA]">{t('Como foi?')}</h1>
           <div className="w-6" />
         </div>
 
@@ -88,19 +90,19 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
         <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] p-5 mb-6 flex justify-between items-center border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
           <div className="flex-1 flex flex-col items-center text-center">
             <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA] mb-0.5">{minutesReal}min</span>
-            <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-semibold">focado real</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-semibold">{t('focado real')}</span>
           </div>
           <div className="w-px h-10 bg-[#DBDBE5]/30 dark:bg-[#2A2B3D]/30" />
           <div className="flex-1 flex flex-col items-center text-center">
             <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA] mb-0.5">{activity?.saidas || 0}</span>
-            <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-semibold">saídas</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-semibold">{t('saídas')}</span>
           </div>
           {totalSubtarefas > 0 && (
             <>
               <div className="w-px h-10 bg-[#DBDBE5]/30 dark:bg-[#2A2B3D]/30" />
               <div className="flex-1 flex flex-col items-center text-center">
                 <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA] mb-0.5">{subtarefas}/{totalSubtarefas}</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-semibold">subtarefas</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-semibold">{t('subtarefas')}</span>
               </div>
             </>
           )}
@@ -109,7 +111,7 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
         {/* Card Antes */}
         {activity?.texto_antes && (
           <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] p-4 mb-6 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm animate-in fade-in slide-in-from-bottom-3 duration-300">
-            <label className="text-neutral-400 text-xs font-bold uppercase tracking-wider mb-2 block">Você planejou</label>
+            <label className="text-neutral-400 text-xs font-bold uppercase tracking-wider mb-2 block">{t('Você planejou')}</label>
             <p className="text-[#21222D] dark:text-[#F8F9FA] text-sm leading-snug font-medium">
               {activity.texto_antes}
             </p>
@@ -118,12 +120,12 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
 
         {/* Textarea Depois */}
         <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 p-4 mb-8 shadow-sm">
-          <label className="text-neutral-500 dark:text-neutral-400 text-sm mb-3 block font-semibold">O que aconteceu de verdade?</label>
+          <label className="text-neutral-500 dark:text-neutral-400 text-sm mb-3 block font-semibold">{t('O que aconteceu de verdade?')}</label>
           <div className="relative">
             <textarea
               value={afterText}
               onChange={(e) => setAfterText(e.target.value.slice(0, 300))}
-              placeholder="Conseguiu bater sua meta? O que funcionou? O que atrapalhou?"
+              placeholder={t('Conseguiu bater sua meta? O que funcionou? O que atrapalhou?')}
               className="w-full bg-transparent border-none outline-none text-[#21222D] dark:text-[#F8F9FA] text-sm placeholder:text-neutral-400 resize-none h-32 leading-6"
               style={{
                 backgroundImage: 'repeating-linear-gradient(transparent, transparent 23px, rgba(33,34,45,0.03) 24px)',
@@ -145,7 +147,7 @@ export function AfterDiaryScreen({ onNavigate }: AfterDiaryScreenProps) {
           disabled={afterText.length < 30 || isLoading}
           className="w-full max-w-[342px] h-[56px] mb-8 bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 disabled:opacity-50 disabled:hover:bg-[#34117E] disabled:active:scale-100 text-white font-bold text-base rounded-full flex justify-center items-center transition-all shadow-[0_4px_25px_rgba(52,17,126,0.25)] cursor-pointer"
         >
-          {isLoading ? 'avaliando sua sessão...' : 'Ver minha nota'}
+          {isLoading ? t('avaliando sua sessão...') : t('Ver minha nota')}
         </button>
       </div>
     </div>

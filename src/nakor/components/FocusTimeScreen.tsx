@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 interface FocusTimeScreenProps {
   onBack: () => void;
 }
 
 export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
+  const t = useT();
   const [horarioProdutivo, setHorarioProdutivo] = useState('🌅 Manhã — antes do meio dia');
   const [metaSemanal, setMetaSemanal] = useState('10h');
   const [showToast, setShowToast] = useState(false);
@@ -64,7 +66,7 @@ export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
           </button>
           
           <h1 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight absolute left-1/2 -translate-x-1/2">
-            Hora do Foco
+            {t('Hora do Foco')}
           </h1>
           
           <div className="w-10 h-10" />
@@ -75,7 +77,7 @@ export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
           
           {/* Horário Produtivo */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Quando você é mais produtivo</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Quando você é mais produtivo')}</span>
             <div className="bg-white dark:bg-[#151622] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered rounded-[28px] p-6 flex flex-col">
               {periodOptions.map((opt, idx) => {
                 const isSelected = horarioProdutivo === opt;
@@ -85,7 +87,7 @@ export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
                       onClick={() => setHorarioProdutivo(opt)}
                       className="w-full py-4 px-2 flex items-center justify-between text-left cursor-pointer"
                     >
-                      <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">{opt}</span>
+                      <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">{t(opt)}</span>
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? 'border-[#34117E]' : 'border-[#DBDBE5] dark:border-[#2A2B3D]'}`}>
                         {isSelected && <div className="w-2.5 h-2.5 bg-[#34117E] rounded-full" />}
                       </div>
@@ -101,7 +103,7 @@ export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
 
           {/* Meta Semanal */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Meta semanal de horas</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Meta semanal de horas')}</span>
             <div className="bg-white dark:bg-[#151622] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered rounded-[28px] p-6">
               <div className="grid grid-cols-2 gap-3.5">
                 {goalOptions.map(opt => {
@@ -124,7 +126,7 @@ export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
             onClick={handleSave}
             className="w-full h-[56px] rounded-full bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] text-white font-bold text-[16px] flex items-center justify-center mt-2 transition-all active:scale-[0.98] shadow-md-layered cursor-pointer"
           >
-            Salvar
+            {t('Salvar')}
           </button>
 
         </div>
@@ -139,7 +141,7 @@ export function FocusTimeScreen({ onBack }: FocusTimeScreenProps) {
             exit={{ opacity: 0, y: 20 }}
             className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#21222D] border border-white/10 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full shadow-lg z-50 pointer-events-none whitespace-nowrap"
           >
-            ✅ Preferências salvas!
+            {t('✅ Preferências salvas!')}
           </motion.div>
         )}
       </AnimatePresence>

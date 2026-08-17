@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { House, ListChecks, Gift, UserRound } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
+import { useT } from '../lib/i18n';
 
 interface DesktopSidebarProps {
   currentView: string;
@@ -10,6 +11,7 @@ interface DesktopSidebarProps {
 }
 
 export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }: DesktopSidebarProps) {
+  const t = useT();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,10 +39,10 @@ export function DesktopSidebar({ currentView, onNavigate, userName, userEmail }:
 
       <nav className="relative flex-1 space-y-1">
         {[
-          { id: 'home', icon: House, label: 'Início' },
-          { id: 'tasks', icon: ListChecks, label: 'Tarefas' },
-          { id: 'loja', icon: Gift, label: 'Trocas' },
-          { id: 'profile', icon: UserRound, label: 'Perfil' }
+          { id: 'home', icon: House, label: t('Início') },
+          { id: 'tasks', icon: ListChecks, label: t('Tarefas') },
+          { id: 'loja', icon: Gift, label: t('Trocas') },
+          { id: 'profile', icon: UserRound, label: t('Perfil') }
         ].map(tab => {
           const Icon = tab.icon;
           const isActive = currentView === tab.id;

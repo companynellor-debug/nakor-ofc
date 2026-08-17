@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { NakorLogo } from './NakorLogo';
 import { localAuth as supabase } from '../lib/localAuth';
+import { useT } from '../lib/i18n';
 
 interface AuthScreenProps {
   onAuthSuccess: (email: string, name?: string) => void;
@@ -20,6 +21,7 @@ interface AuthScreenProps {
 }
 
 export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'login', message }: AuthScreenProps) {
+  const t = useT();
   const [view, setView] = useState<'login' | 'register'>(initialView);
   
   // Field values
@@ -41,14 +43,14 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
 
   const handleForgotPassword = async () => {
     if (!email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) === false) {
-      setErrors({ email: 'Informe seu e-mail' });
+      setErrors({ email: t('Informe seu e-mail') });
       return;
     }
     setErrors({});
     setResetLoading(true);
     setResetLoading(false);
     setForgotPasswordMsg(
-      'A recuperação por e-mail ficará disponível quando o banco de dados definitivo for conectado.'
+      t('A recuperação por e-mail ficará disponível quando o banco de dados definitivo for conectado.')
     );
     setTimeout(() => setForgotPasswordMsg(''), 6000);
   };
@@ -69,15 +71,15 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
     const newErrors: Record<string, string> = {};
 
     if (!email) {
-      newErrors.email = 'E-mail é obrigatório';
+      newErrors.email = t('E-mail é obrigatório');
     } else if (!validateEmail(email)) {
-      newErrors.email = 'Insira um e-mail válido';
+      newErrors.email = t('Insira um e-mail válido');
     }
 
     if (!password) {
-      newErrors.password = 'Senha é obrigatória';
+      newErrors.password = t('Senha é obrigatória');
     } else if (password.length < 6) {
-      newErrors.password = 'A senha deve conter no mínimo 6 caracteres';
+      newErrors.password = t('A senha deve conter no mínimo 6 caracteres');
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -96,9 +98,9 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
 
     if (error) {
       const msg = /invalid login credentials/i.test(error.message)
-        ? 'E-mail ou senha incorretos'
+        ? t('E-mail ou senha incorretos')
         : /email not confirmed/i.test(error.message)
-          ? 'Confirme seu e-mail antes de entrar'
+          ? t('Confirme seu e-mail antes de entrar')
           : error.message;
       setErrors({ password: msg });
       return;
@@ -112,25 +114,25 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
     const newErrors: Record<string, string> = {};
 
     if (!name) {
-      newErrors.name = 'Nome completo é obrigatório';
+      newErrors.name = t('Nome completo é obrigatório');
     }
 
     if (!email) {
-      newErrors.email = 'E-mail é obrigatório';
+      newErrors.email = t('E-mail é obrigatório');
     } else if (!validateEmail(email)) {
-      newErrors.email = 'Insira um e-mail válido';
+      newErrors.email = t('Insira um e-mail válido');
     }
 
     if (!password) {
-      newErrors.password = 'Senha é obrigatória';
+      newErrors.password = t('Senha é obrigatória');
     } else if (password.length < 6) {
-      newErrors.password = 'A senha deve conter no mínimo 6 caracteres';
+      newErrors.password = t('A senha deve conter no mínimo 6 caracteres');
     }
 
     if (!confirmPassword) {
-      newErrors.confirmPassword = 'Confirme sua senha';
+      newErrors.confirmPassword = t('Confirme sua senha');
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'As senhas não coincidem';
+      newErrors.confirmPassword = t('As senhas não coincidem');
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -152,14 +154,14 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
 
     if (error) {
       const msg = /already registered|already exists/i.test(error.message)
-        ? 'Já existe uma conta com esse e-mail'
+        ? t('Já existe uma conta com esse e-mail')
         : error.message;
       setErrors({ email: msg });
       return;
     }
 
     if (!data.session) {
-      setInfo('Enviamos um link de confirmação para o seu e-mail. Confirme para entrar.');
+      setInfo(t('Enviamos um link de confirmação para o seu e-mail. Confirme para entrar.'));
       return;
     }
 
@@ -195,7 +197,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
           className="flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold text-[#5B5766] hover:text-[#16131F] rounded-full bg-[#FFFFFF] hover:bg-[#F3EEFF] border border-[#ECECF1] shadow-sm-layered transition-all cursor-pointer group"
         >
           <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
-          <span>VOLTAR</span>
+          <span>{t('VOLTAR')}</span>
         </button>
       </div>
 
@@ -212,7 +214,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                 <NakorLogo size={60} color="#34117E" />
               </div>
               <p className="text-[12px] font-mono font-bold text-[#6D28D9] tracking-widest uppercase">
-                Foco total. Resultado real.
+                {t('Foco total. Resultado real.')}
               </p>
             </div>
 
@@ -228,7 +230,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
             {/* Form Card */}
             <div className="w-full bg-[#FFFFFF] rounded-3xl p-6 sm:p-8 border border-[#ECECF1] shadow-lg-layered relative">
               <h2 className="text-2xl font-display font-semibold tracking-tight text-[#16131F] mb-6 text-center">
-                {view === 'login' ? 'Acessar Conta' : 'Criar Conta'}
+                {view === 'login' ? t('Acessar Conta') : t('Criar Conta')}
               </h2>
 
               {view === 'login' ? (
@@ -244,7 +246,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         type="email"
                         value={email}
                         onChange={(e) => handleFieldChange('email', e.target.value)}
-                        placeholder="seu@email.com"
+                        placeholder={t("seu@email.com")}
                         className="w-full py-4 pl-11 pr-4 bg-transparent outline-none text-[#16131F] text-sm placeholder-[#9A96A6] font-medium"
                       />
                     </div>
@@ -266,7 +268,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => handleFieldChange('password', e.target.value)}
-                        placeholder="sua senha"
+                        placeholder={t("sua senha")}
                         className="w-full py-4 pl-11 pr-11 bg-transparent outline-none text-[#16131F] text-sm placeholder-[#9A96A6] font-medium"
                       />
                       <button 
@@ -293,7 +295,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                       onClick={handleForgotPassword}
                       className="text-xs text-[#6D28D9] hover:text-[#34117E] transition-colors font-medium cursor-pointer disabled:opacity-60"
                     >
-                      {resetLoading ? 'Enviando...' : 'Esqueci minha senha'}
+                      {resetLoading ? t('Enviando...') : t('Esqueci minha senha')}
                     </button>
                     
                     {forgotPasswordMsg && (
@@ -310,7 +312,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                     disabled={loading}
                     className="w-full bg-gradient-to-r from-[#5B21B6] to-[#34117E] hover:from-[#6D28D9] hover:to-[#5B21B6] active:scale-[0.98] text-white font-bold py-4 rounded-xl text-sm transition-all shadow-md-layered flex items-center justify-center gap-2 cursor-pointer mt-2 disabled:opacity-60"
                   >
-                    {loading ? 'Entrando...' : 'Entrar'}
+                    {loading ? t('Entrando...') : t('Entrar')}
                   </button>
                 </form>
               ) : (
@@ -326,7 +328,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         type="text"
                         value={name}
                         onChange={(e) => handleFieldChange('name', e.target.value)}
-                        placeholder="seu nome completo"
+                        placeholder={t("seu nome completo")}
                         className="w-full py-4 pl-11 pr-4 bg-transparent outline-none text-[#16131F] text-sm placeholder-[#9A96A6] font-medium"
                       />
                     </div>
@@ -348,7 +350,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         type="email"
                         value={email}
                         onChange={(e) => handleFieldChange('email', e.target.value)}
-                        placeholder="seu@email.com"
+                        placeholder={t("seu@email.com")}
                         className="w-full py-4 pl-11 pr-4 bg-transparent outline-none text-[#16131F] text-sm placeholder-[#9A96A6] font-medium"
                       />
                     </div>
@@ -370,7 +372,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => handleFieldChange('password', e.target.value)}
-                        placeholder="sua senha"
+                        placeholder={t("sua senha")}
                         className="w-full py-4 pl-11 pr-11 bg-transparent outline-none text-[#16131F] text-sm placeholder-[#9A96A6] font-medium"
                       />
                       <button 
@@ -399,7 +401,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                         type={showConfirmPassword ? 'text' : 'password'}
                         value={confirmPassword}
                         onChange={(e) => handleFieldChange('confirmPassword', e.target.value)}
-                        placeholder="confirmar senha"
+                        placeholder={t("confirmar senha")}
                         className="w-full py-4 pl-11 pr-11 bg-transparent outline-none text-[#16131F] text-sm placeholder-[#9A96A6] font-medium"
                       />
                       <button 
@@ -424,7 +426,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                     disabled={loading}
                     className="w-full bg-gradient-to-r from-[#5B21B6] to-[#34117E] hover:from-[#6D28D9] hover:to-[#5B21B6] active:scale-[0.98] text-white font-bold py-4 rounded-xl text-sm transition-all shadow-md-layered flex items-center justify-center gap-2 cursor-pointer mt-2 disabled:opacity-60"
                   >
-                    {loading ? 'Criando conta...' : 'Criar conta'}
+                    {loading ? t('Criando conta...') : t('Criar conta')}
                   </button>
 
 
@@ -451,7 +453,7 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                     }}
                     className="w-full py-4 bg-white dark:bg-[#151622] hover:bg-[#FAFAFB] text-[#34117E] font-bold rounded-xl text-sm border border-[#ECECF1] shadow-sm-layered transition-all active:scale-[0.98] text-center cursor-pointer"
                   >
-                    Criar uma conta
+                    {t('Criar uma conta')}
                   </button>
                 </>
               ) : (
@@ -462,13 +464,13 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
                   }}
                   className="text-xs font-mono font-bold text-[#6D28D9] hover:text-[#34117E] transition-all cursor-pointer"
                 >
-                  VOLTAR PARA O LOGIN
+                  {t('VOLTAR PARA O LOGIN')}
                 </button>
               )}
 
               {/* Terms Footer */}
               <p className="text-[11px] font-sans text-[#5B5766] text-center max-w-xs leading-relaxed pt-2">
-                Ao continuar você aceita nossos <a href="#" className="underline hover:text-[#16131F]">Termos de uso</a>
+                {t('Ao continuar você aceita nossos')} <a href="#" className="underline hover:text-[#16131F]">{t('Termos de uso')}</a>
               </p>
             </div>
 
@@ -492,21 +494,21 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
           <div className="space-y-12 relative z-10 my-auto">
             <div className="space-y-4 max-w-md">
               <h1 className="text-4xl font-display font-semibold tracking-tight text-white leading-tight">
-                Liberte seu potencial acadêmico.
+                {t('Liberte seu potencial acadêmico.')}
               </h1>
               <p className="text-[#E4DAFF] text-base leading-relaxed">
-                Descubra por que o Nakor é o sistema definitivo de foco utilizado por estudantes de alto rendimento. Sem brechas, sem distrações.
+                {t('Descubra por que o Nakor é o sistema definitivo de foco utilizado por estudantes de alto rendimento. Sem brechas, sem distrações.')}
               </p>
             </div>
 
             {/* Dashboard / Mini Mockup */}
             <div className="bg-white/[0.04] backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg-layered max-w-md">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-mono tracking-wider text-[#E4DAFF] uppercase">Sessão Ativa</span>
-                <span className="text-[10px] font-mono text-[#F3EEFF] bg-white/10 px-2.5 py-0.5 rounded-full font-bold">Modo Foco</span>
+                <span className="text-[10px] font-mono tracking-wider text-[#E4DAFF] uppercase">{t('Sessão Ativa')}</span>
+                <span className="text-[10px] font-mono text-[#F3EEFF] bg-white/10 px-2.5 py-0.5 rounded-full font-bold">{t('Modo Foco')}</span>
               </div>
-              <h4 className="text-base font-semibold text-white tracking-tight mb-1">Revisão de Redação do ENEM</h4>
-              <p className="text-xs text-neutral-300 font-sans mb-4">Duração planejada: 45 min — Sem distrações</p>
+              <h4 className="text-base font-semibold text-white tracking-tight mb-1">{t('Revisão de Redação do ENEM')}</h4>
+              <p className="text-xs text-neutral-300 font-sans mb-4">{t('Duração planejada: 45 min — Sem distrações')}</p>
               
               <div className="flex items-end justify-between">
                 <div className="text-3xl font-display font-bold tracking-tight text-white">
@@ -521,21 +523,21 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
             {/* Testimonial block */}
             <div className="border-t border-white/10 pt-6 max-w-md">
               <p className="text-xs text-[#E4DAFF] leading-relaxed italic">
-                "O Nakor mudou completamente minha rotina de estudos. O timer bloqueado não me deixa pegar o celular, e as notas de IA me dão insights que nunca tive antes."
+                {t('"O Nakor mudou completamente minha rotina de estudos. O timer bloqueado não me deixa pegar o celular, e as notas de IA me dão insights que nunca tive antes."')}
               </p>
               <div className="flex items-center gap-2 mt-3">
                 <div className="w-6 h-6 rounded-full bg-[#F3EEFF] text-[#34117E] flex items-center justify-center font-bold text-[9px]">
                   MS
                 </div>
-                <span className="text-[11px] font-medium text-white">Mateus S., Estudante de Medicina</span>
+                <span className="text-[11px] font-medium text-white">{t('Mateus S., Estudante de Medicina')}</span>
               </div>
             </div>
           </div>
 
           {/* Footer of the panel */}
           <div className="relative z-10 text-[10px] font-mono text-[#E4DAFF]/60 flex justify-between items-center">
-            <span>© Nakor Focus Systems</span>
-            <span>Estética Big Tech</span>
+            <span>{t('© Nakor Focus Systems')}</span>
+            <span>{t('Estética Big Tech')}</span>
           </div>
 
         </div>

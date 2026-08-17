@@ -1,4 +1,5 @@
 import { DesktopSidebar } from './DesktopSidebar';
+import { useT } from '../lib/i18n';
 
 import React,
 
@@ -61,6 +62,7 @@ const StackedCoins = () => (
 );
 
 export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
+  const t = useT();
   const userName = onboardingData?.name || localStorage.getItem('nakor_user') || 'Alex';
   const userEmail = onboardingData?.email || localStorage.getItem('nakor_user_email') || 'alex@email.com';
 
@@ -129,10 +131,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     
     if (days > 0) {
-      return `Termina em ${days} ${days === 1 ? 'dia' : 'dias'}`;
+      return t('Termina em {n} {unit}', { n: days, unit: t(days === 1 ? 'dia' : 'dias') });
     }
     const hours = Math.floor(diff / (1000 * 60 * 60));
-    return `Termina em ${hours}h`;
+    return t('Termina em {n}h', { n: hours });
   }, []);
 
   // Calculate real progress from history (NO FAKE DATA)
@@ -268,11 +270,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
     const time = savedOnboarding?.productiveTime || 'Manhã';
     
     if (time.toLowerCase().includes('noite')) {
-      return "Você costuma ser mais produtivo à noite. Que tal começar agora?";
+      return t("Você costuma ser mais produtivo à noite. Que tal começar agora?");
     } else if (time.toLowerCase().includes('tarde')) {
-      return "Você costuma ser mais produtivo à tarde. Que tal começar agora?";
+      return t("Você costuma ser mais produtivo à tarde. Que tal começar agora?");
     } else {
-      return "Você costuma ser mais produtivo de manhã. Que tal começar agora?";
+      return t("Você costuma ser mais produtivo de manhã. Que tal começar agora?");
     }
   }, [onboardingData]);
 
@@ -328,7 +330,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
             }`}
           >
-            Tarefas
+            {t('Tarefas')}
           </button>
           <button 
             onClick={() => setActiveMainTab('desafios')}
@@ -338,7 +340,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
             }`}
           >
-            Desafios
+            {t('Desafios')}
           </button>
         </div>
 
@@ -347,11 +349,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
             {/* Header */}
             <div className="w-full flex justify-between items-center gap-4 mb-10 flex-wrap sm:flex-nowrap">
               <div className="flex items-center gap-3 shrink-0">
-                <h1 className="text-3xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">Tarefas</h1>
+                <h1 className="text-3xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">{t('Tarefas')}</h1>
                 <button 
                   onClick={() => setIsModalOpen(true)}
                   className="w-8 h-8 rounded-full bg-[#34117E] hover:bg-[#250b61] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(52,17,126,0.3)] hover:scale-110 active:scale-95 transition-all cursor-pointer shrink-0"
-                  title="Adicionar Tarefa"
+                  title={t('Adicionar Tarefa')}
                 >
                   <Plus size={16} strokeWidth={3} />
                 </button>
@@ -365,7 +367,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
               {/* Left Column (Tasks Checklist) */}
               <div className="md:col-span-2 space-y-6 w-full flex flex-col">
                 <span className="text-xs text-neutral-400 font-bold uppercase tracking-wider pl-1">
-                  Hoje
+                  {t('Hoje')}
                 </span>
 
                 {/* Checklist Container */}
@@ -375,7 +377,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     <div className="w-full bg-white dark:bg-[#151622] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 rounded-[28px] py-14 px-6 flex flex-col items-center justify-center text-center shadow-sm-layered">
                       <ClipboardList className="text-neutral-300 mb-3.5 animate-pulse" size={40} strokeWidth={1.5} />
                       <p className="text-sm text-neutral-500 dark:text-neutral-400 font-bold leading-relaxed max-w-[200px]">
-                        Nenhuma tarefa ainda. Adicione sua primeira!
+                        {t('Nenhuma tarefa ainda. Adicione sua primeira!')}
                       </p>
                     </div>
                   ) : (
@@ -426,14 +428,14 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                   className="w-full py-4 bg-[#34117E] hover:bg-[#250b61] text-white text-[15px] font-extrabold rounded-[20px] shadow-[0_10px_25px_-5px_rgba(52,17,126,0.35)] hover:shadow-[0_14px_30px_-5px_rgba(52,17,126,0.45)] hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex justify-center items-center gap-2.5 cursor-pointer mt-4 border border-[#34117E]/10"
                 >
                   <Plus size={18} strokeWidth={3} className="text-white" />
-                  <span>Adicionar Nova Tarefa</span>
+                  <span>{t('Adicionar Nova Tarefa')}</span>
                 </button>
               </div>
 
               {/* Right Column (Goal and Tip Widget) */}
               <div className="space-y-6 w-full flex flex-col">
                 <span className="text-xs text-neutral-400 font-bold uppercase tracking-wider pl-1 hidden md:block opacity-0">
-                  Resumo
+                  {t('Resumo')}
                 </span>
 
                 {/* Card meta de hoje */}
@@ -441,10 +443,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                   <div className="flex justify-between items-center mb-5">
                     <div>
                       <span className="text-xs text-white/60 font-bold uppercase tracking-wider block mb-1">
-                        Meta de hoje
+                        {t('Meta de hoje')}
                       </span>
                       <span className="text-lg font-bold text-white">
-                        {completedTasks} de {totalTasks} atividades
+                        {t('{completed} de {total} atividades', { completed: completedTasks, total: totalTasks })}
                       </span>
                     </div>
                     
@@ -498,7 +500,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
           <div className="w-full flex flex-col">
             {/* Header Desafios */}
             <div className="w-full flex justify-between items-center mb-5">
-              <h1 className="text-3xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">Desafios</h1>
+              <h1 className="text-3xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">{t('Desafios')}</h1>
             </div>
 
             {/* Sub-abas */}
@@ -511,7 +513,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
                 }`}
               >
-                Diários
+                {t('Diários')}
               </button>
               <button 
                 onClick={() => setActiveSubTab('semanais')}
@@ -521,7 +523,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                     : 'text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA]'
                 }`}
               >
-                Semanais
+                {t('Semanais')}
               </button>
             </div>
 
@@ -539,10 +541,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         
                         <div className="flex-1 min-w-0">
                           <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#C4B5FD]/15 text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#C4B5FD]/30">
-                            DESAFIO DIÁRIO
+                            {t('DESAFIO DIÁRIO')}
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
-                            Foque por 1h sem sair do app
+                            {t('Foque por 1h sem sair do app')}
                           </h3>
                         </div>
                       </div>
@@ -556,7 +558,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <div className="flex justify-end">
                           <span className="text-xs font-bold text-white/60">
-                            <span className="text-[#C4B5FD]">{todayFocusMinutes}</span> / 60 min
+                            <span className="text-[#C4B5FD]">{todayFocusMinutes}</span> {t('/ 60 min')}
                           </span>
                         </div>
                       </div>
@@ -565,13 +567,13 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                       <div className="flex items-center justify-between pt-1">
                         <div className="flex items-center gap-1.5 text-xs text-white/70 font-medium">
                           <Clock size={13} className="text-white/50" />
-                          <span>Termina em {timeLeftToday}</span>
+                          <span>{t('Termina em {time}', { time: timeLeftToday })}</span>
                         </div>
                         <button 
                           onClick={() => onNavigate?.('new_activity')}
                           className="bg-[#5B34C7] hover:bg-[#4A2AA8] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
                         >
-                          Iniciar
+                          {t('Iniciar')}
                         </button>
 
                       </div>
@@ -586,10 +588,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         
                         <div className="flex-1 min-w-0">
                           <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#34117E]/10 text-[#34117E] dark:text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5">
-                            DESAFIO DIÁRIO
+                            {t('DESAFIO DIÁRIO')}
                           </span>
                           <h3 className="text-sm font-bold text-neutral-400 line-through leading-tight tracking-tight">
-                            Complete 5 tarefas hoje
+                            {t('Complete 5 tarefas hoje')}
                           </h3>
                         </div>
                       </div>
@@ -609,10 +611,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         
                         <div className="flex-1 min-w-0">
                           <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 text-neutral-500 dark:text-neutral-400 text-[9px] font-bold uppercase tracking-wider mb-1.5">
-                            DESAFIO DIÁRIO
+                            {t('DESAFIO DIÁRIO')}
                           </span>
                           <h3 className="text-sm font-bold text-neutral-500 dark:text-neutral-400 leading-tight tracking-tight">
-                            Use o modo foco por 2h
+                            {t('Use o modo foco por 2h')}
                           </h3>
                         </div>
                       </div>
@@ -634,10 +636,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         
                         <div className="flex-1 min-w-0">
                           <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#C4B5FD]/15 text-[#C4B5FD] text-[9px] font-extrabold uppercase tracking-wider mb-1.5 border border-[#C4B5FD]/30">
-                            DESAFIO SEMANAL
+                            {t('DESAFIO SEMANAL')}
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
-                            Acumule 10h de foco essa semana
+                            {t('Acumule 10h de foco essa semana')}
                           </h3>
                         </div>
                       </div>
@@ -651,7 +653,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <div className="flex justify-end">
                           <span className="text-xs font-bold text-white/60">
-                            <span className="text-[#C4B5FD]">{weeklyFocusHours.toFixed(1)}h</span> / 10h
+                            <span className="text-[#C4B5FD]">{weeklyFocusHours.toFixed(1)}h</span> {t('/ 10h')}
                           </span>
                         </div>
                       </div>
@@ -665,7 +667,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                           onClick={() => onNavigate?.('new_activity')}
                           className="bg-[#5B34C7] hover:bg-[#4A2AA8] text-white font-extrabold text-xs px-5 py-2.5 rounded-[16px] transition-all shadow-md-layered cursor-pointer"
                         >
-                          Continuar
+                          {t('Continuar')}
                         </button>
                       </div>
 
@@ -680,10 +682,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         
                         <div className="flex-1 min-w-0">
                           <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/10 text-white/80 text-[9px] font-bold uppercase tracking-wider mb-1.5">
-                            DESAFIO SEMANAL
+                            {t('DESAFIO SEMANAL')}
                           </span>
                           <h3 className="text-base font-extrabold text-white leading-tight tracking-tight">
-                            Mantenha streak por 7 dias
+                            {t('Mantenha streak por 7 dias')}
                           </h3>
                         </div>
                       </div>
@@ -697,11 +699,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         </div>
                         <div className="flex justify-between items-center mt-2">
                           <span className="text-xs font-bold text-white/70">
-                            <span className="text-white">{Math.min(streak, 7)}</span> / 7 dias
+                            <span className="text-white">{Math.min(streak, 7)}</span> {t('/ 7 dias')}
                           </span>
                           <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-xl border border-white/20">
                             <CoinIcon className="w-3.5 h-3.5 text-white" />
-                            <span className="text-xs font-extrabold text-white">+300 coins</span>
+                            <span className="text-xs font-extrabold text-white">{t('+300 coins')}</span>
                           </div>
                         </div>
                       </div>
@@ -716,10 +718,10 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                         
                         <div className="flex-1 min-w-0">
                           <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 text-neutral-400 text-[9px] font-bold uppercase tracking-wider mb-1.5">
-                            DESAFIO SEMANAL
+                            {t('DESAFIO SEMANAL')}
                           </span>
                           <h3 className="text-base font-extrabold text-[#21222D] dark:text-[#F8F9FA] leading-tight tracking-tight">
-                            Atinja nota média 9.0
+                            {t('Atinja nota média 9.0')}
                           </h3>
                         </div>
                       </div>
@@ -737,7 +739,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                           </span>
                           <div className="flex items-center gap-1.5 bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 px-3 py-1 rounded-xl">
                             <CoinIcon className="w-3.5 h-3.5 text-neutral-400" />
-                            <span className="text-xs font-extrabold text-neutral-400">+500 coins</span>
+                            <span className="text-xs font-extrabold text-neutral-400">{t('+500 coins')}</span>
                           </div>
                         </div>
                       </div>
@@ -753,22 +755,22 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                   <StackedCoins />
                   <div className="text-center mt-4">
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider">
-                      Recompensas Ativas
+                      {t('Recompensas Ativas')}
                     </p>
                     <p className="text-2xl font-extrabold text-[#34117E] dark:text-[#C4B5FD] tracking-tight mt-1.5">
-                      +680 coins
+                      {t('+680 coins')}
                     </p>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium leading-relaxed mt-2.5 max-w-[200px] mx-auto">
-                      Conclua seus desafios diários e semanais para acumular moedas e resgatar prêmios incríveis na Loja Nakor!
+                      {t('Conclua seus desafios diários e semanais para acumular moedas e resgatar prêmios incríveis na Loja Nakor!')}
                     </p>
                   </div>
                 </div>
 
                 {/* Info Card */}
                 <div className="w-full bg-[#34117E]/10 rounded-[20px] p-5 border border-[#34117E]/20 flex flex-col text-left shadow-sm-layered">
-                  <span className="text-xs text-[#34117E] dark:text-[#C4B5FD] font-bold uppercase tracking-widest mb-2 block">DICA DE SUCESSO</span>
+                  <span className="text-xs text-[#34117E] dark:text-[#C4B5FD] font-bold uppercase tracking-widest mb-2 block">{t('DICA DE SUCESSO')}</span>
                   <p className="text-[#21222D]/80 dark:text-[#F8F9FA]/80 text-xs font-semibold leading-relaxed">
-                    Sua meta semanal de foco pode ser atingida com apenas duas sessões de 45 minutos por dia. Mantenha a consistência!
+                    {t('Sua meta semanal de foco pode ser atingida com apenas duas sessões de 45 minutos por dia. Mantenha a consistência!')}
                   </p>
                 </div>
               </div>
@@ -793,7 +795,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
             <div className="w-12 h-1 bg-neutral-300 rounded-full mx-auto mb-5" />
             
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">Nova tarefa</h2>
+              <h2 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">{t('Nova tarefa')}</h2>
               <button 
                 onClick={() => setIsModalOpen(false)}
                 className="w-8 h-8 rounded-full bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] hover:bg-[#DBDBE5]/60 dark:bg-[#2A2B3D]/60 transition-colors cursor-pointer"
@@ -806,11 +808,11 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
               {/* Nome da tarefa */}
               <div className="space-y-2">
                 <label className="text-[11px] font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Nome da tarefa
+                  {t('Nome da tarefa')}
                 </label>
                 <input
                   type="text"
-                  placeholder="Ex: Estudar Matemática"
+                  placeholder={t('Ex: Estudar Matemática')}
                   value={taskName}
                   onChange={(e) => setTaskName(e.target.value)}
                   className="w-full bg-white dark:bg-[#151622] border border-[#DBDBE5] dark:border-[#2A2B3D] focus:border-[#34117E] text-[#21222D] dark:text-[#F8F9FA] text-sm rounded-[16px] px-4 py-4 outline-none transition-all placeholder:text-neutral-400 font-bold"
@@ -822,7 +824,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
               {/* Duração */}
               <div className="space-y-3">
                 <label className="text-[11px] font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Duração estimada
+                  {t('Duração estimada')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {durations.map(dur => (
@@ -847,7 +849,7 @@ export function TasksScreen({ onboardingData, onNavigate }: TasksScreenProps) {
                 type="submit"
                 className="w-full bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] active:scale-95 text-white font-bold py-4 rounded-[16px] text-sm transition-all shadow-md-layered mt-2 cursor-pointer flex justify-center items-center"
               >
-                Adicionar
+                {t('Adicionar')}
               </button>
             </form>
           </div>

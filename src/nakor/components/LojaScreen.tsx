@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingBag, Lock, Gift, Star, ArrowLeft, CheckCircle2, AlertCircle, ChevronRight, X } from 'lucide-react';
 import { DesktopSidebar } from './DesktopSidebar';
 import { NakorLogo } from './NakorLogo';
+import { useT } from '../lib/i18n';
 
 // Import photorealistic mockup images using Vite robust URL resolution
 import notionPackMockup from '../assets/images/notion_pack_mockup_1783483426855.jpg';
@@ -33,6 +34,7 @@ interface LojaScreenProps {
 }
 
 export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }: LojaScreenProps) {
+  const t = useT();
   const userName = onboardingData?.name || localStorage.getItem('nakor_user') || 'Alex';
   const userEmail = onboardingData?.email || localStorage.getItem('nakor_user_email') || 'alex@email.com';
 
@@ -179,12 +181,12 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
 
   const handleRedeem = (product: Product) => {
     if (redeemedIds.includes(product.id)) {
-      showToastMessage("⚠️ Você já resgatou este produto!");
+      showToastMessage(t("⚠️ Você já resgatou este produto!"));
       return;
     }
 
     if (coins < product.price) {
-      showToastMessage("❌ Coins insuficientes!");
+      showToastMessage(t("❌ Coins insuficientes!"));
       return;
     }
 
@@ -192,7 +194,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
     setCoins(newCoins);
     setRedeemedIds([...redeemedIds, product.id]);
     setSelectedProduct(null);
-    showToastMessage("✅ Resgatado com sucesso!");
+    showToastMessage(t("✅ Resgatado com sucesso!"));
   };
 
 
@@ -231,7 +233,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
         {imgSrc && (
           <img 
             src={imgSrc} 
-            alt={product.name} 
+            alt={t(product.name)} 
             className={`w-full h-full object-cover select-none pointer-events-none transition-transform duration-500 hover:scale-105 ${filterClass}`} 
             referrerPolicy="no-referrer"
           />
@@ -249,9 +251,9 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
           {/* HEADER */}
           <div id="loja-header" className="w-full flex flex-col mb-10">
             <div className="mb-6">
-              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">RECOMPENSAS</span>
-              <h1 className="text-3xl font-semibold tracking-tight text-[#21222D] dark:text-[#F8F9FA] font-sans">Trocas</h1>
-              <p className="text-neutral-500 dark:text-neutral-400 text-xs mt-0.5 font-medium">Sua dedicação diária vale prêmios exclusivos</p>
+              <span className="text-[10px] text-[#34117E] dark:text-[#C4B5FD] font-mono tracking-widest uppercase mb-1.5 block font-bold">{t('RECOMPENSAS')}</span>
+              <h1 className="text-3xl font-semibold tracking-tight text-[#21222D] dark:text-[#F8F9FA] font-sans">{t('Trocas')}</h1>
+              <p className="text-neutral-500 dark:text-neutral-400 text-xs mt-0.5 font-medium">{t('Sua dedicação diária vale prêmios exclusivos')}</p>
             </div>
 
             {/* WALLET CARD */}
@@ -259,7 +261,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="text-[#9CA3AF] dark:text-neutral-400 text-[10px] font-mono tracking-[2px] uppercase mb-1">
-                    Seu Saldo
+                    {t('Seu Saldo')}
                   </div>
                   <div className="flex items-baseline gap-2">
                     <span className="text-white font-mono text-[40px] font-bold leading-none">
@@ -271,7 +273,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   </div>
                   {lastSessionCoins && (
                     <div className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1.5">
-                      +{lastSessionCoins} coins na última sessão
+                      {t('+{n} coins na última sessão', { n: lastSessionCoins })}
                     </div>
                   )}
                 </div>
@@ -289,7 +291,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                 {nextProduct ? (
                   <>
                     <div className="text-[#9CA3AF] dark:text-neutral-400 text-[11px] mb-2 font-medium">
-                      Faltam {nextProduct.price - coins} coins para {nextProduct.name}
+                      {t('Faltam {n} coins para {name}', { n: nextProduct.price - coins, name: t(nextProduct.name) })}
                     </div>
                     <div className="w-full h-[6px] bg-[#374151] rounded-[3px] overflow-hidden">
                       <div 
@@ -300,7 +302,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   </>
                 ) : (
                   <div className="text-[#A5B4FC] text-[11px] font-medium pt-1">
-                    Você pode resgatar prêmios!
+                    {t('Você pode resgatar prêmios!')}
                   </div>
                 )}
               </div>
@@ -321,7 +323,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                       : 'bg-white dark:bg-[#151622] text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-sm-layered'
                   }`}
                 >
-                  {cat}
+                  {t(cat)}
                 </button>
               );
             })}
@@ -331,7 +333,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
           {featuredProduct && activeCategory === "Todos" && (
             <div className="mb-8">
               <span className="text-[10px] text-[#6B7280] dark:text-neutral-400 font-mono tracking-[2px] uppercase mb-3 block">
-                EM DESTAQUE
+                {t('EM DESTAQUE')}
               </span>
               <div 
                 onClick={() => setSelectedProduct(featuredProduct)}
@@ -342,10 +344,10 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                 </div>
                 <div className="flex-1 p-4 flex flex-col justify-center">
                   <span className="text-[9px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase block mb-1">
-                    {featuredProduct.category}
+                    {t(featuredProduct.category)}
                   </span>
                   <h3 className="text-[15px] font-bold text-[#21222D] dark:text-[#F8F9FA] leading-snug line-clamp-2 mb-3">
-                    {featuredProduct.name}
+                    {t(featuredProduct.name)}
                   </h3>
                   <div className="mt-auto self-start">
                     {(() => {
@@ -395,14 +397,14 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                   {/* Product Information Card Area */}
                   <div className="p-3 flex flex-col flex-1 bg-transparent">
                     <span className="text-[9px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase block mb-1">
-                      {product.category}
+                      {t(product.category)}
                     </span>
-                    <h3 className="text-[13px] font-bold text-[#21222D] dark:text-[#F8F9FA] leading-snug line-clamp-2">{product.name}</h3>
+                    <h3 className="text-[13px] font-bold text-[#21222D] dark:text-[#F8F9FA] leading-snug line-clamp-2">{t(product.name)}</h3>
                     
                     <div className="mt-auto pt-3">
                       {(product.locked || product.soon) ? (
                         <div className="inline-block mt-1">
-                          <span className="text-[10px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase">EM BREVE</span>
+                          <span className="text-[10px] text-[#9CA3AF] dark:text-neutral-400 font-mono tracking-[1px] uppercase">{t('EM BREVE')}</span>
                         </div>
                       ) : (
                         <div className="flex flex-col items-start gap-0.5">
@@ -416,7 +418,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                           </div>
                           {!canAfford && (
                             <span className="text-[#9CA3AF] dark:text-neutral-400 text-[10px] pl-1 font-mono">
-                              faltam {product.price - coins}
+                              {t('faltam {n}', { n: product.price - coins })}
                             </span>
                           )}
                         </div>
@@ -430,8 +432,8 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
             {/* EM BREVE CARD */}
             <div className="bg-[#F9FAFB] rounded-[16px] overflow-hidden border-[1.5px] border-dashed border-[#D1D5DB] flex flex-col items-center justify-center p-4 min-h-[220px]">
               <span className="text-[32px] text-[#9CA3AF] dark:text-neutral-400 font-mono mb-2">?</span>
-              <span className="text-[11px] text-[#9CA3AF] dark:text-neutral-400 text-center font-bold font-sans">novos prêmios em breve</span>
-              <span className="text-[9px] text-[#D1D5DB] text-center mt-1">parcerias e cupons semanais</span>
+              <span className="text-[11px] text-[#9CA3AF] dark:text-neutral-400 text-center font-bold font-sans">{t('novos prêmios em breve')}</span>
+              <span className="text-[9px] text-[#D1D5DB] text-center mt-1">{t('parcerias e cupons semanais')}</span>
             </div>
           </div>
 
@@ -470,13 +472,13 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                 {/* Badge de categoria */}
                 <div className="flex justify-start shrink-0 mb-3">
                   <span className="bg-[#DBDBE5]/25 dark:bg-[#2A2B3D]/25 text-[#34117E] dark:text-[#C4B5FD] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 font-mono font-medium text-[9px] tracking-widest rounded-full px-3 py-1 uppercase">
-                    {selectedProduct.category}
+                    {t(selectedProduct.category)}
                   </span>
                 </div>
 
                 {/* Nome do produto */}
                 <h2 className="text-xl font-semibold text-[#21222D] dark:text-[#F8F9FA] tracking-tight font-sans shrink-0">
-                  {selectedProduct.name}
+                  {t(selectedProduct.name)}
                 </h2>
 
                 {/* Imagem/visual do produto */}
@@ -486,14 +488,14 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
 
                 {/* Descrição */}
                 <p className="text-neutral-500 dark:text-neutral-400 text-xs leading-relaxed shrink-0 mb-6 font-medium">
-                  {selectedProduct.fullDescription}
+                  {t(selectedProduct.fullDescription)}
                 </p>
 
                 {/* Card de Preço & Resgate */}
                 <div className="bg-[#F5F5F7] dark:bg-[#0D0F14] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shrink-0 rounded-[20px] p-5 flex flex-col gap-3.5 shadow-sm-layered">
                   {/* Preço Original */}
                   <div className="flex justify-between items-center">
-                    <span className="text-neutral-400 text-xs font-medium">Preço Original</span>
+                    <span className="text-neutral-400 text-xs font-medium">{t('Preço Original')}</span>
                     <span className="text-neutral-400 line-through text-xs font-mono font-medium">
                       {selectedProduct.originalPrice ? `${selectedProduct.originalPrice} coins` : "—"}
                     </span>
@@ -501,7 +503,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
 
                   {/* Custo do Resgate */}
                   <div className="flex justify-between items-center border-t border-[#DBDBE5]/20 dark:border-[#2A2B3D]/20 pt-3.5">
-                    <span className="text-neutral-600 text-xs font-medium">Custo do Resgate</span>
+                    <span className="text-neutral-600 text-xs font-medium">{t('Custo do Resgate')}</span>
                     <span className="text-[#34117E] dark:text-[#C4B5FD] font-bold text-sm font-mono">
                       {selectedProduct.price} COINS
                     </span>
@@ -514,21 +516,21 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                     disabled
                     className="w-full h-12 bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 rounded-[16px] flex items-center justify-center text-neutral-400 font-bold text-xs mt-6 cursor-not-allowed"
                   >
-                    Produto já resgatado
+                    {t('Produto já resgatado')}
                   </button>
                 ) : coins >= selectedProduct.price ? (
                   <button 
                     onClick={() => handleRedeem(selectedProduct)}
                     className="w-full h-12 bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] text-white font-bold text-xs rounded-[16px] flex items-center justify-center mt-6 transition-all cursor-pointer shadow-sm-layered"
                   >
-                    Resgatar por {selectedProduct.price} coins
+                    {t('Resgatar por {price} coins', { price: selectedProduct.price })}
                   </button>
                 ) : (
                   <button 
                     disabled
                     className="w-full h-12 bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 rounded-[16px] flex items-center justify-center text-neutral-400 font-bold text-xs mt-6 cursor-not-allowed"
                   >
-                    Coins insuficientes — continue focando!
+                    {t('Coins insuficientes — continue focando!')}
                   </button>
                 )}
               </motion.div>

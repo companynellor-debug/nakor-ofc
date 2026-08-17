@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useT } from '../lib/i18n';
 import { ChevronLeft, Lock, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -25,6 +26,7 @@ interface Seal {
 }
 
 export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
+  const t = useT();
   const [coins, setCoins] = useState<number>(() => {
     const saved = localStorage.getItem('nakor_coins');
     return saved ? parseInt(saved, 10) : 0;
@@ -225,9 +227,9 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
       // Show toast
       if (newlyUnlockedSeals.length === 1) {
         const s = newlyUnlockedSeals[0];
-        setToastMessage(`🎉 Selo ${s.name} desbloqueado! +${s.reward} coins`);
+        setToastMessage(t('🎉 Selo {name} desbloqueado! +{reward} coins', { name: t(s.name), reward: s.reward }));
       } else {
-        setToastMessage(`🎉 ${newlyUnlockedSeals.length} novos selos desbloqueados! +${addedCoins} coins`);
+        setToastMessage(t('🎉 {count} novos selos desbloqueados! +{added} coins', { count: newlyUnlockedSeals.length, added: addedCoins }));
       }
 
       const timer = setTimeout(() => {
@@ -255,17 +257,17 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
   }, [nextSeal, streak, totalHours, hasHistory]);
 
   const progressText = useMemo(() => {
-    if (!nextSeal) return 'Nível Máximo Atingido!';
+    if (!nextSeal) return t('Nível Máximo Atingido!');
     
     if (nextSeal.id === 'estreante') {
-      return 'Falta 1 atividade para Estreante';
+      return t('Falta 1 atividade para Estreante');
     } else if (nextSeal.id === 'consistente') {
       const remaining = Math.max(0, 7 - streak);
-      return `Faltam ${remaining} dias de streak para Consistente`;
+      return t('Faltam {n} dias de streak para Consistente', { n: remaining });
     } else {
       const required = nextSeal.id === 'focado' ? 25 : nextSeal.id === 'dedicado' ? 100 : nextSeal.id === 'elite' ? 250 : 500;
       const remaining = Math.max(0, required - totalHours);
-      return `Faltam ${remaining}h para ${nextSeal.name}`;
+      return t('Faltam {n}h para {name}', { n: remaining, name: t(nextSeal.name) });
     }
   }, [nextSeal, streak, totalHours]);
 
@@ -273,12 +275,12 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
     if (!nextSeal) return '';
     
     if (nextSeal.id === 'estreante') {
-      return `${hasHistory ? 1 : 0} / 1 atividade`;
+      return t('{n} / 1 atividade', { n: hasHistory ? 1 : 0 });
     } else if (nextSeal.id === 'consistente') {
-      return `${streak} / 7 dias`;
+      return t('{n} / 7 dias', { n: streak });
     } else {
       const required = nextSeal.id === 'focado' ? 25 : nextSeal.id === 'dedicado' ? 100 : nextSeal.id === 'elite' ? 250 : 500;
-      return `${totalHours}h / ${required}h`;
+      return t('{h}h / {req}h', { h: totalHours, req: required });
     }
   }, [nextSeal, streak, totalHours, hasHistory]);
 
@@ -298,12 +300,12 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
               className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 hover:text-[#21222D] dark:hover:text-[#F8F9FA] text-xs font-bold uppercase tracking-wider mb-2 cursor-pointer transition-colors"
             >
               <ChevronLeft size={16} />
-              Voltar
+              {t('Voltar')}
             </button>
             <h1 className="text-[32px] font-extrabold tracking-tighter text-[#21222D] dark:text-[#F8F9FA] uppercase leading-none">
-              CONQUISTAS
+              {t('CONQUISTAS')}
             </h1>
-            <span className="text-neutral-500 dark:text-neutral-400 text-sm font-semibold mt-1">Seu progresso</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-sm font-semibold mt-1">{t('Seu progresso')}</span>
           </div>
 
           {/* Badge Coins */}
@@ -334,10 +336,10 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
               </div>
 
               <h2 className="text-2xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight uppercase leading-none mb-1">
-                {currentSeal.name}
+                {t(currentSeal.name)}
               </h2>
               <p className="text-neutral-500 dark:text-neutral-400 text-xs font-bold uppercase tracking-wider mb-5">
-                {currentSeal.requirementText}
+                {t(currentSeal.requirementText)}
               </p>
             </>
           ) : (
@@ -347,10 +349,10 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
                 <Lock size={36} className="text-neutral-400" />
               </div>
               <h2 className="text-xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight uppercase mb-1">
-                Sem Conquistas
+                {t('Sem Conquistas')}
               </h2>
               <p className="text-neutral-500 dark:text-neutral-400 text-xs font-semibold mb-5">
-                Complete atividades para desbloquear selos!
+                {t('Complete atividades para desbloquear selos!')}
               </p>
             </>
           )}
@@ -360,9 +362,9 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
             <div className="flex flex-col">
               <span className="text-xs text-[#21222D] dark:text-[#F8F9FA] font-bold tracking-tight mb-2.5 block text-center">
                 {nextSeal ? (
-                  <>Faltam <span className="text-[#34117E] dark:text-[#C4B5FD]">{nextSeal.id === 'consistente' ? `${Math.max(0, 7 - streak)} dias de streak` : nextSeal.id === 'estreante' ? '1 atividade' : `${Math.max(0, (nextSeal.id === 'focado' ? 25 : nextSeal.id === 'dedicado' ? 100 : nextSeal.id === 'elite' ? 250 : 500) - totalHours)}h`}</span> para {nextSeal.name}</>
+                  <>{t('Faltam')} <span className="text-[#34117E] dark:text-[#C4B5FD]">{nextSeal.id === 'consistente' ? t('{n} dias de streak', { n: Math.max(0, 7 - streak) }) : nextSeal.id === 'estreante' ? t('1 atividade') : t('{n}h', { n: Math.max(0, (nextSeal.id === 'focado' ? 25 : nextSeal.id === 'dedicado' ? 100 : nextSeal.id === 'elite' ? 250 : 500) - totalHours) })}</span> {t('para {name}', { name: t(nextSeal.name) })}</>
                 ) : (
-                  'Todos os selos desbloqueados!'
+                  t('Todos os selos desbloqueados!')
                 )}
               </span>
 
@@ -406,7 +408,7 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
                       <Lock size={15} className="text-neutral-500 dark:text-neutral-400" />
                     </div>
                     <span className="text-[10px] font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                      Bloqueado
+                      {t('Bloqueado')}
                     </span>
                   </div>
                 )}
@@ -431,23 +433,23 @@ export function AchievementsScreen({ onNavigate }: AchievementsScreenProps) {
 
                 {/* Seal Name */}
                 <span className="text-sm font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight uppercase block leading-none mb-1">
-                  {seal.name}
+                  {t(seal.name)}
                 </span>
 
                 {/* Requirement or Secret label */}
                 <span className="text-[10px] text-neutral-400 font-bold text-center block mb-3 line-clamp-1">
-                  {isLenda && !isUnlocked ? 'Requisito Secreto' : seal.requirementText}
+                  {isLenda && !isUnlocked ? t('Requisito Secreto') : t(seal.requirementText)}
                 </span>
 
                 {/* Unlock Status Text */}
                 <div className="mt-auto">
                   {isUnlocked ? (
                     <span className="text-[10px] font-extrabold text-[#34117E] dark:text-[#C4B5FD] uppercase tracking-wider flex items-center gap-1">
-                      Conquistado
+                      {t('Conquistado')}
                     </span>
                   ) : (
                     <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
-                      {isLenda ? 'Requisito secreto' : 'Bloqueado'}
+                      {isLenda ? t('Requisito secreto') : t('Bloqueado')}
                     </span>
                   )}
                 </div>
