@@ -6,6 +6,7 @@ import { UnifiedGlowCard } from './UnifiedGlowCard';
 import { CARD_LAYOUTS, LayoutThumb } from './CardLayoutThumbs';
 import { AuraDomeCard } from './AuraDomeCard';
 import { WidgetStackCard } from './WidgetStackCard';
+import { useT } from '../lib/i18n';
 
 interface CardColorsScreenProps {
   onBack: () => void;
@@ -130,6 +131,7 @@ export function getCardBgStyle(styleId: string, accentColor: string, opacity: nu
 }
 
 export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
+  const t = useT();
   const [accentColor, setAccentColor] = useState('#7C3AED');
   const [bgStyle, setBgStyle] = useState('gradient'); // 'gradient', 'solid', 'grain'
   const [scoreStyle, setScoreStyle] = useState('large'); // 'large', 'compact'
@@ -231,7 +233,7 @@ useEffect(() => {
           </button>
           
           <h1 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight absolute left-1/2 -translate-x-1/2">
-            Cores dos cards
+            {t('Cores dos cards')}
           </h1>
           
           <div className="w-10 h-10" />
@@ -244,14 +246,14 @@ useEffect(() => {
             (() => {
               const previewProps = {
                 accentColor,
-                title: lastActivity?.nome || 'Sessão de Foco',
+                title: lastActivity?.nome || t('Sessão de Foco'),
                 minutes: lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 45,
                 plannedMinutes: lastActivity?.duracao_prevista
                   ? Math.round(lastActivity.duracao_prevista / 60)
                   : 60,
                 score: lastActivity?.nota ?? 8.7,
                 exits: lastActivity?.saidas ?? 0,
-                message: conteudo.fraseIA ? lastActivity?.mensagem_card || 'isso aí 😎' : undefined,
+                message: conteudo.fraseIA ? lastActivity?.mensagem_card || t('isso aí 😎') : undefined,
               };
               if (layout === 'aura') return <AuraDomeCard {...previewProps} />;
               if (layout === 'widget') return <WidgetStackCard {...previewProps} />;
@@ -313,7 +315,7 @@ useEffect(() => {
                         className="text-[5px] font-mono tracking-widest text-white uppercase"
                         style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55)' }}
                       >
-                        SESSÃO FOCO
+                        {t('SESSÃO FOCO')}
                       </span>
                       <div className="flex items-center gap-0.5">
                         <NakorLogo size={7} color="#FFFFFF" />
@@ -327,7 +329,7 @@ useEffect(() => {
                         {conteudo.notaIA && (
                           <>
                             <span className="text-[5px] font-mono tracking-widest text-white/60 uppercase mb-0.5">
-                              NOTA
+                              {t('NOTA')}
                             </span>
                             <div
                               className="font-extrabold tracking-tighter text-white"
@@ -351,7 +353,7 @@ useEffect(() => {
                               textShadow: '0 1px 3px rgba(0,0,0,0.55)',
                             }}
                           >
-                            {lastActivity?.mensagem_card || 'isso aí 😎'}
+                            {lastActivity?.mensagem_card || t('isso aí 😎')}
                           </p>
                         )}
                         {(conteudo.streak || conteudo.selo) && (
@@ -361,7 +363,7 @@ useEffect(() => {
                                 className="px-1.5 py-0.5 rounded-full text-white text-[5.5px] font-bold"
                                 style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
                               >
-                                🔥 {lastActivity?.streak || 1} {lastActivity?.streak === 1 ? 'dia' : 'dias'}
+                                🔥 {lastActivity?.streak || 1} {lastActivity?.streak === 1 ? t('dia') : t('dias')}
                               </span>
                             )}
                             {conteudo.selo && (
@@ -369,7 +371,7 @@ useEffect(() => {
                                 className="px-1.5 py-0.5 rounded-full text-white text-[5.5px] font-bold"
                                 style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
                               >
-                                {lastActivity?.nivel || 'Iniciante'}
+                                {lastActivity?.nivel || t('Iniciante')}
                               </span>
                             )}
                           </div>
@@ -389,7 +391,7 @@ useEffect(() => {
                             className="text-[5px] font-mono tracking-widest text-white/50 uppercase mb-1 px-1.5 py-[1px] rounded-full"
                             style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
                           >
-                            {kind === 'antes' ? 'ANTES' : 'DEPOIS'}
+                            {kind === 'antes' ? t('ANTES') : t('DEPOIS')}
                           </span>
                           <p
                             className="text-white text-[6.5px] font-medium italic leading-snug m-0 overflow-hidden"
@@ -414,7 +416,7 @@ useEffect(() => {
                         {conteudo.duracao ? (
                           <div className="flex items-center gap-0.5 opacity-70">
                             <Clock size={6} strokeWidth={1.75} />
-                            <span>{lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 25}MIN</span>
+                            <span>{lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 25}{t('MIN')}</span>
                           </div>
                         ) : <div />}
                         {conteudo.horario ? (
@@ -427,7 +429,7 @@ useEffect(() => {
               ))}
             </div>
             <p className="text-neutral-500 dark:text-neutral-400 text-[10px] text-center mt-2">
-              Prévia real: os 3 cards são gerados lado a lado
+              {t('Prévia real: os 3 cards são gerados lado a lado')}
             </p>
           </div>
           )}
@@ -435,7 +437,7 @@ useEffect(() => {
 
           {/* Formato do Card */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Formato dos cards</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Formato dos cards')}</span>
             <div className="grid grid-cols-2 gap-3">
               {CARD_LAYOUTS.map((opt) => {
                 const isSelected = layout === opt.id;
@@ -456,9 +458,9 @@ useEffect(() => {
 
                     <div>
                       <p className={`text-[13px] font-bold m-0 ${isSelected ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-neutral-500 dark:text-neutral-400'}`}>
-                        {opt.label}
+                        {t(opt.label)}
                       </p>
-                      <p className="text-[10px] text-neutral-400 m-0">{opt.hint}</p>
+                      <p className="text-[10px] text-neutral-400 m-0">{t(opt.hint)}</p>
                     </div>
                   </motion.button>
                 );
@@ -469,7 +471,7 @@ useEffect(() => {
 
           {/* Seleção de Cor */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Cor de Destaque</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Cor de Destaque')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[24px] p-5 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
               <div className="grid grid-cols-6 gap-3">
                 {colors.map((c) => (
@@ -492,7 +494,7 @@ useEffect(() => {
 
           {/* Estilo do Fundo */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Estilo do Fundo</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Estilo do Fundo')}</span>
             <div className="w-full overflow-x-auto pb-3 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0 no-scrollbar">
               <div className="flex gap-3 min-w-max">
                 {bgOptions.map((opt) => {
@@ -542,7 +544,7 @@ useEffect(() => {
                       <span className={`text-[10px] leading-tight font-bold mt-2.5 line-clamp-2 h-7 overflow-hidden ${
                         isSelected ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-neutral-500 dark:text-neutral-400'
                       }`}>
-                        {opt.label}
+                        {t(opt.label)}
                       </span>
                     </motion.button>
                   );
@@ -554,10 +556,10 @@ useEffect(() => {
           
           {/* Opacidade do Fundo */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Opacidade do fundo do card</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Opacidade do fundo do card')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[24px] p-5 flex flex-col gap-4 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
               <div className="flex justify-between items-center">
-                <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Intensidade do fundo</span>
+                <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Intensidade do fundo')}</span>
                 <span className="text-[#958CE8] font-bold">{bgOpacity}%</span>
               </div>
               <input 
@@ -573,7 +575,7 @@ useEffect(() => {
 
           {/* Estilo da Nota */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Estilo da Nota</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Estilo da Nota')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[24px] p-4 flex flex-col border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
               {scoreOptions.map((opt, idx) => {
                 const isSelected = scoreStyle === opt.id;
@@ -601,7 +603,7 @@ useEffect(() => {
                             />
                           )}
                         </div>
-                        <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{opt.label}</span>
+                        <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t(opt.label)}</span>
                       </div>
                     </button>
                     {idx < scoreOptions.length - 1 && (
@@ -616,13 +618,13 @@ useEffect(() => {
           
           {/* Conteúdo dos Cards */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">O que aparecer nos cards</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('O que aparecer nos cards')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[24px] p-4 flex flex-col gap-4 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
               
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Texto do Antes</span>
-                  <span className="text-neutral-400 text-xs font-semibold">Seu relato antes da sessão</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Texto do Antes')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Seu relato antes da sessão')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, textoAntes: !prev.textoAntes}))}
@@ -634,8 +636,8 @@ useEffect(() => {
 
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Texto do Depois</span>
-                  <span className="text-neutral-400 text-xs font-semibold">O que aconteceu de verdade</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Texto do Depois')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('O que aconteceu de verdade')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, textoDepois: !prev.textoDepois}))}
@@ -648,10 +650,10 @@ useEffect(() => {
               <div className="flex items-center justify-between opacity-50">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1">
-                    <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Nota da IA</span>
+                    <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Nota da IA')}</span>
                     <span className="text-[10px] bg-neutral-100 px-1.5 py-0.5 rounded text-[#21222D] dark:text-[#F8F9FA] ml-1 font-bold">🔒</span>
                   </div>
-                  <span className="text-neutral-400 text-xs font-semibold">Sua pontuação da sessão</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Sua pontuação da sessão')}</span>
                 </div>
                 <div className="w-12 h-6 rounded-full bg-[#958CE8] relative">
                   <div className="w-4 h-4 rounded-full bg-white absolute top-1 translate-x-7" />
@@ -660,8 +662,8 @@ useEffect(() => {
 
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Frase da IA</span>
-                  <span className="text-neutral-400 text-xs font-semibold">Mensagem gerada pela IA</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Frase da IA')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Mensagem gerada pela IA')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, fraseIA: !prev.fraseIA}))}
@@ -673,8 +675,8 @@ useEffect(() => {
 
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Streak</span>
-                  <span className="text-neutral-400 text-xs font-semibold">Seus dias seguidos de foco 🔥</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Streak')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Seus dias seguidos de foco 🔥')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, streak: !prev.streak}))}
@@ -686,8 +688,8 @@ useEffect(() => {
 
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Selo atual</span>
-                  <span className="text-neutral-400 text-xs font-semibold">Seu nível no Nakor</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Selo atual')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Seu nível no Nakor')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, selo: !prev.selo}))}
@@ -699,8 +701,8 @@ useEffect(() => {
 
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Horário de conclusão</span>
-                  <span className="text-neutral-400 text-xs font-semibold">Hora que você terminou</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Horário de conclusão')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Hora que você terminou')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, horario: !prev.horario}))}
@@ -712,8 +714,8 @@ useEffect(() => {
 
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">Duração da sessão</span>
-                  <span className="text-neutral-400 text-xs font-semibold">Quanto tempo focou</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Duração da sessão')}</span>
+                  <span className="text-neutral-400 text-xs font-semibold">{t('Quanto tempo focou')}</span>
                 </div>
                 <button 
                   onClick={() => setConteudo(prev => ({...prev, duracao: !prev.duracao}))}
@@ -730,7 +732,7 @@ useEffect(() => {
             onClick={handleSave}
             className="w-full h-[56px] rounded-full bg-[#34117E] hover:bg-[#2C0E6B] text-white font-bold text-[16px] flex items-center justify-center mt-2 mb-4 transition-all active:scale-[0.98] shadow-sm cursor-pointer"
           >
-            Salvar estilo
+            {t('Salvar estilo')}
           </button>
 
         </div>
@@ -745,7 +747,7 @@ useEffect(() => {
             exit={{ opacity: 0, y: 20 }}
             className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#21222D] border border-white/10 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full shadow-lg z-50 pointer-events-none whitespace-nowrap text-center max-w-[350px]"
           >
-            ✅ Estilo salvo! Seus próximos cards usarão esse visual.
+            {t('✅ Estilo salvo! Seus próximos cards usarão esse visual.')}
           </motion.div>
         )}
       </AnimatePresence>

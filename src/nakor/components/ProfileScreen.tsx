@@ -1,4 +1,6 @@
 import { DesktopSidebar } from './DesktopSidebar';
+import { useT } from '../lib/i18n';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
@@ -24,6 +26,7 @@ interface ProfileScreenProps {
 }
 
 export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onToggleTheme }: ProfileScreenProps) {
+  const t = useT();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
@@ -69,10 +72,10 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
           try {
             localStorage.setItem('nakor_avatar', base64String);
             window.dispatchEvent(new Event('avatarChanged'));
-            setToastMessage("Avatar atualizado com sucesso!");
+            setToastMessage(t("Avatar atualizado com sucesso!"));
             setTimeout(() => setToastMessage(null), 2000);
           } catch (error) {
-            setToastMessage("Erro: Imagem muito grande.");
+            setToastMessage(t("Erro: Imagem muito grande."));
             setTimeout(() => setToastMessage(null), 2000);
           }
         };
@@ -204,7 +207,7 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
 
   // Show "Em breve" toast
   const handleItemClick = (name: string) => {
-    setToastMessage(`Em breve: ${name}`);
+    setToastMessage(t('Em breve: {name}', { name }));
     setTimeout(() => {
       setToastMessage(null);
     }, 2000);
@@ -230,9 +233,12 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
         <div className="w-full max-w-[390px] md:max-w-[1000px] md:p-10 px-6 pt-10 md:pt-12 flex flex-col items-center">
 
         {/* Header */}
-        <div className="w-full text-center md:text-left mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">Perfil</h1>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium mt-1">Gerencie seu progresso e conta</p>
+        <div className="w-full flex items-start justify-between gap-3 text-center md:text-left mb-6">
+          <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">{t('Perfil')}</h1>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium mt-1">{t('Gerencie seu progresso e conta')}</p>
+          </div>
+          <LanguageSwitcher />
         </div>
 
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start pb-10">
@@ -265,7 +271,7 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
                 <p className="text-neutral-500 dark:text-neutral-400 text-xs truncate mb-2">{userEmail}</p>
                 <div className="self-start inline-flex items-center gap-1 bg-[#F3F4F6] px-2.5 py-1 rounded-lg border border-[#E5E7EB]">
                   <Flame size={12} className="text-[#4F46E5] fill-[#4F46E5]/20" />
-                  <span className="text-[10px] font-bold text-[#4F46E5] uppercase tracking-wider">{streak} dias seguidos</span>
+                  <span className="text-[10px] font-bold text-[#4F46E5] uppercase tracking-wider">{t('{n} dias seguidos', { n: streak })}</span>
                 </div>
               </div>
             </div>
@@ -274,22 +280,22 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
             <div className="grid grid-cols-3 gap-3 w-full">
               <div className="bg-white dark:bg-[#151622] rounded-[20px] p-4 text-center border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex flex-col justify-center items-center">
                 <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA]">{totalHours}h</span>
-                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">Total</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">{t('Total')}</span>
               </div>
               <div className="bg-white dark:bg-[#151622] rounded-[20px] p-4 text-center border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex flex-col justify-center items-center">
                 <span className="text-xl font-bold text-[#4F46E5]">{averageScore}</span>
-                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">Média</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">{t('Média')}</span>
               </div>
               <div className="bg-white dark:bg-[#151622] rounded-[20px] p-4 text-center border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm flex flex-col justify-center items-center">
                 <span className="text-xl font-bold text-[#21222D] dark:text-[#F8F9FA]">{streak}</span>
-                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">Dias</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider mt-1">{t('Dias')}</span>
               </div>
             </div>
 
             {/* Meta Semanal Card */}
             <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] p-6 border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 shadow-sm">
               <div className="flex justify-between items-end mb-4">
-                <h3 className="font-bold text-sm text-[#21222D] dark:text-[#F8F9FA]">Meta semanal</h3>
+                <h3 className="font-bold text-sm text-[#21222D] dark:text-[#F8F9FA]">{t('Meta semanal')}</h3>
                 <span className="text-[#4F46E5] font-mono text-[11px] font-bold bg-[#4F46E5]/10 px-2.5 py-1 rounded-md">{weeklyHours}h / {goalHours}h</span>
               </div>
  
@@ -302,8 +308,8 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
  
               <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-medium block">
                 {remainingHours > 0 
-                  ? `Faltam ${remainingHours}h para fechar a semana` 
-                  : 'Parabéns! Meta semanal atingida 🎉'}
+                  ? t('Faltam {n}h para fechar a semana', { n: remainingHours }) 
+                  : t('Parabéns! Meta semanal atingida 🎉')}
               </span>
             </div>
 
@@ -314,20 +320,20 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
             
             <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/50 overflow-hidden divide-y divide-[#F3F4F6] dark:divide-white/[0.06] shadow-[0_10px_30px_-18px_rgba(23,16,54,0.25)]">
               {[
-                { key: 'history', label: 'Histórico', Icon: History, onClick: () => onNavigate && onNavigate('history') },
-                { key: 'conquistas', label: 'Conquistas', Icon: Trophy, onClick: () => onNavigate && onNavigate('conquistas') },
-                { key: 'notifications', label: 'Notificações', Icon: Bell, onClick: () => onNavigate && onNavigate('notifications') },
-                { key: 'focus_time', label: 'Hora do Foco', Icon: AlarmClock, onClick: () => onNavigate && onNavigate('focus_time') },
-                { key: 'card_colors', label: 'Cores dos cards', Icon: Palette, onClick: () => onNavigate && onNavigate('card_colors') },
+                { key: 'history', label: t('Histórico'), Icon: History, onClick: () => onNavigate && onNavigate('history') },
+                { key: 'conquistas', label: t('Conquistas'), Icon: Trophy, onClick: () => onNavigate && onNavigate('conquistas') },
+                { key: 'notifications', label: t('Notificações'), Icon: Bell, onClick: () => onNavigate && onNavigate('notifications') },
+                { key: 'focus_time', label: t('Hora do Foco'), Icon: AlarmClock, onClick: () => onNavigate && onNavigate('focus_time') },
+                { key: 'card_colors', label: t('Cores dos cards'), Icon: Palette, onClick: () => onNavigate && onNavigate('card_colors') },
                 ...(onToggleTheme
                   ? [{
                       key: 'theme',
-                      label: `Tema: ${theme === 'light' ? 'Claro' : 'Escuro'}`,
+                      label: `${t('Tema:')} ${theme === 'light' ? t('Claro') : t('Escuro')}`,
                       Icon: theme === 'light' ? Moon : Sun,
                       onClick: onToggleTheme
                     }]
                   : []),
-                { key: 'help', label: 'Ajuda', Icon: LifeBuoy, onClick: () => handleItemClick('Ajuda') }
+                { key: 'help', label: t('Ajuda'), Icon: LifeBuoy, onClick: () => handleItemClick(t('Ajuda')) }
               ].map(({ key, label, Icon, onClick }) => (
                 <button
                   key={key}
@@ -351,7 +357,7 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
                 onClick={handleSair}
                 className="w-full p-4 rounded-[24px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/30 text-neutral-500 dark:text-neutral-400 hover:text-red-500 text-[13px] font-bold transition-colors cursor-pointer shadow-sm text-center"
               >
-                Sair da conta
+                {t('Sair da conta')}
               </button>
             </div>
 

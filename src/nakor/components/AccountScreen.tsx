@@ -8,6 +8,7 @@ import {
   updateLocalProfile,
   deleteLocalProfile,
 } from '../lib/cloudSync';
+import { useT } from '../lib/i18n';
 
 
 interface AccountScreenProps {
@@ -15,6 +16,7 @@ interface AccountScreenProps {
 }
 
 export function AccountScreen({ onBack }: AccountScreenProps) {
+  const t = useT();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [showPasswordChange, setShowPasswordChange] = useState(false);
@@ -28,7 +30,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const savedName = localStorage.getItem('nakor_user') || 'Nakor User';
+    const savedName = localStorage.getItem('nakor_user') || t('Nakor User');
     const savedEmail = localStorage.getItem('nakor_user_email') || 'user@email.com';
     const savedAvatar = localStorage.getItem('nakor_avatar');
     setName(savedName);
@@ -78,9 +80,9 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
           try {
             localStorage.setItem('nakor_avatar', base64String);
             window.dispatchEvent(new Event('avatarChanged'));
-            triggerToast("Avatar atualizado!");
+            triggerToast(t('Avatar atualizado!'));
           } catch (error) {
-            triggerToast("Erro: Imagem muito grande.");
+            triggerToast(t('Erro: Imagem muito grande.'));
           }
         };
         img.src = reader.result as string;
@@ -91,23 +93,23 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
 
   const handleSave = async () => {
     if (!name.trim() || !email.trim()) {
-      triggerToast('Preencha os campos obrigatórios');
+      triggerToast(t('Preencha os campos obrigatórios'));
       return;
     }
 
     if (showPasswordChange && (newPassword !== confirmPassword || !newPassword)) {
-      triggerToast('As senhas não coincidem');
+      triggerToast(t('As senhas não coincidem'));
       return;
     }
     if (showPasswordChange && newPassword.length < 6) {
-      triggerToast('A senha deve ter no mínimo 6 caracteres');
+      triggerToast(t('A senha deve ter no mínimo 6 caracteres'));
       return;
     }
 
     const { data: userData } = await supabase.auth.getUser();
     const user = userData.user;
     if (!user) {
-      triggerToast('Sessão expirada. Entre novamente.');
+      triggerToast(t('Sessão expirada. Entre novamente.'));
       return;
     }
 
@@ -128,7 +130,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
         return;
       }
       if (updates.email) {
-        triggerToast('Confirme o novo e-mail na sua caixa de entrada');
+        triggerToast(t('Confirme o novo e-mail na sua caixa de entrada'));
         return;
       }
     }
@@ -137,7 +139,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
     setConfirmPassword('');
     setShowPasswordChange(false);
     await flushSync();
-    triggerToast('✅ Dados atualizados!');
+    triggerToast(t('✅ Dados atualizados!'));
   };
 
   const handleDeleteAccount = async () => {
@@ -172,7 +174,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
           </button>
           
           <h1 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight absolute left-1/2 -translate-x-1/2">
-            Minha conta
+            {t('Minha conta')}
           </h1>
           
           <div className="w-10 h-10" />
@@ -191,7 +193,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
               {avatarUrl ? (
-                <img src={avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover shadow-sm" />
+                <img src={avatarUrl} alt={t("Avatar")} className="w-full h-full rounded-full object-cover shadow-sm" />
               ) : (
                 <div className="w-full h-full rounded-full bg-neutral-100 flex items-center justify-center text-4xl font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-wider shadow-sm">
                   {initials}
@@ -199,16 +201,16 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
               )}
             </div>
             <span className="text-[#34117E] dark:text-[#C4B5FD] text-sm font-semibold">
-              Toque para alterar
+              {t('Toque para alterar')}
             </span>
           </div>
 
           {/* Dados Pessoais */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Dados Pessoais</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Dados Pessoais')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 flex flex-col gap-4 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
               <div className="flex flex-col gap-1.5">
-                <span className="text-neutral-400 text-xs font-semibold">Nome</span>
+                <span className="text-neutral-400 text-xs font-semibold">{t('Nome')}</span>
                 <input 
                   type="text" 
                   value={name}
@@ -220,7 +222,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
               <div className="w-full h-px bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20" />
               
               <div className="flex flex-col gap-1.5">
-                <span className="text-neutral-400 text-xs font-semibold">Email</span>
+                <span className="text-neutral-400 text-xs font-semibold">{t('Email')}</span>
                 <input 
                   type="email" 
                   value={email}
@@ -233,13 +235,13 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
 
           {/* Segurança */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">Segurança</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Segurança')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 flex flex-col gap-4 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
               <button 
                 onClick={() => setShowPasswordChange(!showPasswordChange)}
                 className="flex items-center justify-between w-full text-left cursor-pointer"
               >
-                <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">Alterar senha</span>
+                <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">{t('Alterar senha')}</span>
                 <ChevronRight size={18} className="text-[#6B7280] dark:text-neutral-400" />
               </button>
               
@@ -256,7 +258,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
                     <div className="relative">
                       <input 
                         type={showNewPassword ? "text" : "password"}
-                        placeholder="Nova senha"
+                        placeholder={t("Nova senha")}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         className="w-full bg-[#F5F5F7] dark:bg-[#0D0F14] rounded-[16px] h-12 px-4 text-[#21222D] dark:text-[#F8F9FA] text-[14px] outline-none border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 focus:border-[#34117E]/40"
@@ -273,7 +275,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
                     <div className="relative">
                       <input 
                         type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirmar senha"
+                        placeholder={t("Confirmar senha")}
                         value={confirmPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         className="w-full bg-[#F5F5F7] dark:bg-[#0D0F14] rounded-[16px] h-12 px-4 text-[#21222D] dark:text-[#F8F9FA] text-[14px] outline-none border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 focus:border-[#34117E]/40"
@@ -296,12 +298,12 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
             onClick={handleSave}
             className="w-full h-[56px] rounded-full bg-gradient-to-br from-[#5B34C7] to-[#34117E] hover:from-[#4C2AB0] hover:to-[#2A0E68] shadow-[0_10px_26px_-10px_rgba(52,17,126,0.7)] active:scale-[0.985] text-white font-bold text-[16px] flex items-center justify-center mt-2 transition-all active:scale-[0.98] shadow-md-layered cursor-pointer"
           >
-            Salvar alterações
+            {t('Salvar alterações')}
           </button>
 
           {/* Zona de Perigo */}
           <div className="flex flex-col gap-2 mt-4">
-            <span className="text-[#FF4444] text-[10px] font-bold uppercase tracking-wider pl-4">Zona de perigo</span>
+            <span className="text-[#FF4444] text-[10px] font-bold uppercase tracking-wider pl-4">{t('Zona de perigo')}</span>
             <div className="bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#FF4444]/25 shadow-md-layered flex flex-col gap-5">
               <button
                 onClick={handleClearTestData}
@@ -309,7 +311,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
               >
                 <span className="flex items-center gap-2 text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-bold">
                   <Trash2 size={16} className="text-[#8B8D98]" />
-                  Limpar dados de teste
+                  {t('Limpar dados de teste')}
                 </span>
                 <ChevronRight size={18} className="text-[#8B8D98]" />
               </button>
@@ -319,7 +321,7 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
                 onClick={() => setShowDeleteModal(true)}
                 className="flex items-center justify-between w-full text-left cursor-pointer"
               >
-                <span className="text-[#FF4444] text-[15px] font-bold">Excluir conta</span>
+                <span className="text-[#FF4444] text-[15px] font-bold">{t('Excluir conta')}</span>
                 <ChevronRight size={18} className="text-[#FF4444]" />
               </button>
             </div>
@@ -348,9 +350,9 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
               <div className="w-12 h-12 rounded-full bg-[#FF4444]/10 flex items-center justify-center text-[#FF4444] mb-4">
                 <AlertTriangle size={24} />
               </div>
-              <h3 className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-lg mb-2">Tem certeza?</h3>
+              <h3 className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-lg mb-2">{t('Tem certeza?')}</h3>
               <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-6 leading-relaxed font-medium">
-                Todos os seus dados serão apagados permanentemente. Esta ação não pode ser desfeita.
+                {t('Todos os seus dados serão apagados permanentemente. Esta ação não pode ser desfeita.')}
               </p>
               
               <div className="flex gap-3 w-full">
@@ -358,13 +360,13 @@ export function AccountScreen({ onBack }: AccountScreenProps) {
                   onClick={() => setShowDeleteModal(false)}
                   className="flex-1 h-12 rounded-full bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 text-[#21222D] dark:text-[#F8F9FA] font-bold text-[14px] cursor-pointer"
                 >
-                  Cancelar
+                  {t('Cancelar')}
                 </button>
                 <button 
                   onClick={handleDeleteAccount}
                   className="flex-1 h-12 rounded-full bg-[#FF4444] hover:bg-[#e03d3d] text-white font-bold text-[14px] cursor-pointer shadow-sm"
                 >
-                  Excluir
+                  {t('Excluir')}
                 </button>
               </div>
             </motion.div>

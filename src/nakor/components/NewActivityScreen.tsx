@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Pencil, CheckSquare, Plus, Circle, ChevronUp, ChevronDown } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 interface TimePickerProps {
   value: number; // total minutes
@@ -7,6 +8,7 @@ interface TimePickerProps {
 }
 
 export function TimePicker({ value, onChange }: TimePickerProps) {
+  const t = useT();
   const hContainerRef = useRef<HTMLDivElement>(null);
   const mContainerRef = useRef<HTMLDivElement>(null);
   
@@ -114,13 +116,13 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
 
   // Human-readable portuguese description of duration
   const getDurationText = () => {
-    if (currentHours === 0 && currentMinutes === 0) return 'Duração mínima de 5 minutos';
-    const hText = currentHours > 0 ? `${currentHours} ${currentHours === 1 ? 'hora' : 'horas'}` : '';
-    const mText = currentMinutes > 0 ? `${currentMinutes} ${currentMinutes === 1 ? 'minuto' : 'minutos'}` : '';
+    if (currentHours === 0 && currentMinutes === 0) return t('Duração mínima de 5 minutos');
+    const hText = currentHours > 0 ? `${currentHours} ${currentHours === 1 ? t('hora') : t('horas')}` : '';
+    const mText = currentMinutes > 0 ? `${currentMinutes} ${currentMinutes === 1 ? t('minuto') : t('minutos')}` : '';
     
-    if (hText && mText) return `A atividade durará por ${hText} e ${mText}`;
-    if (hText) return `A atividade durará por ${hText}`;
-    return `A atividade durará por ${mText}`;
+    if (hText && mText) return t('A atividade durará por {h} e {m}', { h: hText, m: mText });
+    if (hText) return t('A atividade durará por {h}', { h: hText });
+    return t('A atividade durará por {m}', { m: mText });
   };
 
   return (
@@ -261,6 +263,7 @@ interface NewActivityScreenProps {
 }
 
 export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
+  const t = useT();
   const [name, setName] = useState('');
   const [duration, setDuration] = useState(25);
   const [isCustomTime, setIsCustomTime] = useState(false);
@@ -305,7 +308,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
           >
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-[18px] font-bold text-[#21222D] dark:text-[#F8F9FA]">Nova Atividade</h1>
+          <h1 className="text-[18px] font-bold text-[#21222D] dark:text-[#F8F9FA]">{t('Nova Atividade')}</h1>
           <div className="w-6" /> {/* Spacer to center the title exactly */}
         </div>
 
@@ -316,14 +319,14 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Nome da atividade"
+            placeholder={t('Nome da atividade')}
             className="bg-transparent border-none outline-none text-[#21222D] dark:text-[#F8F9FA] w-full placeholder:text-neutral-400 font-bold"
           />
         </div>
 
         {/* Duration */}
         <div className="w-full mb-8">
-          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block pl-1">DURAÇÃO</label>
+          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block pl-1">{t('DURAÇÃO')}</label>
           <div className="flex flex-wrap gap-2">
             {[25, 45, 60, 90].map((d) => (
               <button
@@ -346,7 +349,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
                   : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D]/80 dark:text-[#F8F9FA]/80 hover:bg-neutral-50 shadow-sm'
               }`}
             >
-              Personalizado
+              {t('Personalizado')}
             </button>
           </div>
           
@@ -363,14 +366,14 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-2">
               <CheckSquare size={20} className="text-[#21222D] dark:text-[#F8F9FA]" />
-              <h3 className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-base">Subtarefas</h3>
+              <h3 className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-base">{t('Subtarefas')}</h3>
             </div>
             <button 
               onClick={() => setIsAddingSubtask(true)}
               className="text-[#34117E] dark:text-[#C4B5FD] text-sm font-bold flex items-center gap-1 hover:brightness-110 disabled:opacity-50 cursor-pointer"
               disabled={subtasks.length >= 5}
             >
-              <Plus size={16} /> Adicionar
+              <Plus size={16} /> {t('Adicionar')}
             </button>
           </div>
 
@@ -394,7 +397,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
                     if (e.key === 'Enter') handleAddSubtask();
                   }}
                   onBlur={handleAddSubtask}
-                  placeholder="Nova subtarefa..."
+                  placeholder={t('Nova subtarefa...')}
                   className="bg-transparent border-none outline-none text-[#21222D] dark:text-[#F8F9FA] w-full text-sm placeholder:text-neutral-400 font-bold"
                 />
               </div>
@@ -405,7 +408,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
                 onClick={() => setIsAddingSubtask(true)}
                 className={`w-full py-3 rounded-2xl border border-dashed border-[#DBDBE5] dark:border-[#2A2B3D] text-neutral-500 dark:text-neutral-400 text-sm flex items-center justify-center gap-2 hover:bg-neutral-50 transition-colors cursor-pointer ${subtasks.length > 0 ? 'mt-4' : ''}`}
               >
-                <Plus size={16} /> nova subtarefa
+                <Plus size={16} /> {t('nova subtarefa')}
               </button>
             )}
           </div>
@@ -413,12 +416,12 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
 
         {/* Notes (Antes) */}
         <div className="w-full bg-white dark:bg-[#151622] rounded-[24px] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 p-5 shadow-sm">
-          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block">ANTES</label>
+          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block">{t('ANTES')}</label>
           <div className="relative">
             <textarea
               value={beforeText}
               onChange={(e) => setBeforeText(e.target.value.slice(0, 300))}
-              placeholder="O que você espera dessa atividade?&#10;Qual é sua meta agora?"
+              placeholder={t('O que você espera dessa atividade?\nQual é sua meta agora?')}
               className="w-full bg-transparent border-none outline-none text-[#21222D] dark:text-[#F8F9FA] text-sm placeholder:text-neutral-400 resize-none h-32 leading-6 font-medium"
               style={{
                 backgroundImage: 'repeating-linear-gradient(transparent, transparent 23px, rgba(33,34,45,0.03) 24px)',
@@ -440,7 +443,7 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
           disabled={!name.trim()}
           className="w-full max-w-[342px] h-[56px] mb-8 bg-[#34117E] hover:bg-[#250b61] active:scale-95 disabled:opacity-50 disabled:hover:bg-[#34117E] disabled:active:scale-100 text-white font-bold text-base rounded-full flex justify-center items-center transition-all shadow-[0_4px_25px_rgba(52,17,126,0.25)] cursor-pointer"
         >
-          Iniciar
+          {t('Iniciar')}
         </button>
       </div>
     </div>

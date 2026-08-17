@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 interface NotificationsScreenProps {
   onBack: () => void;
 }
 
 export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
+  const t = useT();
   const [dailyReminder, setDailyReminder] = useState(true);
   const [reminderTime, setReminderTime] = useState('08:00');
   const [inactivityAlert, setInactivityAlert] = useState(false);
@@ -100,7 +102,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
           </button>
           
           <h1 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight absolute left-1/2 -translate-x-1/2">
-            Notificações
+            {t('Notificações')}
           </h1>
           
           <div className="w-10 h-10" /> {/* Spacer */}
@@ -113,8 +115,8 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
             {/* Item 1: Lembrete diário */}
             <div className="flex items-center justify-between py-3">
               <div className="flex flex-col gap-1 pr-4">
-                <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">Lembrete diário</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-[13px] leading-snug font-medium">Te chama pro foco todo dia</span>
+                <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">{t('Lembrete diário')}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-[13px] leading-snug font-medium">{t('Te chama pro foco todo dia')}</span>
               </div>
               <button 
                 onClick={handleToggleDaily}
@@ -133,7 +135,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
               <>
                 <div className="w-full h-px bg-[#DBDBE5]/20 dark:bg-[#2A2B3D]/20 my-2" />
                 <div className="flex items-center justify-between py-3">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">Horário do lembrete</span>
+                  <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">{t('Horário do lembrete')}</span>
                   <div className="relative">
                     <input 
                       type="time" 
@@ -152,8 +154,8 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
             {/* Item 3: Alerta de inatividade */}
             <div className="flex items-center justify-between py-3">
               <div className="flex flex-col gap-1 pr-4">
-                <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">Alerta de inatividade</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-[13px] leading-snug font-medium">Avisa se você não focou até o horário produtivo</span>
+                <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">{t('Alerta de inatividade')}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-[13px] leading-snug font-medium">{t('Avisa se você não focou até o horário produtivo')}</span>
               </div>
               <button 
                 onClick={handleToggleInactivity}
@@ -172,8 +174,8 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
             {/* Item 4: Conquistas desbloqueadas */}
             <div className="flex items-center justify-between py-3">
               <div className="flex flex-col gap-1 pr-4">
-                <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">Conquistas desbloqueadas</span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-[13px] leading-snug font-medium">Notifica quando ganhar um novo selo</span>
+                <span className="text-[#21222D] dark:text-[#F8F9FA] font-bold text-[15px]">{t('Conquistas desbloqueadas')}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-[13px] leading-snug font-medium">{t('Notifica quando ganhar um novo selo')}</span>
               </div>
               <button 
                 onClick={handleToggleAchievements}
@@ -199,7 +201,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
           exit={{ opacity: 0, y: 20 }}
           className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#21222D] border border-white/10 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full shadow-lg z-50 pointer-events-none"
         >
-          Salvo
+          {t('Salvo')}
         </motion.div>
       )}
     </div>

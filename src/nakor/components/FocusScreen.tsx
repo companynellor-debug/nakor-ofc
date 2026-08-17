@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Eye } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 interface FocusScreenProps {
   onNavigate: (view: string) => void;
 }
 
 export function FocusScreen({ onNavigate }: FocusScreenProps) {
+  const t = useT();
   const [activity, setActivity] = useState<any>(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -31,7 +33,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
       }
     } else {
       // Fallback if no activity found
-      setActivity({ nome: 'Foco Profundo', subtarefas: [] });
+      setActivity({ nome: t('Foco Profundo'), subtarefas: [] });
       setTimeLeft(25 * 60);
       totalTimeRef.current = 25 * 60;
     }
@@ -140,10 +142,10 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
             <X size={20} strokeWidth={2.5} />
           </button>
           <h1 className="text-[15px] font-bold text-[#16131F] dark:text-[#F8F9FA] truncate px-4 flex-1 text-center tracking-tight">
-            {activity?.nome || 'Trabalho Focado'}
+            {activity?.nome || t('Trabalho Focado')}
           </h1>
           <div className="bg-[#EEEEF9] dark:bg-[#2B2A48] px-3 py-1.5 rounded-full flex items-center justify-center shrink-0">
-            <span className="text-[#232394] dark:text-[#C4B5FD] text-xs font-bold">{exits} saídas</span>
+            <span className="text-[#232394] dark:text-[#C4B5FD] text-xs font-bold">{t('{n} saídas', { n: exits })}</span>
           </div>
         </div>
 
@@ -192,7 +194,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
             <span className={`font-mono font-bold tracking-tighter tabular-nums text-[#16131F] dark:text-[#F8F9FA] ${hoursLeft > 0 ? 'text-[52px]' : 'text-[72px]'} leading-none`}>
               {timeString}
             </span>
-            <span className="text-[#9A96A6] dark:text-[#A2A5B9] text-sm mt-3 font-semibold uppercase tracking-widest text-[10px]">restantes</span>
+            <span className="text-[#9A96A6] dark:text-[#A2A5B9] text-sm mt-3 font-semibold uppercase tracking-widest text-[10px]">{t('restantes')}</span>
           </div>
         </div>
 
@@ -201,7 +203,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
           <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-5 mb-8 border border-[#ECECF1] dark:border-[#2A2B3D] shadow-md-layered">
             <div className="flex justify-between items-center mb-3">
               <span className="text-[#5B5766] dark:text-[#A2A5B9] text-sm font-semibold">
-                {completedSubtasks.length} de {activity.subtarefas.length} subtarefas concluídas
+                {t('{done} de {total} subtarefas concluídas', { done: completedSubtasks.length, total: activity.subtarefas.length })}
               </span>
               <div className="flex gap-1.5">
                 {activity.subtarefas.map((_: any, idx: number) => (
@@ -246,14 +248,14 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
                   disabled={currentSubtaskIndex === 0}
                   className="text-xs text-[#5B5766] dark:text-[#A2A5B9] hover:text-[#5D5FEF] dark:hover:text-[#C4B5FD] disabled:opacity-30 cursor-pointer font-bold transition-colors"
                 >
-                  Anterior
+                  {t('Anterior')}
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); setCurrentSubtaskIndex(prev => Math.min(activity.subtarefas.length - 1, prev + 1)); }}
                   disabled={currentSubtaskIndex === activity.subtarefas.length - 1}
                   className="text-xs text-[#5B5766] dark:text-[#A2A5B9] hover:text-[#5D5FEF] dark:hover:text-[#C4B5FD] disabled:opacity-30 cursor-pointer font-bold transition-colors"
                 >
-                  Próxima
+                  {t('Próxima')}
                 </button>
               </div>
             )}
@@ -262,7 +264,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
 
         {/* Motivational Phrase */}
         <p className="text-[#5B5766] dark:text-[#A2A5B9] italic text-[15px] text-center mb-10 px-4 leading-relaxed">
-          "você já passou da metade. não para agora."
+          {t('"você já passou da metade. não para agora."')}
         </p>
 
         {/* Monitoring Badge */}
@@ -272,7 +274,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[#10B981]" />
           </div>
           <Eye size={16} className="text-[#9A96A6] dark:text-[#A2A5B9]" />
-          <span className="text-[#5B5766] dark:text-[#A2A5B9] text-xs font-semibold tracking-tight">monitorando distrações</span>
+          <span className="text-[#5B5766] dark:text-[#A2A5B9] text-xs font-semibold tracking-tight">{t('monitorando distrações')}</span>
         </div>
 
       </div>
@@ -284,13 +286,13 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
             onClick={() => setIsPaused(!isPaused)}
             className="flex-1 h-[56px] bg-white dark:bg-[#151622] border border-[#ECECF1] dark:border-[#2A2B3D] hover:bg-[#F5F5F7] dark:hover:bg-[#1B1C2C] active:scale-95 text-[#16131F] dark:text-[#F8F9FA] font-bold text-[15px] rounded-2xl transition-all flex justify-center items-center cursor-pointer shadow-sm"
           >
-            {isPaused ? 'Retomar' : 'Pausar'}
+            {isPaused ? t('Retomar') : t('Pausar')}
           </button>
           <button 
             onClick={() => setShowModal(true)}
             className="flex-1 h-[56px] bg-white dark:bg-[#151622] border border-[#ECECF1] dark:border-[#2A2B3D] hover:bg-[#F5F5F7] dark:hover:bg-[#1B1C2C] active:scale-95 text-[#16131F] dark:text-[#F8F9FA] font-bold text-[15px] rounded-2xl transition-all flex justify-center items-center cursor-pointer shadow-sm"
           >
-            Encerrar
+            {t('Encerrar')}
           </button>
         </div>
       </div>
@@ -299,15 +301,15 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/40 backdrop-blur-md animate-fade-in">
           <div className="bg-white dark:bg-[#151622] w-full max-w-[320px] rounded-[28px] p-6 border border-[#ECECF1] dark:border-[#2A2B3D] shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-200">
-            <h3 className="text-xl font-bold text-[#16131F] dark:text-[#F8F9FA] mb-2">Tem certeza?</h3>
-            <p className="text-[#5B5766] dark:text-[#A2A5B9] text-sm mb-6">O progresso atual será salvo, mas você está encerrando antes do tempo.</p>
+            <h3 className="text-xl font-bold text-[#16131F] dark:text-[#F8F9FA] mb-2">{t('Tem certeza?')}</h3>
+            <p className="text-[#5B5766] dark:text-[#A2A5B9] text-sm mb-6">{t('O progresso atual será salvo, mas você está encerrando antes do tempo.')}</p>
             
             <div className="w-full flex gap-3">
               <button 
                 onClick={() => setShowModal(false)}
                 className="flex-1 py-3 rounded-full bg-[#ECECF1] dark:bg-[#2A2B3D] hover:bg-[#DDDDF2] dark:hover:bg-[#3A3B4D] text-[#16131F] dark:text-[#F8F9FA] font-bold text-sm transition-colors cursor-pointer"
               >
-                Cancelar
+                {t('Cancelar')}
               </button>
               <button 
                 onClick={() => {
@@ -316,7 +318,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
                 }}
                 className="flex-1 py-3 rounded-full bg-red-500 hover:bg-red-600 text-white font-bold text-sm transition-all cursor-pointer shadow-sm"
               >
-                Encerrar
+                {t('Encerrar')}
               </button>
             </div>
           </div>

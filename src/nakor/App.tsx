@@ -21,6 +21,7 @@ import { HeroVisual } from './components/HeroVisual';
 import { PhoneMockups } from './components/PhoneMockups';
 import { NakorLogo } from './components/NakorLogo';
 import { GuidedTour } from './components/GuidedTour';
+import { useT } from './lib/i18n';
 
 import { localAuth as supabase } from './lib/localAuth';
 import {
@@ -56,6 +57,7 @@ import {
 const TAB_ORDER = ['home', 'tasks', 'new_activity', 'loja', 'profile'];
 
 export default function App() {
+  const t = useT();
   const [view, setView] = useState<string>('landing');
   const [loadingTab, setLoadingTab] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -488,11 +490,11 @@ export default function App() {
         {/* Bottom Navbar */}
         {view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && !isLojaDrawerOpen && (() => {
           const tabs = [
-            { id: 'home', icon: House, label: 'Início' },
-            { id: 'tasks', icon: ListChecks, label: 'Tarefas' },
-            { id: 'new_activity', icon: Play, label: 'Iniciar', isCenter: true },
-            { id: 'loja', icon: Gift, label: 'Trocas' },
-            { id: 'profile', icon: UserRound, label: 'Perfil' }
+            { id: 'home', icon: House, label: t('Início') },
+            { id: 'tasks', icon: ListChecks, label: t('Tarefas') },
+            { id: 'new_activity', icon: Play, label: t('Iniciar'), isCenter: true },
+            { id: 'loja', icon: Gift, label: t('Trocas') },
+            { id: 'profile', icon: UserRound, label: t('Perfil') }
           ];
 
           return (
@@ -519,7 +521,7 @@ export default function App() {
                         <div key={tab.id} className="relative flex flex-col items-center justify-center w-[20%] h-full">
                           <button
                             onClick={() => handleNavigate(tab.id)}
-                            aria-label="Iniciar atividade"
+                            aria-label={t("Iniciar atividade")}
                             data-tour={`nav-${tab.id}`}
                             className="absolute -top-7 flex flex-col items-center justify-center cursor-pointer outline-none select-none active:scale-95 transition-transform"
                           >

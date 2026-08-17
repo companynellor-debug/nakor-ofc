@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Timer, LogOut, Moon } from 'lucide-react';
+import { useT } from '../lib/i18n';
 
 function hexToRgba(hex: string, alpha: number): string {
   if (!hex) return `rgba(255, 255, 255, ${alpha})`;
@@ -103,6 +104,7 @@ export const WidgetStackCard = forwardRef<HTMLDivElement, WidgetStackCardProps>(
     },
     ref
   ) {
+    const t = useT();
     const goal = plannedMinutes > 0 ? plannedMinutes : Math.max(minutes, 1);
     const focusPct = Math.round(Math.min(1, minutes / goal) * 100);
     const h = Math.floor(minutes / 60);
@@ -200,14 +202,18 @@ export const WidgetStackCard = forwardRef<HTMLDivElement, WidgetStackCardProps>(
               )}
             </p>
             <p className="m-0 mt-1 text-white/75 text-[14px] font-medium whitespace-nowrap">
-              {startLabel && endLabel ? `${startLabel} - ${endLabel}` : `${exits} ${exits === 1 ? 'saída' : 'saídas'} · meta ${goal}min`}
+              {startLabel && endLabel
+                ? `${startLabel} - ${endLabel}`
+                : (exits === 1
+                    ? t('{n} saída · meta {goal}min', { n: exits, goal })
+                    : t('{n} saídas · meta {goal}min', { n: exits, goal }))}
             </p>
           </div>
         </div>
 
         <div className="flex items-center justify-between text-white/45 text-[10px] font-mono tracking-wider mt-auto">
           <span>{showDomain ? 'nakor.com.br' : ''}</span>
-          <span>{streak ? `${streak}D STREAK` : 'SESSÃO FOCO'}</span>
+          <span>{streak ? t('{n}D STREAK', { n: streak }) : t('SESSÃO FOCO')}</span>
         </div>
 
         {message ? (

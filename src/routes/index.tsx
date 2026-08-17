@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { LanguageProvider } from "../nakor/lib/i18n";
 
 const NakorApp = lazy(() => import("../nakor/App"));
 
@@ -34,8 +35,10 @@ function Index() {
   }
 
   return (
-    <Suspense fallback={<div className="min-h-screen bg-brand-bg" />}>
-      <NakorApp />
-    </Suspense>
+    <LanguageProvider>
+      <Suspense fallback={<div className="min-h-screen bg-brand-bg" />}>
+        <NakorApp />
+      </Suspense>
+    </LanguageProvider>
   );
 }
