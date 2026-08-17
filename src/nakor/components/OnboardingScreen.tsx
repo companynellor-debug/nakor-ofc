@@ -460,7 +460,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
       </div>
       
       {/* HEADER */}
-      <div className="relative z-50 shrink-0 px-4 sm:px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-3 bg-transparent grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 max-w-lg mx-auto w-full">
+      <div className="relative z-50 shrink-0 px-4 sm:px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-3 bg-transparent grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-2 sm:gap-3 max-w-lg mx-auto w-full">
         {/* Back Button */}
         <button 
           onClick={handleBack}
@@ -485,6 +485,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
         <span className="text-xs font-medium text-text-secondary shrink-0 tabular-nums">
           {t('{n} de 6', { n: currentStep + 1 })}
         </span>
+        <LanguageSwitcher />
       </div>
 
       {/* SLIDER */}

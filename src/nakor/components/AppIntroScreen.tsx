@@ -6,6 +6,8 @@ import intro2 from '../../assets/intro-2.png';
 import intro3 from '../../assets/intro-3.png';
 
 
+import { LanguageSwitcher } from './LanguageSwitcher';
+
 interface AppIntroScreenProps {
   onStart: () => void;
   onLogin: () => void;
@@ -83,6 +85,9 @@ export function AppIntroScreen({ onStart, onLogin }: AppIntroScreenProps) {
     <div className="h-[100dvh] min-h-[100dvh] w-full flex flex-col bg-[#0D0F14] font-sans overflow-hidden">
       {/* Main Content Area */}
       <div className="flex-1 min-h-0 flex flex-col overflow-hidden relative">
+        <div className="absolute top-[max(0.75rem,env(safe-area-inset-top))] right-4 z-40">
+          <LanguageSwitcher variant="dark" />
+        </div>
         <div className="flex-1 min-h-0 relative flex items-center justify-center pt-4 pb-4 overflow-hidden">
           {/* Glow effects */}
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#34117E]/40 blur-[120px] mix-blend-overlay" />

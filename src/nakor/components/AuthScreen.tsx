@@ -9,6 +9,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { NakorLogo } from './NakorLogo';
 import { localAuth as supabase } from '../lib/localAuth';
 import { useT } from '../lib/i18n';
@@ -190,6 +191,11 @@ export function AuthScreen({ onAuthSuccess, onBackToLanding, initialView = 'logi
   return (
     <div className="min-h-screen w-full bg-[#FAFAFB] text-[#16131F] relative overflow-hidden flex flex-col font-sans antialiased">
       
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-30">
+        <LanguageSwitcher />
+      </div>
+
       {/* Floating Back to Landing Link */}
       <div className="absolute top-6 left-6 z-30">
         <button 
