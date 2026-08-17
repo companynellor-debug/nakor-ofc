@@ -4,6 +4,7 @@ import { DesktopSidebar } from './DesktopSidebar';
 import { FocusCircle } from './FocusCircle';
 import { motion } from 'motion/react';
 import { useLanguage } from '../lib/i18n';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 function StatCard({ icon, value, label, bgColor, textColor, iconColor }: { icon: React.ReactNode; value: string; label: string; bgColor?: string; textColor?: string; iconColor?: string }) {
   return (
@@ -366,9 +367,12 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
               <h1 className="text-2xl font-bold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">{greeting}, {userName}</h1>
               <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
             </div>
+            <div className="flex items-center gap-2 shrink-0">
+            <LanguageSwitcher />
             <div className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm-layered shrink-0 ${streak >= 1 ? 'bg-gradient-to-r from-[#F59E0B] to-[#F97316]' : 'bg-[#F3F4F6]'}`}>
               <Flame size={14} strokeWidth={2} className={streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'} />
               <span className={`font-mono font-bold text-xs ${streak >= 1 ? 'text-white' : 'text-[#9CA3AF] dark:text-neutral-400'}`}>{streak}d</span>
+            </div>
             </div>
           </div>
 
@@ -507,6 +511,7 @@ export function HomeScreen({ onboardingData, onNavigate, onViewHistoricActivity 
                 <p className="text-[#6B7280] dark:text-neutral-400 text-[11px] mt-1 font-mono tracking-[1.5px] uppercase">{dateDisplay}</p>
               </div>
               <div className="flex items-center gap-3">
+                <LanguageSwitcher />
                 <button 
                   onClick={() => alert(t('Configurações da Conta no menu Perfil.'))} 
                   className="w-10 h-10 rounded-[16px] bg-white dark:bg-[#151622] border border-[#DBDBE5]/60 dark:border-[#2A2B3D]/60 flex items-center justify-center text-[#21222D] dark:text-[#F8F9FA] hover:border-[#34117E]/40 hover:shadow-sm-layered transition-all cursor-pointer shadow-sm-layered"
