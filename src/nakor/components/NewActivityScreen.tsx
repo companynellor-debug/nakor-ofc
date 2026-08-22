@@ -273,6 +273,20 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
   const [newSubtask, setNewSubtask] = useState('');
   const [beforeText, setBeforeText] = useState('');
 
+  const { projects, createProject } = useProjects();
+  const [projectId, setProjectId] = useState<string | null>(null);
+  const [isCreatingProject, setIsCreatingProject] = useState(false);
+  const [newProjectName, setNewProjectName] = useState('');
+
+  const selectedProject = projects.find((p) => p.id === projectId) || null;
+
+  const handleCreateProject = async () => {
+    const created = await createProject(newProjectName);
+    if (created) setProjectId(created.id);
+    setNewProjectName('');
+    setIsCreatingProject(false);
+  };
+
   const handleAddSubtask = () => {
     if (newSubtask.trim() && subtasks.length < 5) {
       setSubtasks([...subtasks, newSubtask.trim()]);
