@@ -370,8 +370,9 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
                         <span className="text-[15px] font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight truncate">
                           {item.nome || t('Atividade')}
                         </span>
-                        <span className="text-xs text-neutral-400 font-semibold mt-0.5">
+                        <span className="text-xs text-neutral-400 font-semibold mt-0.5 truncate">
                           {formattedDate} • {durationStr}
+                          {item.projeto_nome ? ` • ${item.projeto_nome}` : ''}
                         </span>
                       </div>
                     </div>
