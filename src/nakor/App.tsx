@@ -14,6 +14,7 @@ import { NotificationsScreen } from './components/NotificationsScreen';
 import { AccountScreen } from './components/AccountScreen';
 import { FocusTimeScreen } from './components/FocusTimeScreen';
 import { CardColorsScreen } from './components/CardColorsScreen';
+import { ProgressScreen } from './components/ProgressScreen';
 import { AchievementsScreen } from './components/AchievementsScreen';
 import { LojaScreen } from './components/LojaScreen';
 import { AppIntroScreen } from "./components/AppIntroScreen";
@@ -480,15 +481,31 @@ export default function App() {
                 </div>
               </motion.div>
             )}
+            {view === 'progress' && (
+              <motion.div 
+                key="progress" 
+                {...tabAnim}
+                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
+              >
+                <DesktopSidebar currentView="history" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
+                <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
+                  <div className="w-full flex justify-center">
+                    <ProgressScreen 
+                      onBack={() => setView('history')}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
           
-          {view !== 'home' && view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'history' && view !== 'tasks' && view !== 'profile' && view !== 'conquistas' && view !== 'loja' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && (
+          {view !== 'home' && view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'history' && view !== 'tasks' && view !== 'profile' && view !== 'conquistas' && view !== 'loja' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && view !== 'progress' && (
             <div className="min-h-screen w-full bg-transparent" />
           )}
         </div>
         
         {/* Bottom Navbar */}
-        {view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && !isLojaDrawerOpen && (() => {
+        {view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && view !== 'progress' && !isLojaDrawerOpen && (() => {
           const tabs = [
             { id: 'home', icon: House, label: t('Início') },
             { id: 'tasks', icon: ListChecks, label: t('Tarefas') },

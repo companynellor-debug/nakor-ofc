@@ -211,8 +211,12 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         {/* Header */}
         <div className="w-full flex items-center justify-between mb-8">
           <h1 className="text-3xl font-extrabold tracking-tight text-[#21222D] dark:text-[#F8F9FA]">{t('Suas atividades')}</h1>
-          <button className="w-10 h-10 bg-white dark:bg-[#151622] rounded-[16px] flex items-center justify-center border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:bg-neutral-50 active:scale-95 transition-all cursor-pointer shadow-sm-layered">
-            <SlidersHorizontal size={18} className="text-[#21222D] dark:text-[#F8F9FA]" />
+          <button
+            onClick={() => onNavigate('progress')}
+            className="h-10 px-4 bg-white dark:bg-[#151622] rounded-[16px] flex items-center gap-2 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 hover:border-[#34117E]/40 active:scale-95 transition-all cursor-pointer shadow-sm-layered"
+          >
+            <BarChart2 size={18} className="text-[#34117E] dark:text-[#C4B5FD]" />
+            <span className="text-xs font-bold text-[#21222D] dark:text-[#F8F9FA]">{t('Progresso')}</span>
           </button>
         </div>
 
@@ -370,8 +374,9 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
                         <span className="text-[15px] font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight truncate">
                           {item.nome || t('Atividade')}
                         </span>
-                        <span className="text-xs text-neutral-400 font-semibold mt-0.5">
+                        <span className="text-xs text-neutral-400 font-semibold mt-0.5 truncate">
                           {formattedDate} • {durationStr}
+                          {item.projeto_nome ? ` • ${item.projeto_nome}` : ''}
                         </span>
                       </div>
                     </div>
