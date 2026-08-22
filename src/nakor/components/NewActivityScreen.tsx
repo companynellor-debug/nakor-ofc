@@ -341,6 +341,71 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
           />
         </div>
 
+        {/* Project (opcional) */}
+        <div className="w-full mb-8">
+          <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block pl-1">
+            {t('PROJETO')} <span className="font-semibold opacity-60">({t('opcional')})</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setProjectId(null)}
+              className={`px-4 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer ${
+                projectId === null
+                  ? 'bg-[#34117E] text-white shadow-md'
+                  : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D]/80 dark:text-[#F8F9FA]/80 shadow-sm'
+              }`}
+            >
+              {t('Sem projeto')}
+            </button>
+            {projects.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => setProjectId(p.id)}
+                className={`px-4 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer flex items-center gap-2 max-w-full ${
+                  projectId === p.id
+                    ? 'bg-[#34117E] text-white shadow-md'
+                    : 'bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 text-[#21222D]/80 dark:text-[#F8F9FA]/80 shadow-sm'
+                }`}
+              >
+                <FolderOpen size={14} />
+                <span className="truncate">{p.name}</span>
+              </button>
+            ))}
+
+            {isCreatingProject ? (
+              <div className="w-full bg-white dark:bg-[#151622] rounded-full border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 px-4 py-2 flex items-center gap-2 shadow-sm">
+                <input
+                  autoFocus
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleCreateProject()}
+                  placeholder={t('Nome do projeto')}
+                  className="bg-transparent outline-none border-none text-sm font-bold w-full text-[#21222D] dark:text-[#F8F9FA] placeholder:text-neutral-400"
+                />
+                <button
+                  onClick={handleCreateProject}
+                  className="text-[#34117E] dark:text-[#C4B5FD] text-xs font-bold cursor-pointer shrink-0"
+                >
+                  {t('Salvar')}
+                </button>
+                <button
+                  onClick={() => { setIsCreatingProject(false); setNewProjectName(''); }}
+                  className="text-neutral-400 cursor-pointer shrink-0"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsCreatingProject(true)}
+                className="px-4 py-2.5 rounded-full text-sm font-bold bg-[#EEEEF9] dark:bg-[#2B2A48] text-[#34117E] dark:text-[#C4B5FD] flex items-center gap-1.5 cursor-pointer transition-all active:scale-95"
+              >
+                <Plus size={14} /> {t('Novo projeto')}
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Duration */}
         <div className="w-full mb-8">
           <label className="text-[#21222D]/70 dark:text-[#F8F9FA]/70 text-sm font-bold mb-3 block pl-1">{t('DURAÇÃO')}</label>
