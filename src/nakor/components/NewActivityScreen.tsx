@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, Pencil, CheckSquare, Plus, Circle, ChevronUp, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Pencil, CheckSquare, Plus, Circle, ChevronUp, ChevronDown, FolderOpen, X } from 'lucide-react';
 import { useT } from '../lib/i18n';
+import { useProjects } from '../hooks/useProjects';
 
 interface TimePickerProps {
   value: number; // total minutes
