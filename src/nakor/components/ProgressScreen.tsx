@@ -8,6 +8,7 @@ import { getProjectBreakdown } from '../services/progressService';
 import { WeeklyWorkCard } from './cards/WeeklyWorkCard';
 import { MonthlyWorkCard } from './cards/MonthlyWorkCard';
 import { WorkGridCard } from './cards/WorkGridCard';
+import { SessionWorkCard } from './cards/SessionWorkCard';
 import { CopyableCard } from './cards/CopyableCard';
 import { useT } from '../lib/i18n';
 
