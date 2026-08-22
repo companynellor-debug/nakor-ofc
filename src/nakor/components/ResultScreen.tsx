@@ -344,12 +344,21 @@ export function ResultScreen({ onNavigate, historicActivity }: ResultScreenProps
             id: Date.now().toString(),
             nome: currentActivity.nome || 'Sessão de Foco',
             duracao_real: currentActivity.duracao_real || 0,
+            duracao_prevista: (currentActivity.duracao || 0) * 60,
             nota: currentEvaluation.nota || 0,
             saidas: currentActivity.saidas || 0,
             texto_antes: currentActivity.texto_antes || '',
             texto_depois: currentActivity.texto_depois || '',
             mensagem_card: currentEvaluation.mensagem_card || '',
             moedas: earnedCoins,
+            projeto_id: currentActivity.projeto_id ?? null,
+            projeto_nome: currentActivity.projeto_nome ?? null,
+            subtarefas_total: Array.isArray(currentActivity.subtarefas)
+              ? currentActivity.subtarefas.length
+              : currentActivity.subtarefas_total || 0,
+            subtarefas_concluidas: currentActivity.subtarefas_concluidas || 0,
+            status: currentActivity.concluida === false ? 'cancelled' : 'completed',
+            timestamp_inicio: currentActivity.timestamp_inicio || null,
             timestamp: Date.now()
           };
           history.unshift(newHistoryItem);
