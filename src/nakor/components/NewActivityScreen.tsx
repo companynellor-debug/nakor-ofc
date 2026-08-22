@@ -305,6 +305,8 @@ export function NewActivityScreen({ onNavigate }: NewActivityScreenProps) {
       duracao: duration,
       subtarefas: subtasks,
       texto_antes: beforeText,
+      projeto_id: selectedProject?.id ?? null,
+      projeto_nome: selectedProject?.name ?? null,
       timestamp_inicio: Date.now()
     };
     
