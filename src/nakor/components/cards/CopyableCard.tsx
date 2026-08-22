@@ -5,7 +5,7 @@ import { useT } from '../../lib/i18n';
 
 interface Props {
   fileName?: string;
-  children: (ref: React.RefObject<HTMLDivElement>) => React.ReactNode;
+  children: (ref: React.RefObject<HTMLDivElement | null>) => React.ReactNode;
 }
 
 /** Envolve qualquer card e adiciona o botão de copiar/compartilhar imagem. */
