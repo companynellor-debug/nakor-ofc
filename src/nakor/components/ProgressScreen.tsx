@@ -154,6 +154,20 @@ export function ProgressScreen({ onBack }: ProgressScreenProps) {
               {(ref) => <MonthlyWorkCard ref={ref} theme={theme} summary={summary} />}
             </CopyableCard>
           )}
+
+          {activities[0] && (
+            <CopyableCard fileName="nakor-sessao.png">
+              {(ref) => (
+                <SessionWorkCard
+                  ref={ref}
+                  theme={theme}
+                  variant="compact"
+                  activity={activities[0]}
+                  streak={summary.currentStreak}
+                />
+              )}
+            </CopyableCard>
+          )}
         </div>
       </div>
     </div>

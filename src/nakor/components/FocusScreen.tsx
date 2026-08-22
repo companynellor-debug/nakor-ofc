@@ -79,6 +79,7 @@ export function FocusScreen({ onNavigate }: FocusScreenProps) {
         ...activity,
         duracao_real: realDuration,
         saidas: exits,
+        subtarefas_total: Array.isArray(activity.subtarefas) ? activity.subtarefas.length : 0,
         subtarefas_concluidas: completedSubtasks.length,
         timestamp_fim: Date.now(),
         concluida: completedNormally
