@@ -14,6 +14,7 @@ import { NotificationsScreen } from './components/NotificationsScreen';
 import { AccountScreen } from './components/AccountScreen';
 import { FocusTimeScreen } from './components/FocusTimeScreen';
 import { CardColorsScreen } from './components/CardColorsScreen';
+import { ProgressScreen } from './components/ProgressScreen';
 import { AchievementsScreen } from './components/AchievementsScreen';
 import { LojaScreen } from './components/LojaScreen';
 import { AppIntroScreen } from "./components/AppIntroScreen";
