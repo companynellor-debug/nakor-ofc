@@ -14,7 +14,7 @@ function activityValues(data: CardRenderData) {
   return {
     title: activity.title || activity.projectName || 'Sessão de foco',
     minutes: Math.max(0, Math.round(activity.actualDuration / 60)),
-    plannedMinutes: Math.max(0, Math.round(activity.plannedDuration / 60)),
+    plannedMinutes: Math.max(0, Math.round((activity.plannedDuration ?? 0) / 60)),
     score: activity.focusScore || 0,
     exits: activity.exitCount || 0,
   };
