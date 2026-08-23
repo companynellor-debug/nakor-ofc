@@ -15,10 +15,15 @@ export interface CardRenderData {
   streak: number;
 }
 
-export type CardModelId = 'trio' | 'unificado' | 'aura' | 'widget' | 'session' | 'weekly' | 'monthly';
+export type CardModelId = 'unificado' | 'aura' | 'session' | 'weekly' | 'monthly';
 
-/** Modelos removidos por serem visualmente idênticos a outro modelo. */
-const MODEL_ALIASES: Record<string, CardModelId> = { grid: 'monthly' };
+/** Modelos removidos (idênticos a outro modelo ou descontinuados). */
+const MODEL_ALIASES: Record<string, CardModelId> = {
+  grid: 'monthly',
+  trio: 'unificado',
+  widget: 'aura',
+};
+
 
 export interface CardModelDefinition {
   id: CardModelId;
