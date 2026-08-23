@@ -12,10 +12,10 @@ export function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const VALID_MODEL_IDS = ['session', 'weekly', 'monthly', 'grid'];
+const VALID_MODEL_IDS = ['trio', 'unificado', 'aura', 'widget', 'session', 'weekly', 'monthly', 'grid'];
 
 export function readCardPreferences(): CardPreferences {
-  const fallback: CardPreferences = { selectedModelId: 'session', selectedColor: DEFAULT_ACCENT };
+  const fallback: CardPreferences = { selectedModelId: 'trio', selectedColor: DEFAULT_ACCENT, bgOpacity: 100 };
   if (typeof window === 'undefined') return fallback;
   try {
     const raw = localStorage.getItem(PREFS_KEY);
@@ -25,6 +25,7 @@ export function readCardPreferences(): CardPreferences {
     return {
       selectedModelId: VALID_MODEL_IDS.includes(model) ? model : fallback.selectedModelId,
       selectedColor: parsed.selectedColor || parsed.accentColor || fallback.selectedColor,
+      bgOpacity: Math.min(100, Math.max(35, Number(parsed.bgOpacity) || 100)),
     };
   } catch {
     return fallback;
@@ -45,6 +46,7 @@ export function saveCardPreferences(prefs: CardPreferences) {
         selectedColor: prefs.selectedColor,
         layout: prefs.selectedModelId,
         accentColor: prefs.selectedColor,
+        bgOpacity: prefs.bgOpacity ?? previous.bgOpacity ?? 100,
       }),
     );
     window.dispatchEvent(new Event('nakor_card_prefs_updated'));
@@ -54,7 +56,8 @@ export function saveCardPreferences(prefs: CardPreferences) {
 }
 
 
-export function buildCardTheme(accent: string = DEFAULT_ACCENT): CardTheme {
+export function buildCardTheme(accent: string = DEFAULT_ACCENT, backgroundOpacity = 100): CardTheme {
+  const normalizedOpacity = Math.min(100, Math.max(35, backgroundOpacity)) / 100;
   return {
     accent,
     accentSoft: hexToRgba(accent, 0.18),
@@ -62,6 +65,7 @@ export function buildCardTheme(accent: string = DEFAULT_ACCENT): CardTheme {
     accentGlow: hexToRgba(accent, 0.45),
     textPrimary: '#FFFFFF',
     textSecondary: 'rgba(255,255,255,0.62)',
-    background: '#0B0A12',
+    background: `rgba(11,10,18,${normalizedOpacity})`,
+    backgroundOpacity: normalizedOpacity,
   };
 }

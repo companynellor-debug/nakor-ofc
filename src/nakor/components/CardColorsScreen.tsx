@@ -29,19 +29,21 @@ export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
   const [modelId, setModelId] = useState<string>('session');
   const [color, setColor] = useState<string>('#7C3AED');
   const [variant, setVariant] = useState<CardVariant>('normal');
+  const [bgOpacity, setBgOpacity] = useState(100);
   const [saved, setSaved] = useState(false);
 
   const data = useCardData();
-  const theme = buildCardTheme(color);
+  const theme = buildCardTheme(color, bgOpacity);
 
   useEffect(() => {
     const prefs = readCardPreferences();
     setModelId(prefs.selectedModelId);
     setColor(prefs.selectedColor);
+    setBgOpacity(prefs.bgOpacity ?? 100);
   }, []);
 
   const handleSave = () => {
-    saveCardPreferences({ selectedModelId: modelId, selectedColor: color });
+    saveCardPreferences({ selectedModelId: modelId, selectedColor: color, bgOpacity });
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -86,10 +88,20 @@ export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
               </div>
             </div>
 
-            <div className="w-full rounded-[28px] p-4 bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 shadow-sm flex justify-center">
+            <div className="w-full overflow-hidden rounded-[28px] p-4 bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 shadow-sm flex justify-center">
               <ScaleToFit width={CARD_SIZES[variant].width}>
                 {renderCardModel(modelId, { theme, variant, data })}
               </ScaleToFit>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider">{t('Opacidade do fundo')}</span>
+              <span className="text-[12px] font-bold text-[#7C3AED]">{bgOpacity}%</span>
+            </div>
+            <div className="rounded-[20px] border border-[#DBDBE5]/50 bg-white p-4 dark:border-[#2A2B3D]/50 dark:bg-[#151622]">
+              <input aria-label={t('Opacidade do fundo')} type="range" min="35" max="100" value={bgOpacity} onChange={(event) => setBgOpacity(Number(event.target.value))} className="w-full accent-[#7C3AED]" />
             </div>
           </div>
 

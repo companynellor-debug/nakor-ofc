@@ -6,6 +6,7 @@ export function useCardPreferences() {
   const [prefs, setPrefs] = useState<CardPreferences>({
     selectedModelId: 'session',
     selectedColor: '#7C3AED',
+    bgOpacity: 100,
   });
 
 
@@ -20,7 +21,7 @@ export function useCardPreferences() {
     };
   }, []);
 
-  const theme = useMemo(() => buildCardTheme(prefs.selectedColor), [prefs.selectedColor]);
+  const theme = useMemo(() => buildCardTheme(prefs.selectedColor, prefs.bgOpacity), [prefs.selectedColor, prefs.bgOpacity]);
 
   return { prefs, theme };
 }

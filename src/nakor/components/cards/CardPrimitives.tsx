@@ -33,17 +33,12 @@ export const CardShell = React.forwardRef<HTMLDivElement, CardShellProps>(
           color: theme.textPrimary,
         }}
       >
-        {/* brilho superior */}
+        {/* brilho superior em gradiente para exportar corretamente em todos os navegadores */}
         <div
           className="pointer-events-none absolute"
           style={{
-            top: -110,
-            right: -70,
-            width: 260,
-            height: 260,
-            borderRadius: 9999,
-            background: hexToRgba(theme.accent, 0.5),
-            filter: 'blur(70px)',
+            inset: 0,
+            background: `radial-gradient(70% 58% at 92% 0%, ${hexToRgba(theme.accent, 0.48)} 0%, transparent 72%)`,
           }}
         />
         <div className="relative flex flex-col flex-1">{children}</div>
