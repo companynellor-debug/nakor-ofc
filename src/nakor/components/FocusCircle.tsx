@@ -58,18 +58,23 @@ export function FocusCircle({
       <div
         className={`absolute inset-0 rounded-full pointer-events-none transition-all duration-700 ${
           isComplete
-            ? 'bg-[#34117E]/15 dark:bg-[#8B5CF6]/25'
-            : 'bg-[#34117E]/10 dark:bg-[#8B5CF6]/20'
+            ? 'bg-[#34117E]/15 dark:bg-[#8B5CF6]/55'
+            : 'bg-[#34117E]/10 dark:bg-[#8B5CF6]/45'
         }`}
         style={{ filter: 'blur(60px)' }}
+      />
+
+      {/* Miolo roxo (destaque no modo escuro) */}
+      <div
+        className="absolute inset-[12%] rounded-full pointer-events-none transition-all duration-700 bg-transparent dark:bg-[radial-gradient(circle_at_50%_35%,rgba(139,92,246,0.42)_0%,rgba(76,42,160,0.30)_55%,rgba(13,15,20,0)_100%)] dark:shadow-[inset_0_0_60px_rgba(167,139,250,0.28)]"
       />
 
       {/* Outer decorative ring */}
       <div
         className={`absolute inset-0 rounded-full border pointer-events-none transition-colors duration-700 ${
           isComplete
-            ? 'border-[#34117E]/20 dark:border-[#A78BFA]/30'
-            : 'border-[#E0DDF5]/70 dark:border-white/[0.08]'
+            ? 'border-[#34117E]/20 dark:border-[#A78BFA]/45'
+            : 'border-[#E0DDF5]/70 dark:border-[#A78BFA]/25'
         }`}
       />
 
@@ -77,14 +82,15 @@ export function FocusCircle({
       <div
         className={`absolute ${ringSize} rounded-full pointer-events-none transition-all duration-700 ${
           isComplete
-            ? 'border-[#34117E]/15 dark:border-[#A78BFA]/20'
-            : 'border-[#F1F1F7] dark:border-white/[0.06]'
+            ? 'border-[#34117E]/15 dark:border-[#A78BFA]/35'
+            : 'border-[#F1F1F7] dark:border-[#A78BFA]/20'
         }`}
         style={{
           borderWidth: ringThickness,
           boxShadow: 'inset 0 2px 4px rgba(52, 17, 126, 0.04)',
         }}
       />
+
 
 
       {/* SVG progress ring */}
