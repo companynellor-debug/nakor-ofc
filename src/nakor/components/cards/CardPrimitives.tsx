@@ -203,7 +203,7 @@ export function CardFooterBrand({ theme }: { theme: CardTheme }) {
         className="text-[10px] font-bold tracking-[0.24em] uppercase"
         style={{ color: theme.textSecondary }}
       >
-        nakor.app
+        nakor.com.br
       </span>
       <span
         className="w-1.5 h-1.5 rounded-full"

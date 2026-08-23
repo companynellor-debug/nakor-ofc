@@ -58,7 +58,7 @@ function CompactLegacyCard({ theme, data, kind, ref }: { theme: CardTheme; data:
         ))}
       </div>
       <div className="mt-3 flex items-center justify-between text-[9px] font-bold tracking-[0.16em]" style={{ color: theme.textSecondary }}>
-        <span>NAKOR.APP</span><Zap size={12} style={{ color: theme.accent }} />
+        <span>NAKOR.COM.BR</span><Zap size={12} style={{ color: theme.accent }} />
       </div>
     </div>
   );
