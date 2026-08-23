@@ -4,7 +4,6 @@ import type { WorkGridCell } from '../../services/progressService';
 import { SessionWorkCard } from './SessionWorkCard';
 import { WeeklyWorkCard } from './WeeklyWorkCard';
 import { MonthlyWorkCard } from './MonthlyWorkCard';
-import { WorkGridCard } from './WorkGridCard';
 import { LegacyCard } from './LegacyCards';
 
 /** Dados reais necessários para renderizar qualquer modelo de card. */
@@ -16,7 +15,10 @@ export interface CardRenderData {
   streak: number;
 }
 
-export type CardModelId = 'trio' | 'unificado' | 'aura' | 'widget' | 'session' | 'weekly' | 'monthly' | 'grid';
+export type CardModelId = 'trio' | 'unificado' | 'aura' | 'widget' | 'session' | 'weekly' | 'monthly';
+
+/** Modelos removidos por serem visualmente idênticos a outro modelo. */
+const MODEL_ALIASES: Record<string, CardModelId> = { grid: 'monthly' };
 
 export interface CardModelDefinition {
   id: CardModelId;
@@ -85,26 +87,13 @@ export const CARD_MODELS: CardModelDefinition[] = [
       <MonthlyWorkCard ref={ref} theme={theme} variant={variant} summary={data.monthly} />
     ),
   },
-  {
-    id: 'grid',
-    name: 'Work Grid',
-    description: 'Consistência em grid de intensidade',
-    render: ({ theme, variant, data, ref }) => (
-      <WorkGridCard
-        ref={ref}
-        theme={theme}
-        variant={variant}
-        cells={data.grid}
-        currentStreak={data.streak}
-      />
-    ),
-  },
 ];
 
 export const CARD_MODEL_IDS = CARD_MODELS.map((m) => m.id);
 
 export function resolveCardModel(id?: string): CardModelDefinition {
-  return CARD_MODELS.find((m) => m.id === id) ?? CARD_MODELS[0];
+  const resolved = (id && MODEL_ALIASES[id]) || id;
+  return CARD_MODELS.find((m) => m.id === resolved) ?? CARD_MODELS[0];
 }
 
 export function renderCardModel(
