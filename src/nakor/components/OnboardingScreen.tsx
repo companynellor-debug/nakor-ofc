@@ -18,9 +18,11 @@ import {
 } from 'lucide-react';
 import { useT } from '../lib/i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { AuraDomeCard } from './AuraDomeCard';
-import { WidgetStackCard } from './WidgetStackCard';
-import { CARD_LAYOUTS, LayoutThumb, type CardLayoutId } from './CardLayoutThumbs';
+import { CARD_MODELS, renderCardModel } from './cards/registry';
+import { CARD_SIZES } from './cards/CardPrimitives';
+import { ScaleToFit } from './cards/ScaleToFit';
+import { useCardData } from '../hooks/useCardData';
+import { buildCardTheme, saveCardPreferences } from '../services/cardTheme';
 
 
 interface OnboardingScreenProps {
@@ -130,169 +132,15 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Prévia real do card de resultado (mesma ideia da tela de Cores dos cards). */
-function ResultCardPreview({ layout, color }: { layout: CardLayoutId; color: string }) {
-  if (layout === 'aura' || layout === 'widget') {
-    const props = {
-      accentColor: color,
-      title: 'Estudar',
-      minutes: 25,
-      plannedMinutes: 30,
-      score: 8.7,
-      exits: 0,
-      streak: 3,
-      message: 'isso aí 😎',
-    };
-    // Os cards reais são desenhados para ~380px (fontes em px fixos).
-    // Renderizamos no tamanho nativo e reduzimos com scale para não cortar nada.
-    const NATIVE = 380;
-    const TARGET = 210;
-    const scale = TARGET / NATIVE;
-    return (
-      <div
-        className="mx-auto relative"
-        style={{ width: TARGET, height: TARGET }}
-      >
-        <div
-          style={{
-            width: NATIVE,
-            height: NATIVE,
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            pointerEvents: 'none',
-          }}
-        >
-          {layout === 'aura' ? <AuraDomeCard {...props} /> : <WidgetStackCard {...props} />}
-        </div>
-      </div>
-    );
-  }
-
-  if (layout === 'trio') {
-    const cards: Array<{ tag: string; text?: string; nota?: string }> = [
-      { tag: 'ANTES', text: 'Estava cansado e sem foco...' },
-      { tag: 'DEPOIS', text: 'Consegui terminar tudo!' },
-      { tag: 'NOTA', nota: '8.7' },
-    ];
-    return (
-      <div className="flex gap-2 items-stretch w-full">
-        {cards.map((c) => (
-          <div
-            key={c.tag}
-            className="flex-1 relative overflow-hidden flex flex-col justify-between p-2"
-            style={{
-              borderRadius: '14px',
-              aspectRatio: '4 / 5',
-              backgroundColor: '#0D0F14',
-              backgroundImage: `linear-gradient(180deg, ${hexToRgba(color, 0.85)} 0%, ${hexToRgba(color, 0.25)} 45%, #0D0F14 100%)`,
-              boxShadow: `0 10px 24px -12px ${hexToRgba(color, 0.55)}`,
-            }}
-          >
-            <div className="flex items-center justify-between opacity-70">
-              <span className="text-[4.5px] font-mono tracking-widest text-white uppercase">SESSÃO FOCO</span>
-              <span className="text-[5.5px] font-bold tracking-tight text-white">Nakor</span>
-            </div>
-            {c.nota ? (
-              <div className="flex flex-col items-center my-auto">
-                <span className="text-[4.5px] font-mono tracking-widest text-white/60">NOTA</span>
-                <span className="text-white font-extrabold text-[26px] leading-none tracking-tighter">{c.nota}</span>
-                <span className="text-white/75 text-[6px] mt-1">isso aí 😎</span>
-              </div>
-            ) : (
-              <div
-                className="my-auto w-full p-1.5 flex flex-col items-center"
-                style={{
-                  backgroundColor: 'rgba(0,0,0,0.30)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                }}
-              >
-                <span className="text-[4.5px] font-mono tracking-widest text-white/60 mb-1">{c.tag}</span>
-                <p className="text-white text-[6px] italic leading-snug m-0 text-center">"{c.text}"</p>
-              </div>
-            )}
-            <div className="flex justify-between text-[4.5px] font-mono text-white/70 pt-1 border-t border-white/10">
-              <span>25MIN</span>
-              <span>14:30</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
+/** Prévia real do card de resultado (mesmos componentes usados após a atividade). */
+function ResultCardPreview({ modelId, color }: { modelId: string; color: string }) {
+  const data = useCardData();
+  const theme = buildCardTheme(color);
   return (
-    <div
-      className="relative overflow-hidden w-full max-w-[210px] mx-auto p-3.5 flex flex-col justify-between"
-      style={{
-        aspectRatio: '1 / 1',
-        borderRadius: '32px',
-        backgroundColor: '#0A0A0C',
-        backgroundImage: `radial-gradient(120% 85% at 50% 108%, ${hexToRgba(color, 0.95)} 0%, ${hexToRgba(color, 0.5)} 38%, ${hexToRgba(color, 0.1)} 66%, rgba(10,10,12,0) 85%)`,
-        boxShadow: `0 18px 40px -16px ${hexToRgba(color, 0.5)}, inset 0 0 0 1px rgba(255,255,255,0.07)`,
-      }}
-    >
-      <div className="flex items-center gap-2">
-        <div
-          className="w-6 h-6 rounded-full"
-          style={{ backgroundColor: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.16)' }}
-        />
-        <div>
-          <p className="text-white font-bold text-[10px] leading-none m-0">Estudar</p>
-          <p className="text-white/60 text-[7px] leading-none m-0 mt-1">3 dias de foco</p>
-        </div>
-      </div>
-      <div className="flex gap-4 mt-2">
-        {[
-          { v: '25', l: 'min' },
-          { v: '8.7', l: 'nota' },
-          { v: '0', l: 'saídas' },
-        ].map((s) => (
-          <div key={s.l} className="flex flex-col">
-            <span className="text-white font-bold text-[13px] leading-none">{s.v}</span>
-            <span className="text-white/55 text-[7px] mt-0.5">{s.l}</span>
-          </div>
-        ))}
-      </div>
-      <div
-        className="w-full mt-2 relative overflow-hidden"
-        style={{ height: '22px', borderRadius: '9px', backgroundColor: 'rgba(255,255,255,0.16)' }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '78%',
-            borderRadius: '9px',
-            backgroundColor: hexToRgba(color, 0.95),
-            backgroundImage:
-              'repeating-linear-gradient(115deg, rgba(255,255,255,0.26) 0px, rgba(255,255,255,0.26) 6px, rgba(255,255,255,0.02) 6px, rgba(255,255,255,0.02) 14px)',
-          }}
-        />
-      </div>
-      <div className="flex items-end justify-between mt-2">
-        <div className="flex items-baseline gap-1">
-          <span className="text-white font-extrabold text-[30px] leading-none tracking-tight">25</span>
-          <span className="text-white/70 text-[8px] font-medium">min focados</span>
-        </div>
-        <div
-          className="flex flex-col items-center justify-center"
-          style={{
-            width: '34px',
-            height: '34px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255,255,255,0.22)',
-            border: '1px solid rgba(255,255,255,0.28)',
-          }}
-        >
-          <span className="text-white font-extrabold text-[12px] leading-none">8.7</span>
-          <span className="text-white/75 text-[5.5px] mt-0.5 font-semibold uppercase">nota</span>
-        </div>
-      </div>
-      <div className="flex items-center justify-between mt-1.5 text-[5.5px] font-mono tracking-wider text-white/70">
-        <span>nakor.com.br</span>
-        <span>SESSÃO FOCO</span>
-      </div>
+    <div className="w-full max-w-[240px] mx-auto pointer-events-none">
+      <ScaleToFit width={CARD_SIZES.normal.width}>
+        {renderCardModel(modelId, { theme, variant: 'normal', data })}
+      </ScaleToFit>
     </div>
   );
 }
@@ -309,7 +157,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
   const [productiveTime, setProductiveTime] = useState<string>(''); // Step 4: Singleselect
   const [hour, setHour] = useState(8); // Step 5: Drum picker hours (0-23)
   const [minute, setMinute] = useState(0); // Step 5: Drum picker minutes (0-59)
-  const [cardLayout, setCardLayout] = useState<CardLayoutId>('trio'); // Step 6
+  const [cardLayout, setCardLayout] = useState<string>('session'); // Step 6
   const [cardColor, setCardColor] = useState('#7C3AED'); // Step 6
 
   const TOTAL_STEPS = 6;
@@ -345,19 +193,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
     localStorage.setItem('nakor_onboarding', JSON.stringify(answers));
 
     // Salva o estilo dos cards escolhido aqui, para já ficar na conta do usuário
-    try {
-      const savedRaw = localStorage.getItem('nakor_estilo_cards');
-      const saved = savedRaw ? JSON.parse(savedRaw) : {};
-      localStorage.setItem(
-        'nakor_estilo_cards',
-        JSON.stringify({ ...saved, layout: cardLayout, accentColor: cardColor }),
-      );
-    } catch {
-      localStorage.setItem(
-        'nakor_estilo_cards',
-        JSON.stringify({ layout: cardLayout, accentColor: cardColor }),
-      );
-    }
+    saveCardPreferences({ selectedModelId: cardLayout, selectedColor: cardColor });
 
     onComplete(answers);
   };
@@ -706,10 +542,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   {t('Prévia')}
                 </p>
                 <div className="rounded-[22px] p-4 bg-brand-card border border-brand-border/60 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.12)] flex items-center justify-center">
-                  <ResultCardPreview layout={cardLayout} color={cardColor} />
+                  <ResultCardPreview modelId={cardLayout} color={cardColor} />
                 </div>
                 <p className="text-[10.5px] text-text-secondary text-center">
-                  {CARD_LAYOUTS.find((l) => l.id === cardLayout)?.hint}
+                  {t(CARD_MODELS.find((m) => m.id === cardLayout)?.description || '')}
                 </p>
               </div>
 
@@ -719,7 +555,7 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                   {t('Modelo')}
                 </p>
                 <div className="grid grid-cols-2 gap-3">
-                  {CARD_LAYOUTS.map((opt) => {
+                  {CARD_MODELS.map((opt) => {
                     const isSelected = cardLayout === opt.id;
                     return (
                       <motion.button
@@ -744,20 +580,14 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: Onb
                             <Check size={12} strokeWidth={3.5} color={cardColor === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
                           </div>
                         )}
-                        <div
-                          className="w-full flex items-center justify-center mb-2.5"
-                          style={{ opacity: isSelected ? 1 : 0.55 }}
-                        >
-                          <LayoutThumb id={opt.id} accentColor={cardColor} />
-                        </div>
                         <p
                           className={`text-[13px] font-semibold leading-tight ${
                             isSelected ? 'text-text-primary' : 'text-text-primary/60'
                           }`}
                         >
-                          {opt.label}
+                          {opt.name}
                         </p>
-                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">{opt.hint}</p>
+                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">{t(opt.description)}</p>
                       </motion.button>
                     );
                   })}

@@ -3,12 +3,18 @@
 
 export async function renderCardToBlob(node: HTMLElement): Promise<Blob | null> {
   const { toBlob } = await import('html-to-image');
+  // offsetWidth/Height ignoram transform de ancestrais (escala de tela),
+  // garantindo que a imagem copiada saia sempre no tamanho real do card.
   return toBlob(node, {
     pixelRatio: 3,
     cacheBust: true,
     backgroundColor: 'transparent',
+    width: node.offsetWidth,
+    height: node.offsetHeight,
+    style: { transform: 'none', transformOrigin: 'top left', margin: '0' },
   });
 }
+
 
 export type CardExportResult = 'copied' | 'shared' | 'downloaded' | 'error';
 
