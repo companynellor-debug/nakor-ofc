@@ -4,9 +4,10 @@ import { buildCardTheme, readCardPreferences } from '../services/cardTheme';
 
 export function useCardPreferences() {
   const [prefs, setPrefs] = useState<CardPreferences>({
-    selectedModelId: 'trio',
+    selectedModelId: 'session',
     selectedColor: '#7C3AED',
   });
+
 
   useEffect(() => {
     setPrefs(readCardPreferences());

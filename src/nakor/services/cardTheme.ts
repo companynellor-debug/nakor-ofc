@@ -12,21 +12,47 @@ export function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+const VALID_MODEL_IDS = ['session', 'weekly', 'monthly', 'grid'];
+
 export function readCardPreferences(): CardPreferences {
-  const fallback: CardPreferences = { selectedModelId: 'trio', selectedColor: DEFAULT_ACCENT };
+  const fallback: CardPreferences = { selectedModelId: 'session', selectedColor: DEFAULT_ACCENT };
   if (typeof window === 'undefined') return fallback;
   try {
     const raw = localStorage.getItem(PREFS_KEY);
     if (!raw) return fallback;
     const parsed = JSON.parse(raw);
+    const model = parsed.selectedModelId || parsed.layout;
     return {
-      selectedModelId: parsed.layout || parsed.selectedModelId || fallback.selectedModelId,
-      selectedColor: parsed.accentColor || parsed.selectedColor || fallback.selectedColor,
+      selectedModelId: VALID_MODEL_IDS.includes(model) ? model : fallback.selectedModelId,
+      selectedColor: parsed.selectedColor || parsed.accentColor || fallback.selectedColor,
     };
   } catch {
     return fallback;
   }
 }
+
+/** Salva modelo + cor (mantém as chaves legadas para compatibilidade). */
+export function saveCardPreferences(prefs: CardPreferences) {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = localStorage.getItem(PREFS_KEY);
+    const previous = raw ? JSON.parse(raw) : {};
+    localStorage.setItem(
+      PREFS_KEY,
+      JSON.stringify({
+        ...previous,
+        selectedModelId: prefs.selectedModelId,
+        selectedColor: prefs.selectedColor,
+        layout: prefs.selectedModelId,
+        accentColor: prefs.selectedColor,
+      }),
+    );
+    window.dispatchEvent(new Event('nakor_card_prefs_updated'));
+  } catch {
+    /* ignora */
+  }
+}
+
 
 export function buildCardTheme(accent: string = DEFAULT_ACCENT): CardTheme {
   return {

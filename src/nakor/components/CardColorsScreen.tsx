@@ -1,756 +1,185 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Check, Clock } from 'lucide-react';
-import { NakorLogo } from './NakorLogo';
-import { UnifiedGlowCard } from './UnifiedGlowCard';
-import { CARD_LAYOUTS, LayoutThumb } from './CardLayoutThumbs';
-import { AuraDomeCard } from './AuraDomeCard';
-import { WidgetStackCard } from './WidgetStackCard';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, Check } from 'lucide-react';
+import { CARD_MODELS, renderCardModel } from './cards/registry';
+import { CARD_SIZES } from './cards/CardPrimitives';
+import { ScaleToFit } from './cards/ScaleToFit';
+import { buildCardTheme, readCardPreferences, saveCardPreferences } from '../services/cardTheme';
+import { useCardData } from '../hooks/useCardData';
+import type { CardVariant } from '../domain/types';
 import { useT } from '../lib/i18n';
 
 interface CardColorsScreenProps {
   onBack: () => void;
 }
 
-function hexToRgba(hex: string, alpha: number): string {
-  if (!hex) return `rgba(255, 255, 255, ${alpha})`;
-  let cleanHex = hex.replace('#', '');
-  
-  if (cleanHex.length === 3) {
-    cleanHex = cleanHex.split('').map(char => char + char).join('');
-  }
-  
-  const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
-  const g = parseInt(cleanHex.substring(2, 4), 16) || 0;
-  const b = parseInt(cleanHex.substring(4, 6), 16) || 0;
-  
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-export function getCardBgStyle(styleId: string, accentColor: string, opacity: number): React.CSSProperties {
-  const bgOpacityVal = opacity / 100;
-  const cardBgColor = `rgba(13, 15, 18, ${bgOpacityVal})`;
-  
-  const baseStyle: React.CSSProperties = {
-    backgroundColor: cardBgColor,
-    position: 'relative',
-    overflow: 'hidden',
-    transition: 'all 0.3s ease',
-  };
-
-  switch (styleId) {
-    case 'gradient':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(180deg, ${hexToRgba(accentColor, 0.8)} 0%, ${cardBgColor} 70%)`,
-        border: `1.5px solid ${hexToRgba(accentColor, 0.45)}`,
-      };
-    case 'neon_radial':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(180deg, ${hexToRgba(accentColor, 0.95)} 0%, ${hexToRgba(accentColor, 0.25)} 35%, ${cardBgColor} 100%)`,
-        boxShadow: `inset 0 0 25px ${hexToRgba(accentColor, 0.5)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.95)}`,
-      };
-    case 'aurora_mesh':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(135deg, ${hexToRgba(accentColor, 0.85)} 0%, ${hexToRgba(accentColor, 0.2)} 35%, ${cardBgColor} 100%)`,
-        boxShadow: `inset 0 0 20px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.5px solid ${hexToRgba(accentColor, 0.75)}`,
-      };
-    case 'cyber_grid':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(180deg, ${hexToRgba(accentColor, 0.9)} 0%, ${hexToRgba(accentColor, 0.25)} 40%, ${cardBgColor} 100%)`,
-        boxShadow: `inset 0 0 20px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.85)}`,
-      };
-    case 'laser_split':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(135deg, ${hexToRgba(accentColor, 0.9)} 0%, ${hexToRgba(accentColor, 0.2)} 35%, ${cardBgColor} 100%)`,
-        boxShadow: `inset 0 0 20px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.85)}`,
-      };
-    case 'nebula_glow':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(225deg, ${hexToRgba(accentColor, 0.85)} 0%, ${cardBgColor} 45%, ${hexToRgba(accentColor, 0.4)} 100%)`,
-        boxShadow: `inset 0 0 25px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.8)}`,
-      };
-    case 'sunset_fire':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(45deg, ${hexToRgba(accentColor, 0.9)} 0%, ${hexToRgba(accentColor, 0.2)} 35%, ${cardBgColor} 100%)`,
-        boxShadow: `inset 0 0 20px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.85)}`,
-      };
-    case 'super_nova':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(to top right, ${hexToRgba(accentColor, 0.95)} 0%, ${hexToRgba(accentColor, 0.2)} 35%, ${cardBgColor} 100%)`,
-        boxShadow: `inset 0 0 25px ${hexToRgba(accentColor, 0.5)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `2px solid ${hexToRgba(accentColor, 0.95)}`,
-      };
-    case 'vortex_matrix':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(115deg, ${hexToRgba(accentColor, 0.85)} 10%, ${cardBgColor} 50%, ${hexToRgba(accentColor, 0.45)} 90%)`,
-        boxShadow: `inset 0 0 20px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.5)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.85)}`,
-      };
-    case 'neon_border':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(180deg, ${cardBgColor} 0%, ${cardBgColor} 100%)`,
-        boxShadow: `0 0 20px ${hexToRgba(accentColor, 0.85)}, inset 0 0 12px ${hexToRgba(accentColor, 0.5)}`,
-        border: `2px solid ${hexToRgba(accentColor, 0.95)}`,
-      };
-    case 'eclipse_glow':
-      return {
-        ...baseStyle,
-        backgroundImage: `linear-gradient(180deg, ${cardBgColor} 50%, ${hexToRgba(accentColor, 0.25)} 80%, ${hexToRgba(accentColor, 0.85)} 100%)`,
-        border: `1.8px solid ${hexToRgba(accentColor, 0.85)}`,
-      };
-    case 'grain':
-      return {
-        ...baseStyle,
-        backgroundImage: 'none',
-        border: `1px solid ${hexToRgba(accentColor, 0.5)}`,
-      };
-    case 'solid':
-    default:
-      return {
-        ...baseStyle,
-        backgroundImage: 'none',
-        border: `1px solid ${hexToRgba(accentColor, 0.5)}`,
-      };
-  }
-}
+const COLORS = [
+  { name: 'Roxo', hex: '#7C3AED' },
+  { name: 'Azul', hex: '#2563EB' },
+  { name: 'Ciano', hex: '#0CB6D7' },
+  { name: 'Verde', hex: '#22C55E' },
+  { name: 'Verde Limão', hex: '#A5CE00' },
+  { name: 'Âmbar', hex: '#F59E0B' },
+  { name: 'Rosa', hex: '#EC4899' },
+  { name: 'Vermelho', hex: '#EF4444' },
+  { name: 'Grafite', hex: '#94A3B8' },
+];
 
 export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
   const t = useT();
-  const [accentColor, setAccentColor] = useState('#7C3AED');
-  const [bgStyle, setBgStyle] = useState('gradient'); // 'gradient', 'solid', 'grain'
-  const [scoreStyle, setScoreStyle] = useState('large'); // 'large', 'compact'
-  const [layout, setLayout] = useState('trio'); // 'trio' | 'unificado'
-  
-  const [bgOpacity, setBgOpacity] = useState(80); // 0 to 100
-  const [conteudo, setConteudo] = useState({
-    textoAntes: true,
-    textoDepois: true,
-    notaIA: true,
-    fraseIA: true,
-    streak: true,
-    selo: true,
-    horario: false,
-    duracao: true
-  });
-  const [lastActivity, setLastActivity] = useState<any>(null);
-  const [showToast, setShowToast] = useState(false);
+  const [modelId, setModelId] = useState<string>('session');
+  const [color, setColor] = useState<string>('#7C3AED');
+  const [variant, setVariant] = useState<CardVariant>('normal');
+  const [saved, setSaved] = useState(false);
 
+  const data = useCardData();
+  const theme = buildCardTheme(color);
 
-useEffect(() => {
-    try {
-      const saved = localStorage.getItem('nakor_estilo_cards');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.accentColor) setAccentColor(parsed.accentColor);
-        if (parsed.bgStyle) setBgStyle(parsed.bgStyle);
-        if (parsed.scoreStyle) setScoreStyle(parsed.scoreStyle);
-        if (parsed.layout) setLayout(parsed.layout);
-        if (parsed.bgOpacity !== undefined) setBgOpacity(parsed.bgOpacity);
-        if (parsed.conteudo) setConteudo(parsed.conteudo);
-      }
-      
-      const historyStr = localStorage.getItem('nakor_historico');
-      if (historyStr) {
-        const history = JSON.parse(historyStr);
-        if (history && history.length > 0) {
-          setLastActivity(history[0]);
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  useEffect(() => {
+    const prefs = readCardPreferences();
+    setModelId(prefs.selectedModelId);
+    setColor(prefs.selectedColor);
   }, []);
 
   const handleSave = () => {
-    try {
-      const config = { accentColor, bgStyle, scoreStyle, layout, bgOpacity, conteudo };
-      localStorage.setItem('nakor_estilo_cards', JSON.stringify(config));
-      
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    } catch (e) {
-      console.error(e);
-    }
+    saveCardPreferences({ selectedModelId: modelId, selectedColor: color });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
   };
 
-  const colors = [
-    { name: 'Roxo', hex: '#7C3AED' },
-    { name: 'Azul', hex: '#2563EB' },
-    { name: 'Verde Limão', hex: '#A5CE00' },
-    { name: 'Azul Metálico', hex: '#0CB6D7' },
-    { name: 'Rosa Vibrante', hex: '#EC4899' },
-    { name: 'Branco', hex: '#FFFFFF' }
-  ];
-
-  const bgOptions = [
-    { id: 'gradient', label: 'Gradiente escuro' },
-    { id: 'solid', label: 'Sólido escuro' },
-    { id: 'grain', label: 'Com grain/textura' },
-    { id: 'neon_radial', label: 'Glow Neon Extremo 🔥' },
-    { id: 'aurora_mesh', label: 'Aurora Orgânica 🌌' },
-    { id: 'cyber_grid', label: 'Grade Digital Tech ⚡' },
-    { id: 'laser_split', label: 'Diagonal Laser 📐' },
-    { id: 'nebula_glow', label: 'Nebulosa Cósmica 🪐' },
-    { id: 'sunset_fire', label: 'Pôr do Sol Flamejante 🌅' },
-    { id: 'super_nova', label: 'Supernova Explosiva 💥' },
-    { id: 'vortex_matrix', label: 'Vórtice Hiperespaço 🌀' },
-    { id: 'neon_border', label: 'Borda Neon Infinita 💡' },
-    { id: 'eclipse_glow', label: 'Eclipse Solar 🌑' }
-  ];
-
-  const scoreOptions = [
-    { id: 'large', label: 'Grande e centralizada' },
-    { id: 'compact', label: 'Compacta ao lado da mensagem' }
-  ];
-
   return (
-    <div className="min-h-screen w-full bg-[#F5F5F7] dark:bg-[#0D0F14] text-[#21222D] dark:text-[#F8F9FA] flex flex-col font-sans relative overflow-x-hidden select-none">
-      <div className="w-full max-w-[390px] mx-auto flex flex-col h-full min-h-screen pb-10">
-        
+    <div className="min-h-screen w-full bg-[#F5F5F7] dark:bg-[#0D0F14] text-[#21222D] dark:text-[#F8F9FA] flex flex-col font-sans relative overflow-x-hidden">
+      <div className="w-full max-w-[420px] mx-auto flex flex-col pb-32">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-6 sticky top-0 bg-[#F5F5F7] dark:bg-[#0D0F14]/90 backdrop-blur-md z-30">
-          <button 
+        <div className="flex items-center px-6 py-6 sticky top-0 bg-[#F5F5F7]/90 dark:bg-[#0D0F14]/90 backdrop-blur-md z-30">
+          <button
             onClick={onBack}
-            className="w-10 h-10 rounded-full bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center cursor-pointer active:scale-95 transition-all text-[#21222D] dark:text-[#F8F9FA]"
+            className="w-10 h-10 rounded-full bg-[#DBDBE5]/40 dark:bg-[#2A2B3D]/40 flex items-center justify-center cursor-pointer active:scale-95 transition-all"
           >
             <ArrowLeft size={18} />
           </button>
-          
-          <h1 className="text-lg font-bold text-[#21222D] dark:text-[#F8F9FA] tracking-tight absolute left-1/2 -translate-x-1/2">
-            {t('Cores dos cards')}
+          <h1 className="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2">
+            {t('Cards')}
           </h1>
-          
-          <div className="w-10 h-10" />
         </div>
 
-        <div className="px-5 mt-2 flex flex-col gap-6">
-          
+        <div className="px-5 flex flex-col gap-7">
           {/* Preview */}
-          {['unificado', 'aura', 'widget'].includes(layout) ? (
-            (() => {
-              const previewProps = {
-                accentColor,
-                title: lastActivity?.nome || t('Sessão de Foco'),
-                minutes: lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 45,
-                plannedMinutes: lastActivity?.duracao_prevista
-                  ? Math.round(lastActivity.duracao_prevista / 60)
-                  : 60,
-                score: lastActivity?.nota ?? 8.7,
-                exits: lastActivity?.saidas ?? 0,
-                message: conteudo.fraseIA ? lastActivity?.mensagem_card || t('isso aí 😎') : undefined,
-              };
-              if (layout === 'aura') return <AuraDomeCard {...previewProps} />;
-              if (layout === 'widget') return <WidgetStackCard {...previewProps} />;
-              return <UnifiedGlowCard {...previewProps} />;
-            })()
-          ) : (
-
-          <div className="w-full">
-            <div className="flex gap-2.5 items-stretch">
-              {[
-                conteudo.textoAntes ? 'antes' : null,
-                conteudo.textoDepois ? 'depois' : null,
-                (conteudo.notaIA || conteudo.fraseIA) ? 'nota' : null,
-              ].filter(Boolean).map((kind) => (
-                <div
-                  key={kind as string}
-                  className="flex-1 relative overflow-hidden shadow-xl transition-all duration-300"
-                  style={{
-                    ...getCardBgStyle(bgStyle, accentColor, bgOpacity),
-                    borderRadius: '18px',
-                    aspectRatio: '4 / 5',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    padding: '10px',
-                  }}
-                >
-                  {/* Scrims */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.35) 0%, transparent 80%)',
-                      borderRadius: 'inherit',
-                      zIndex: 1,
-                    }}
-                  />
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      backgroundImage: 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.40) 100%)',
-                      borderRadius: 'inherit',
-                      zIndex: 1,
-                    }}
-                  />
-                  {bgStyle === 'grain' && (
-                    <div
-                      className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-                      style={{
-                        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                        zIndex: 2,
-                      }}
-                    />
-                  )}
-
-                  <div className="relative z-10 flex flex-col justify-between flex-1 gap-2">
-                    {/* Branding */}
-                    <div className="flex items-center justify-between w-full opacity-60">
-                      <span
-                        className="text-[5px] font-mono tracking-widest text-white uppercase"
-                        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.55)' }}
-                      >
-                        {t('SESSÃO FOCO')}
-                      </span>
-                      <div className="flex items-center gap-0.5">
-                        <NakorLogo size={7} color="#FFFFFF" />
-                        <span className="text-[6px] font-display font-bold tracking-tight text-white">Nakor</span>
-                      </div>
-                    </div>
-
-                    {/* Conteúdo central */}
-                    {kind === 'nota' ? (
-                      <div className="flex flex-col items-center justify-center text-center my-auto">
-                        {conteudo.notaIA && (
-                          <>
-                            <span className="text-[5px] font-mono tracking-widest text-white/60 uppercase mb-0.5">
-                              {t('NOTA')}
-                            </span>
-                            <div
-                              className="font-extrabold tracking-tighter text-white"
-                              style={{
-                                fontSize: scoreStyle === 'large' ? '30px' : '22px',
-                                lineHeight: 1,
-                                textShadow: `0 2px 8px rgba(0,0,0,0.6), 0 0 12px ${hexToRgba(accentColor, 0.65)}`,
-                              }}
-                            >
-                              {lastActivity?.nota ? lastActivity.nota.toFixed(1) : '8.7'}
-                            </div>
-                          </>
-                        )}
-                        {conteudo.fraseIA && (
-                          <p
-                            className="text-white font-medium text-[6.5px] mt-1 leading-snug m-0 overflow-hidden"
-                            style={{
-                              display: '-webkit-box',
-                              WebkitBoxOrient: 'vertical',
-                              WebkitLineClamp: 3,
-                              textShadow: '0 1px 3px rgba(0,0,0,0.55)',
-                            }}
-                          >
-                            {lastActivity?.mensagem_card || t('isso aí 😎')}
-                          </p>
-                        )}
-                        {(conteudo.streak || conteudo.selo) && (
-                          <div className="flex items-center gap-1 justify-center mt-1.5 flex-wrap">
-                            {conteudo.streak && (
-                              <span
-                                className="px-1.5 py-0.5 rounded-full text-white text-[5.5px] font-bold"
-                                style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
-                              >
-                                🔥 {lastActivity?.streak || 1} {lastActivity?.streak === 1 ? t('dia') : t('dias')}
-                              </span>
-                            )}
-                            {conteudo.selo && (
-                              <span
-                                className="px-1.5 py-0.5 rounded-full text-white text-[5.5px] font-bold"
-                                style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
-                              >
-                                {lastActivity?.nivel || t('Iniciante')}
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center text-center my-auto w-full">
-                        <div
-                          className="flex flex-col items-center p-1.5 w-full"
-                          style={{
-                            backgroundColor: 'rgba(0,0,0,0.28)',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(255,255,255,0.10)',
-                          }}
-                        >
-                          <span
-                            className="text-[5px] font-mono tracking-widest text-white/50 uppercase mb-1 px-1.5 py-[1px] rounded-full"
-                            style={{ backgroundColor: 'rgba(0,0,0,0.30)', border: '1px solid rgba(255,255,255,0.14)' }}
-                          >
-                            {kind === 'antes' ? t('ANTES') : t('DEPOIS')}
-                          </span>
-                          <p
-                            className="text-white text-[6.5px] font-medium italic leading-snug m-0 overflow-hidden"
-                            style={{
-                              display: '-webkit-box',
-                              WebkitBoxOrient: 'vertical',
-                              WebkitLineClamp: 4,
-                              textShadow: '0 1px 3px rgba(0,0,0,0.55)',
-                            }}
-                          >
-                            "{kind === 'antes'
-                              ? (lastActivity?.texto_antes || 'Estava com pouca energia...')
-                              : (lastActivity?.texto_depois || 'Me senti muito melhor...')}"
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Footer */}
-                    {(conteudo.duracao || conteudo.horario) && (
-                      <div className="flex justify-between items-center mt-auto pt-1 border-t border-white/10 w-full text-[5px] text-white/75 tracking-wider font-mono">
-                        {conteudo.duracao ? (
-                          <div className="flex items-center gap-0.5 opacity-70">
-                            <Clock size={6} strokeWidth={1.75} />
-                            <span>{lastActivity?.duracao_real ? Math.floor(lastActivity.duracao_real / 60) : 25}{t('MIN')}</span>
-                          </div>
-                        ) : <div />}
-                        {conteudo.horario ? (
-                          <span className="opacity-70">{lastActivity?.timestamp ? new Date(lastActivity.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '14:30'}</span>
-                        ) : <div />}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <p className="text-neutral-500 dark:text-neutral-400 text-[10px] text-center mt-2">
-              {t('Prévia real: os 3 cards são gerados lado a lado')}
-            </p>
-          </div>
-          )}
-
-
-          {/* Formato do Card */}
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Formato dos cards')}</span>
-            <div className="grid grid-cols-2 gap-3">
-              {CARD_LAYOUTS.map((opt) => {
-                const isSelected = layout === opt.id;
-                return (
-                  <motion.button
-                    key={opt.id}
-                    onClick={() => setLayout(opt.id)}
-                    whileTap={{ scale: 0.96 }}
-                    className="flex flex-col items-start gap-2 p-3 rounded-[20px] border-2 text-left cursor-pointer bg-white dark:bg-[#151622] transition-all"
-                    style={{
-                      borderColor: isSelected ? accentColor : 'rgba(219,219,229,0.5)',
-                      boxShadow: isSelected ? `0 10px 20px -6px ${hexToRgba(accentColor, 0.3)}` : 'none',
-                    }}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-1">
+                {t('Pré-visualização')}
+              </span>
+              <div className="flex gap-1 p-1 rounded-full bg-[#DBDBE5]/50 dark:bg-[#2A2B3D]/50">
+                {(['normal', 'compact'] as CardVariant[]).map((v) => (
+                  <button
+                    key={v}
+                    onClick={() => setVariant(v)}
+                    className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                      variant === v
+                        ? 'bg-white dark:bg-[#151622] text-[#7C3AED] shadow-sm'
+                        : 'text-neutral-500'
+                    }`}
                   >
-                    <div className="w-full h-14 flex items-center justify-center gap-1.5">
-                      <LayoutThumb id={opt.id} accentColor={accentColor} />
-                    </div>
-
-                    <div>
-                      <p className={`text-[13px] font-bold m-0 ${isSelected ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-neutral-500 dark:text-neutral-400'}`}>
-                        {t(opt.label)}
-                      </p>
-                      <p className="text-[10px] text-neutral-400 m-0">{t(opt.hint)}</p>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-          </div>
-
-
-          {/* Seleção de Cor */}
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Cor de Destaque')}</span>
-            <div className="bg-white dark:bg-[#151622] rounded-[24px] p-5 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
-              <div className="grid grid-cols-6 gap-3">
-                {colors.map((c) => (
-                  <button 
-                    key={c.hex}
-                    onClick={() => setAccentColor(c.hex)}
-                    className="aspect-square rounded-full transition-all flex items-center justify-center relative shadow-sm cursor-pointer"
-                    style={{ 
-                      backgroundColor: c.hex,
-                      border: accentColor === c.hex ? '3px solid #21222D' : '2px solid transparent',
-                      transform: accentColor === c.hex ? 'scale(1.1)' : 'scale(1)'
-                    }}
-                  >
-                    {accentColor === c.hex && <Check size={14} className={c.hex === '#FFFFFF' ? 'text-black' : 'text-white'} strokeWidth={3} />}
+                    {v === 'normal' ? t('Normal') : t('Compacto')}
                   </button>
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Estilo do Fundo */}
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Estilo do Fundo')}</span>
-            <div className="w-full overflow-x-auto pb-3 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0 no-scrollbar">
-              <div className="flex gap-3 min-w-max">
-                {bgOptions.map((opt) => {
-                  const isSelected = bgStyle === opt.id;
-                  return (
-                    <motion.button 
-                      key={opt.id}
-                      onClick={() => setBgStyle(opt.id)}
-                      whileTap={{ scale: 0.95 }}
-                      animate={{ 
-                        scale: isSelected ? 1.06 : 1,
-                        borderColor: isSelected ? accentColor : 'rgba(219, 219, 229, 0.5)',
-                        boxShadow: isSelected 
-                          ? `0 10px 20px -5px ${hexToRgba(accentColor, 0.25)}, 0 0 10px 1px ${hexToRgba(accentColor, 0.15)}` 
-                          : '0 1px 2px 0 rgba(0,0,0,0.05)',
-                        backgroundColor: isSelected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.7)'
-                      }}
-                      transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-                      className="flex flex-col items-center p-3 rounded-[20px] w-24 shrink-0 transition-all border-2 text-center cursor-pointer outline-none"
-                    >
-                      <div className="relative w-14 h-14 rounded-xl overflow-hidden shadow-md flex items-center justify-center">
-                        <div style={{
-                          ...getCardBgStyle(opt.id, accentColor, 100),
-                          position: 'absolute',
-                          inset: 0,
-                          width: '100%',
-                          height: '100%',
-                          borderRadius: 'inherit',
-                          zIndex: 0,
-                          pointerEvents: 'none',
-                        }} />
-                        {opt.id === 'grain' && (
-                          <div 
-                            className="absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none z-10"
-                            style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
-                          />
-                        )}
-                        {/* Selected indicator overlay icon */}
-                        {isSelected && (
-                          <div className="absolute inset-0 bg-[#34117E]/10 flex items-center justify-center z-20">
-                            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md border border-[#34117E]/10">
-                              <Check size={12} className="text-[#34117E] dark:text-[#C4B5FD]" strokeWidth={3.5} />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      <span className={`text-[10px] leading-tight font-bold mt-2.5 line-clamp-2 h-7 overflow-hidden ${
-                        isSelected ? 'text-[#21222D] dark:text-[#F8F9FA]' : 'text-neutral-500 dark:text-neutral-400'
-                      }`}>
-                        {t(opt.label)}
-                      </span>
-                    </motion.button>
-                  );
-                })}
-              </div>
+            <div className="w-full rounded-[28px] p-4 bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 shadow-sm flex justify-center">
+              <ScaleToFit width={CARD_SIZES[variant].width}>
+                {renderCardModel(modelId, { theme, variant, data })}
+              </ScaleToFit>
             </div>
           </div>
 
-          
-          {/* Opacidade do Fundo */}
+          {/* Modelos */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Opacidade do fundo do card')}</span>
-            <div className="bg-white dark:bg-[#151622] rounded-[24px] p-5 flex flex-col gap-4 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
-              <div className="flex justify-between items-center">
-                <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Intensidade do fundo')}</span>
-                <span className="text-[#958CE8] font-bold">{bgOpacity}%</span>
-              </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                value={bgOpacity}
-                onChange={(e) => setBgOpacity(Number(e.target.value))}
-                className="w-full accent-[#958CE8] cursor-pointer"
-              />
-            </div>
-          </div>
-
-          {/* Estilo da Nota */}
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('Estilo da Nota')}</span>
-            <div className="bg-white dark:bg-[#151622] rounded-[24px] p-4 flex flex-col border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
-              {scoreOptions.map((opt, idx) => {
-                const isSelected = scoreStyle === opt.id;
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-1">
+              {t('Modelo do card')}
+            </span>
+            <div className="grid grid-cols-2 gap-3">
+              {CARD_MODELS.map((model) => {
+                const active = model.id === modelId;
                 return (
-                  <React.Fragment key={opt.id}>
-                    <button 
-                      onClick={() => setScoreStyle(opt.id)}
-                      className="w-full py-4 px-2 flex items-center gap-3 text-left cursor-pointer"
-                    >
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${isSelected ? 'border-[#958CE8]' : 'border-[#DBDBE5] dark:border-[#2A2B3D]'}`}>
-                        {isSelected && <div className="w-2.5 h-2.5 bg-[#958CE8] rounded-full" />}
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-8 h-8 rounded-lg border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 relative overflow-hidden shadow-sm"
-                          style={{
-                            backgroundColor: `rgba(0, 0, 0, ${(bgOpacity !== undefined ? bgOpacity : 80) / 100})`,
-                            backgroundImage: opt.id === 'gradient' ? `radial-gradient(circle at 50% 0%, ${accentColor}44 0%, transparent 70%)` : 'none',
-                          }}
-                        >
-                          {opt.id === 'grain' && (
-                            <div 
-                              className="absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"
-                              style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
-                            />
-                          )}
-                        </div>
-                        <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t(opt.label)}</span>
-                      </div>
-                    </button>
-                    {idx < scoreOptions.length - 1 && (
-                      <div className="w-full h-px bg-[#DBDBE5]/30 dark:bg-[#2A2B3D]/30" />
-                    )}
-                  </React.Fragment>
+                  <button
+                    key={model.id}
+                    onClick={() => setModelId(model.id)}
+                    className={`text-left rounded-[22px] p-4 border transition-all cursor-pointer active:scale-[0.98] ${
+                      active
+                        ? 'border-[#7C3AED] bg-[#7C3AED]/10'
+                        : 'border-[#DBDBE5]/60 dark:border-[#2A2B3D]/60 bg-white dark:bg-[#151622]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[14px] font-bold">{model.name}</span>
+                      {active && (
+                        <span className="w-5 h-5 rounded-full bg-[#7C3AED] flex items-center justify-center">
+                          <Check size={12} className="text-white" />
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400 leading-snug block">
+                      {t(model.description)}
+                    </span>
+                  </button>
                 );
               })}
             </div>
           </div>
 
-          
-          {/* Conteúdo dos Cards */}
+          {/* Cores */}
           <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-4">{t('O que aparecer nos cards')}</span>
-            <div className="bg-white dark:bg-[#151622] rounded-[24px] p-4 flex flex-col gap-4 border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/40 shadow-sm">
-              
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Texto do Antes')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Seu relato antes da sessão')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, textoAntes: !prev.textoAntes}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.textoAntes ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.textoAntes ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] font-bold uppercase tracking-wider pl-1">
+              {t('Cor de destaque')}
+            </span>
+            <div className="rounded-[24px] p-5 bg-white dark:bg-[#151622] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/50 shadow-sm flex flex-col gap-4">
+              <div className="grid grid-cols-5 gap-3">
+                {COLORS.map((c) => (
+                  <button
+                    key={c.hex}
+                    onClick={() => setColor(c.hex)}
+                    title={t(c.name)}
+                    className="aspect-square rounded-full flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                    style={{
+                      backgroundColor: c.hex,
+                      boxShadow:
+                        color.toLowerCase() === c.hex.toLowerCase()
+                          ? `0 0 0 3px rgba(124,58,237,0.35), 0 0 18px ${c.hex}`
+                          : 'none',
+                    }}
+                  >
+                    {color.toLowerCase() === c.hex.toLowerCase() && (
+                      <Check size={14} className="text-white drop-shadow" />
+                    )}
+                  </button>
+                ))}
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Texto do Depois')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('O que aconteceu de verdade')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, textoDepois: !prev.textoDepois}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.textoDepois ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.textoDepois ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between opacity-50">
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1">
-                    <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Nota da IA')}</span>
-                    <span className="text-[10px] bg-neutral-100 px-1.5 py-0.5 rounded text-[#21222D] dark:text-[#F8F9FA] ml-1 font-bold">🔒</span>
-                  </div>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Sua pontuação da sessão')}</span>
-                </div>
-                <div className="w-12 h-6 rounded-full bg-[#958CE8] relative">
-                  <div className="w-4 h-4 rounded-full bg-white absolute top-1 translate-x-7" />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Frase da IA')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Mensagem gerada pela IA')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, fraseIA: !prev.fraseIA}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.fraseIA ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.fraseIA ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Streak')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Seus dias seguidos de foco 🔥')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, streak: !prev.streak}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.streak ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.streak ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Selo atual')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Seu nível no Nakor')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, selo: !prev.selo}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.selo ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.selo ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Horário de conclusão')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Hora que você terminou')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, horario: !prev.horario}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.horario ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.horario ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[#21222D] dark:text-[#F8F9FA] text-[15px] font-semibold">{t('Duração da sessão')}</span>
-                  <span className="text-neutral-400 text-xs font-semibold">{t('Quanto tempo focou')}</span>
-                </div>
-                <button 
-                  onClick={() => setConteudo(prev => ({...prev, duracao: !prev.duracao}))}
-                  className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${conteudo.duracao ? 'bg-[#958CE8]' : 'bg-[#DBDBE5] dark:bg-[#2A2B3D]'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${conteudo.duracao ? 'translate-x-7' : 'translate-x-1'}`} />
-                </button>
-              </div>
-
+              <label className="flex items-center justify-between gap-3">
+                <span className="text-[14px] font-semibold">{t('Cor personalizada')}</span>
+                <input
+                  type="color"
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  className="w-12 h-9 rounded-lg bg-transparent cursor-pointer border border-[#DBDBE5]/60 dark:border-[#2A2B3D]/60"
+                />
+              </label>
             </div>
           </div>
 
-          <button 
+          <button
             onClick={handleSave}
-            className="w-full h-[56px] rounded-full bg-[#34117E] hover:bg-[#2C0E6B] text-white font-bold text-[16px] flex items-center justify-center mt-2 mb-4 transition-all active:scale-[0.98] shadow-sm cursor-pointer"
+            className="w-full h-[56px] rounded-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-base transition-all active:scale-95 shadow-[0_10px_30px_rgba(124,58,237,0.35)] cursor-pointer"
           >
-            {t('Salvar estilo')}
+            {saved ? t('Preferência salva!') : t('Salvar preferência')}
           </button>
 
+          <span className="text-center text-[11px] text-neutral-500 dark:text-neutral-400 px-4">
+            {t('Todas as próximas atividades usam automaticamente este modelo e esta cor.')}
+          </span>
         </div>
       </div>
-
-      {/* Toast Notification */}
-      <AnimatePresence>
-        {showToast && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#21222D] border border-white/10 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full shadow-lg z-50 pointer-events-none whitespace-nowrap text-center max-w-[350px]"
-          >
-            {t('✅ Estilo salvo! Seus próximos cards usarão esse visual.')}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
