@@ -468,6 +468,82 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         </div>
         </div>
       </div>
+
+      {editing && (
+        <div className="fixed inset-0 z-[120] flex items-end md:items-center justify-center bg-black/50 backdrop-blur-sm px-4 pb-6 md:pb-0">
+          <div className="w-full max-w-[390px] bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/60 shadow-xl">
+            <h2 className="text-lg font-extrabold mb-5">{t('Editar atividade')}</h2>
+
+            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              {t('Nome')}
+            </label>
+            <input
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              className="w-full mt-2 mb-5 h-12 px-4 rounded-[16px] bg-[#F5F5F7] dark:bg-[#0D0F14] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/60 text-sm font-semibold outline-none focus:border-[#34117E]"
+            />
+
+            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              {t('Projeto')}
+            </label>
+            <div className="flex flex-wrap gap-2 mt-2 mb-3">
+              <button
+                onClick={() => setEditProjectId(null)}
+                className={`px-3.5 h-9 rounded-full text-xs font-bold border transition-colors cursor-pointer ${
+                  editProjectId === null
+                    ? 'bg-[#34117E] text-white border-transparent'
+                    : 'border-[#DBDBE5]/50 dark:border-[#2A2B3D]/60 text-neutral-500 dark:text-neutral-400'
+                }`}
+              >
+                {t('Sem projeto')}
+              </button>
+              {projects.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => setEditProjectId(p.id)}
+                  className={`px-3.5 h-9 rounded-full text-xs font-bold border transition-colors cursor-pointer ${
+                    editProjectId === p.id
+                      ? 'bg-[#34117E] text-white border-transparent'
+                      : 'border-[#DBDBE5]/50 dark:border-[#2A2B3D]/60 text-neutral-500 dark:text-neutral-400'
+                  }`}
+                >
+                  {p.name}
+                </button>
+              ))}
+            </div>
+
+            <input
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              placeholder={t('Novo projeto')}
+              className="w-full mb-6 h-11 px-4 rounded-[16px] bg-[#F5F5F7] dark:bg-[#0D0F14] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/60 text-sm font-semibold outline-none focus:border-[#34117E]"
+            />
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setEditing(null)}
+                className="flex-1 h-12 rounded-[16px] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/60 text-sm font-bold cursor-pointer"
+              >
+                {t('Cancelar')}
+              </button>
+              <button
+                onClick={saveEditor}
+                className="flex-1 h-12 rounded-[16px] bg-[#34117E] text-white text-sm font-bold shadow-[0_8px_20px_rgba(52,17,126,0.3)] cursor-pointer"
+              >
+                {t('Salvar')}
+              </button>
+            </div>
+
+            <button
+              onClick={removeActivity}
+              className="w-full mt-3 h-11 rounded-[16px] text-sm font-bold text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
+            >
+              {t('Excluir atividade')}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
+
   );
 }
