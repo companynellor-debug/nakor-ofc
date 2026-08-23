@@ -1,5 +1,8 @@
 import { DesktopSidebar } from './DesktopSidebar';
 import { useT } from '../lib/i18n';
+import { useActivities } from '../hooks/useActivities';
+import { useProjects } from '../hooks/useProjects';
+
 
 import React,
 
@@ -30,17 +33,70 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
   const userEmail = onboardingData?.email || localStorage.getItem('nakor_user_email') || 'alex@email.com';
 
   const [history, setHistory] = useState<any[]>([]);
+  const { updateActivity, deleteActivity } = useActivities();
+  const { projects, createProject } = useProjects();
+  const [editing, setEditing] = useState<any | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editProjectId, setEditProjectId] = useState<string | null>(null);
+  const [newProjectName, setNewProjectName] = useState('');
+
+  const loadHistory = () => {
+    const raw = localStorage.getItem('nakor_historico');
+    if (!raw) {
+      setHistory([]);
+      return;
+    }
+    try {
+      const parsed = JSON.parse(raw);
+      setHistory(Array.isArray(parsed) ? parsed : []);
+    } catch (e) {
+      console.error('Failed to parse history', e);
+    }
+  };
 
   useEffect(() => {
-    const raw = localStorage.getItem('nakor_historico');
-    if (raw) {
-      try {
-        setHistory(JSON.parse(raw));
-      } catch (e) {
-        console.error('Failed to parse history', e);
+    loadHistory();
+    const handler = () => loadHistory();
+    window.addEventListener('nakor_activities_updated', handler);
+    return () => window.removeEventListener('nakor_activities_updated', handler);
+  }, []);
+
+  const openEditor = (item: any) => {
+    setEditing(item);
+    setEditName(item.nome || '');
+    setEditProjectId(item.projeto_id ?? null);
+    setNewProjectName('');
+  };
+
+  const saveEditor = async () => {
+    if (!editing) return;
+    let projectId = editProjectId;
+    let projectName = projects.find((p) => p.id === projectId)?.name ?? null;
+
+    if (newProjectName.trim()) {
+      const created = await createProject(newProjectName);
+      if (created) {
+        projectId = created.id;
+        projectName = created.name;
       }
     }
-  }, []);
+
+    await updateActivity(String(editing.id ?? editing.timestamp), {
+      title: editName.trim() || t('Atividade'),
+      projectId: projectId ?? null,
+      projectName: projectId ? projectName : null,
+    });
+    setEditing(null);
+    loadHistory();
+  };
+
+  const removeActivity = async () => {
+    if (!editing) return;
+    await deleteActivity(String(editing.id ?? editing.timestamp));
+    setEditing(null);
+    loadHistory();
+  };
+
 
   const getCategoryIcon = (nome: string) => {
     const n = nome.toLowerCase();
@@ -382,16 +438,29 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
                     </div>
 
                     {/* Nota e mensagem da IA */}
-                    <div className="flex flex-col items-end shrink-0 pl-2">
-                      <span className="text-xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight leading-none mb-1">
-                        {nota.toFixed(1)}
-                      </span>
-                      <span className="text-neutral-400 text-[10px] italic font-bold max-w-[120px] truncate">
-                        {item.mensagem_card || t('concluído')}
-                      </span>
+                    <div className="flex items-center gap-2 shrink-0 pl-2">
+                      <div className="flex flex-col items-end">
+                        <span className="text-xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight leading-none mb-1">
+                          {nota.toFixed(1)}
+                        </span>
+                        <span className="text-neutral-400 text-[10px] italic font-bold max-w-[120px] truncate">
+                          {item.mensagem_card || t('concluído')}
+                        </span>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEditor(item);
+                        }}
+                        aria-label={t('Editar atividade')}
+                        className="w-9 h-9 rounded-[12px] flex items-center justify-center border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/60 text-neutral-400 hover:text-[#34117E] dark:hover:text-[#C4B5FD] hover:border-[#34117E]/40 transition-colors cursor-pointer"
+                      >
+                        <SlidersHorizontal size={16} />
+                      </button>
                     </div>
 
                   </div>
+
                 );
               })
             )}
@@ -399,6 +468,82 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         </div>
         </div>
       </div>
+
+      {editing && (
+        <div className="fixed inset-0 z-[120] flex items-end md:items-center justify-center bg-black/50 backdrop-blur-sm px-4 pb-6 md:pb-0">
+          <div className="w-full max-w-[390px] bg-white dark:bg-[#151622] rounded-[28px] p-6 border border-[#DBDBE5]/30 dark:border-[#2A2B3D]/60 shadow-xl">
+            <h2 className="text-lg font-extrabold mb-5">{t('Editar atividade')}</h2>
+
+            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              {t('Nome')}
+            </label>
+            <input
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              className="w-full mt-2 mb-5 h-12 px-4 rounded-[16px] bg-[#F5F5F7] dark:bg-[#0D0F14] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/60 text-sm font-semibold outline-none focus:border-[#34117E]"
+            />
+
+            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              {t('Projeto')}
+            </label>
+            <div className="flex flex-wrap gap-2 mt-2 mb-3">
+              <button
+                onClick={() => setEditProjectId(null)}
+                className={`px-3.5 h-9 rounded-full text-xs font-bold border transition-colors cursor-pointer ${
+                  editProjectId === null
+                    ? 'bg-[#34117E] text-white border-transparent'
+                    : 'border-[#DBDBE5]/50 dark:border-[#2A2B3D]/60 text-neutral-500 dark:text-neutral-400'
+                }`}
+              >
+                {t('Sem projeto')}
+              </button>
+              {projects.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => setEditProjectId(p.id)}
+                  className={`px-3.5 h-9 rounded-full text-xs font-bold border transition-colors cursor-pointer ${
+                    editProjectId === p.id
+                      ? 'bg-[#34117E] text-white border-transparent'
+                      : 'border-[#DBDBE5]/50 dark:border-[#2A2B3D]/60 text-neutral-500 dark:text-neutral-400'
+                  }`}
+                >
+                  {p.name}
+                </button>
+              ))}
+            </div>
+
+            <input
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              placeholder={t('Novo projeto')}
+              className="w-full mb-6 h-11 px-4 rounded-[16px] bg-[#F5F5F7] dark:bg-[#0D0F14] border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/60 text-sm font-semibold outline-none focus:border-[#34117E]"
+            />
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setEditing(null)}
+                className="flex-1 h-12 rounded-[16px] border border-[#DBDBE5]/50 dark:border-[#2A2B3D]/60 text-sm font-bold cursor-pointer"
+              >
+                {t('Cancelar')}
+              </button>
+              <button
+                onClick={saveEditor}
+                className="flex-1 h-12 rounded-[16px] bg-[#34117E] text-white text-sm font-bold shadow-[0_8px_20px_rgba(52,17,126,0.3)] cursor-pointer"
+              >
+                {t('Salvar')}
+              </button>
+            </div>
+
+            <button
+              onClick={removeActivity}
+              className="w-full mt-3 h-11 rounded-[16px] text-sm font-bold text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
+            >
+              {t('Excluir atividade')}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
+
   );
 }
