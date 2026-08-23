@@ -27,10 +27,11 @@ export const CardShell = React.forwardRef<HTMLDivElement, CardShellProps>(
           minHeight: size.minHeight,
           borderRadius: variant === 'compact' ? 28 : 34,
           backgroundColor: theme.background,
-          backgroundImage: `radial-gradient(120% 90% at 82% -10%, ${hexToRgba(theme.accent, 0.55)} 0%, transparent 58%), radial-gradient(95% 70% at 0% 105%, ${hexToRgba(theme.accent, 0.32)} 0%, transparent 62%)`,
-          border: `1px solid ${hexToRgba(theme.accent, 0.42)}`,
+          backgroundImage: `radial-gradient(130% 95% at 84% -12%, ${hexToRgba(theme.accent, 0.62)} 0%, transparent 60%), radial-gradient(100% 75% at -5% 108%, ${hexToRgba(theme.accent, 0.34)} 0%, transparent 64%), linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.22) 100%)`,
+          border: `1px solid ${hexToRgba(theme.accent, 0.46)}`,
           padding: variant === 'compact' ? 20 : 26,
           color: theme.textPrimary,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.14), 0 26px 60px -28px ${hexToRgba(theme.accent, 0.55)}`,
         }}
       >
         {/* brilho superior em gradiente para exportar corretamente em todos os navegadores */}
@@ -38,10 +39,20 @@ export const CardShell = React.forwardRef<HTMLDivElement, CardShellProps>(
           className="pointer-events-none absolute"
           style={{
             inset: 0,
-            background: `radial-gradient(70% 58% at 92% 0%, ${hexToRgba(theme.accent, 0.48)} 0%, transparent 72%)`,
+            background: `radial-gradient(70% 58% at 92% 0%, ${hexToRgba(theme.accent, 0.5)} 0%, transparent 72%)`,
+          }}
+        />
+        {/* vinheta suave nas bordas para dar profundidade */}
+        <div
+          className="pointer-events-none absolute"
+          style={{
+            inset: 0,
+            background: 'radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.35) 100%)',
           }}
         />
         <div className="relative flex flex-col flex-1">{children}</div>
+      </div>
+
       </div>
     );
   },
