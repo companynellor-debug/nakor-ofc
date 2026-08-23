@@ -131,7 +131,7 @@ export const SessionWorkCard = React.forwardRef<HTMLDivElement, Props>(
             </div>
           </div>
           <div className="mt-3">
-            <ProgressLine theme={theme} ratio={ratio} caption="nakor.app" />
+            <ProgressLine theme={theme} ratio={ratio} caption="nakor.com.br" />
           </div>
         </CardShell>
       );

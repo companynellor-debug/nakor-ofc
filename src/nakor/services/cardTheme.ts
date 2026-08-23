@@ -12,7 +12,7 @@ export function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const VALID_MODEL_IDS = ['trio', 'unificado', 'aura', 'widget', 'session', 'weekly', 'monthly', 'grid'];
+const VALID_MODEL_IDS = ['trio', 'unificado', 'aura', 'widget', 'session', 'weekly', 'monthly'];
 
 export function readCardPreferences(): CardPreferences {
   const fallback: CardPreferences = { selectedModelId: 'trio', selectedColor: DEFAULT_ACCENT, bgOpacity: 100 };

@@ -1,6 +1,9 @@
 import { DesktopSidebar } from './DesktopSidebar';
 import { useT } from '../lib/i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useActivities } from '../hooks/useActivities';
+import { getProgressSummary } from '../services/progressService';
+
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
@@ -102,100 +105,43 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }, [userName]);
 
-  // Load history
-  const history = useMemo(() => {
-    const raw = localStorage.getItem('nakor_historico');
-    if (raw) {
-      try {
-        return JSON.parse(raw);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    return [];
-  }, []);
+  // Progresso real (fonte de verdade: repositório de atividades)
+  const { activities } = useActivities();
 
-  // Streak calculation (same as HomeScreen)
-  const streak = useMemo(() => {
-    if (history.length === 0) return 0;
-    
-    const sorted = [...history].sort((a, b) => b.timestamp - a.timestamp);
-    const uniqueDays = new Set<string>();
-    sorted.forEach(item => {
-      const d = new Date(item.timestamp);
-      uniqueDays.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
-    });
-    
-    const dayList = Array.from(uniqueDays).map(dStr => new Date(dStr));
-    if (dayList.length === 0) return 0;
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-    
-    const firstActiveDay = dayList[0];
-    firstActiveDay.setHours(0, 0, 0, 0);
-    
-    if (firstActiveDay < yesterday) {
-      return 0;
-    }
-    
-    let currentStreak = 1;
-    let currentDay = firstActiveDay;
-    
-    for (let i = 1; i < dayList.length; i++) {
-      const prevDay = new Date(currentDay);
-      prevDay.setDate(currentDay.getDate() - 1);
-      prevDay.setHours(0, 0, 0, 0);
-      
-      const checkDay = dayList[i];
-      checkDay.setHours(0, 0, 0, 0);
-      
-      if (checkDay.getTime() === prevDay.getTime()) {
-        currentStreak++;
-        currentDay = checkDay;
-      } else {
-        break;
-      }
-    }
-    
-    return currentStreak;
-  }, [history]);
+  const weekly = useMemo(() => getProgressSummary(activities, 'week'), [activities]);
 
-  // Total hours
+  const streak = weekly.currentStreak;
+
   const totalHours = useMemo(() => {
-    const totalSecs = history.reduce((acc: number, item: any) => acc + (item.duracao_real || 0), 0);
+    const totalSecs = activities.reduce((acc, a) => acc + (a.actualDuration || 0), 0);
     return Math.floor(totalSecs / 3600);
-  }, [history]);
+  }, [activities]);
 
-  // General average score
   const averageScore = useMemo(() => {
-    if (history.length === 0) return '0.0';
-    const sum = history.reduce((acc: number, item: any) => acc + (item.nota || 0), 0);
-    return (sum / history.length).toFixed(1);
-  }, [history]);
+    const scored = activities.filter((a) => typeof a.focusScore === 'number' && a.focusScore !== null);
+    if (scored.length === 0) return '0.0';
+    const sum = scored.reduce((acc, a) => acc + (a.focusScore || 0), 0);
+    return (sum / scored.length).toFixed(1);
+  }, [activities]);
 
-  // Weekly Goal Y (from onboarding)
+  // Meta semanal Y (do onboarding)
   const goalHours = useMemo(() => {
-    const savedOnboarding = onboardingData || JSON.parse(localStorage.getItem('nakor_onboarding') || '{}');
-    const hoursStr = savedOnboarding?.focusHours || '15h';
+    let saved: any = onboardingData;
+    if (!saved) {
+      try {
+        saved = JSON.parse(localStorage.getItem('nakor_onboarding') || '{}');
+      } catch {
+        saved = {};
+      }
+    }
+    const hoursStr = String(saved?.focusHours ?? '15h');
     return parseInt(hoursStr.replace(/\D/g, ''), 10) || 15;
   }, [onboardingData]);
 
-  // Current week total hours
-  const weeklyHours = useMemo(() => {
-    const now = new Date();
-    const currentDay = now.getDay();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    const weekItems = history.filter((item: any) => new Date(item.timestamp) >= startOfWeek);
-    const totalSecs = weekItems.reduce((acc: number, item: any) => acc + (item.duracao_real || 0), 0);
-    return parseFloat((totalSecs / 3600).toFixed(1));
-  }, [history]);
+  const weeklyHours = useMemo(
+    () => parseFloat((weekly.totalFocusTime / 3600).toFixed(1)),
+    [weekly],
+  );
 
   const remainingHours = useMemo(() => {
     return Math.max(0, Math.ceil(goalHours - weeklyHours));
@@ -204,6 +150,7 @@ export function ProfileScreen({ onboardingData, onNavigate, onLogout, theme, onT
   const weeklyProgressPercent = useMemo(() => {
     return Math.min(100, Math.round((weeklyHours / goalHours) * 100));
   }, [weeklyHours, goalHours]);
+
 
   // Show "Em breve" toast
   const handleItemClick = (name: string) => {
