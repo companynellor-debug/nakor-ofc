@@ -74,12 +74,14 @@ export default function App() {
   }
   const dir = navDirRef.current;
 
+  // Transição simples e limpa entre abas (sem efeito de "galeria de fotos")
   const tabAnim = {
-    initial: { opacity: 0, x: dir * 44, scale: 0.98, filter: 'blur(8px)' },
-    animate: { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' },
-    exit: { opacity: 0, x: dir * -44, scale: 0.985, filter: 'blur(8px)' },
-    transition: { type: 'spring' as const, stiffness: 340, damping: 34, mass: 0.7 },
+    initial: { opacity: 0, y: 8 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -4 },
+    transition: { duration: 0.18, ease: 'easeOut' as const },
   };
+
 
 
   useEffect(() => {
