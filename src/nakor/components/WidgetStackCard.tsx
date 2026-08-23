@@ -24,6 +24,7 @@ export interface WidgetStackCardProps {
   startLabel?: string;
   endLabel?: string;
   showDomain?: boolean;
+  backgroundOpacity?: number;
 }
 
 function Gauge({
@@ -101,6 +102,7 @@ export const WidgetStackCard = forwardRef<HTMLDivElement, WidgetStackCardProps>(
       startLabel,
       endLabel,
       showDomain = true,
+      backgroundOpacity = 1,
     },
     ref
   ) {
@@ -120,7 +122,7 @@ export const WidgetStackCard = forwardRef<HTMLDivElement, WidgetStackCardProps>(
           aspectRatio: '1 / 1',
           borderRadius: '44px',
           overflow: 'hidden',
-          backgroundColor: '#050506',
+          backgroundColor: `rgba(5,5,6,${backgroundOpacity})`,
           boxShadow: `0 30px 70px -24px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.6)`,
           display: 'flex',
           flexDirection: 'column',

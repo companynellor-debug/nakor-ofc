@@ -22,6 +22,7 @@ export interface UnifiedGlowCardProps {
   streak?: number | string;
   message?: string;
   timeLabel?: string;
+  backgroundOpacity?: number;
 }
 
 /**
@@ -30,7 +31,7 @@ export interface UnifiedGlowCardProps {
  */
 export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
   function UnifiedGlowCard(
-    { accentColor, title, minutes, plannedMinutes, score, exits, streak, message, timeLabel },
+    { accentColor, title, minutes, plannedMinutes, score, exits, streak, message, timeLabel, backgroundOpacity = 1 },
     ref
   ) {
     const t = useT();
@@ -48,7 +49,7 @@ export const UnifiedGlowCard = forwardRef<HTMLDivElement, UnifiedGlowCardProps>(
           aspectRatio: '1 / 1',
           borderRadius: '52px',
           overflow: 'hidden',
-          backgroundColor: '#0A0A0C',
+          backgroundColor: `rgba(10,10,12,${backgroundOpacity})`,
           boxShadow: `0 30px 70px -20px ${hexToRgba(accentColor, 0.45)}, 0 10px 30px rgba(0,0,0,0.6)`,
           display: 'flex',
           flexDirection: 'column',

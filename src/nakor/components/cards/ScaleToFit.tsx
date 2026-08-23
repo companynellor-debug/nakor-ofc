@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 /**
  * Escala visualmente o card para caber na tela sem deformar proporções.
@@ -18,7 +18,7 @@ export function ScaleToFit({
   const [scale, setScale] = useState(1);
   const [height, setHeight] = useState<number | undefined>(undefined);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const measure = () => {
       const available = outerRef.current?.clientWidth || width;
       const next = Math.min(maxScale, available / width);
@@ -27,16 +27,16 @@ export function ScaleToFit({
       if (h) setHeight(h * next);
     };
     measure();
-    window.addEventListener('resize', measure);
-    const id = window.setTimeout(measure, 120);
+    const observer = new ResizeObserver(measure);
+    if (outerRef.current) observer.observe(outerRef.current);
+    if (innerRef.current) observer.observe(innerRef.current);
     return () => {
-      window.removeEventListener('resize', measure);
-      window.clearTimeout(id);
+      observer.disconnect();
     };
   }, [width, maxScale, children]);
 
   return (
-    <div ref={outerRef} className="w-full flex justify-center" style={{ height }}>
+    <div ref={outerRef} className="w-full min-w-0 overflow-hidden flex justify-center" style={{ height: height ?? 0 }}>
       <div
         ref={innerRef}
         style={{ transform: `scale(${scale})`, transformOrigin: 'top center', width }}

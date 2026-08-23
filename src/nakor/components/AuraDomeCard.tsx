@@ -22,6 +22,7 @@ export interface AuraDomeCardProps {
   streak?: number | string;
   message?: string;
   showDomain?: boolean;
+  backgroundOpacity?: number;
 }
 
 /** Barras determinísticas derivadas da sessão (mesma sessão = mesmo gráfico). */
@@ -43,7 +44,7 @@ function buildBars(minutes: number, score: number, exits: number): number[] {
  */
 export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
   function AuraDomeCard(
-    { accentColor, title, minutes, plannedMinutes, score, exits, streak, message, showDomain = true },
+    { accentColor, title, minutes, plannedMinutes, score, exits, streak, message, showDomain = true, backgroundOpacity = 1 },
     ref
   ) {
     const t = useT();
@@ -64,7 +65,7 @@ export const AuraDomeCard = forwardRef<HTMLDivElement, AuraDomeCardProps>(
           aspectRatio: '1 / 1',
           borderRadius: '64px',
           overflow: 'hidden',
-          backgroundColor: '#07070A',
+          backgroundColor: `rgba(7,7,10,${backgroundOpacity})`,
           boxShadow: `0 30px 70px -22px ${hexToRgba(accentColor, 0.5)}, 0 10px 30px rgba(0,0,0,0.65)`,
           display: 'flex',
           flexDirection: 'column',

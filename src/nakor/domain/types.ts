@@ -97,6 +97,7 @@ export interface CardModel {
 export interface CardPreferences {
   selectedModelId: string;
   selectedColor: string;
+  bgOpacity?: number;
 }
 
 export interface CardTheme {
@@ -107,4 +108,5 @@ export interface CardTheme {
   textPrimary: string;
   textSecondary: string;
   background: string;
+  backgroundOpacity: number;
 }

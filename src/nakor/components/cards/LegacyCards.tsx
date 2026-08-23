@@ -28,7 +28,7 @@ function CompactLegacyCard({ theme, data, kind, ref }: { theme: CardTheme; data:
       className="relative flex h-[200px] w-[360px] flex-col overflow-hidden rounded-[28px] p-5"
       style={{
         color: theme.textPrimary,
-        backgroundColor: '#08080B',
+        backgroundColor: `rgba(8,8,11,${theme.backgroundOpacity})`,
         backgroundImage: `radial-gradient(90% 160% at 100% 100%, ${hexToRgba(theme.accent, 0.82)} 0%, transparent 68%)`,
         border: `1px solid ${hexToRgba(theme.accent, 0.48)}`,
         boxShadow: `inset 0 1px 0 rgba(255,255,255,.12), 0 20px 55px ${hexToRgba(theme.accent, 0.28)}`,
@@ -72,7 +72,7 @@ function TrioCard({ theme, data, ref }: { theme: CardTheme; data: CardRenderData
     { label: 'RESULTADO', value: value.score.toFixed(1), sub: 'Nota de foco' },
   ];
   return (
-    <div ref={ref} className="grid min-h-[460px] w-[360px] grid-cols-3 gap-2 rounded-[34px] bg-[#08080B] p-3">
+    <div ref={ref} className="grid min-h-[460px] w-[360px] grid-cols-3 gap-2 rounded-[34px] p-3" style={{ backgroundColor: `rgba(8,8,11,${theme.backgroundOpacity})` }}>
       {panels.map((panel, index) => (
         <div key={panel.label} className="relative flex flex-col overflow-hidden rounded-[25px] border p-3" style={{ borderColor: hexToRgba(theme.accent, .35), background: `linear-gradient(180deg, #111116 25%, ${hexToRgba(theme.accent, .22 + index * .16)} 100%)` }}>
           <span className="text-[8px] font-bold tracking-[0.15em]" style={{ color: theme.textSecondary }}>{panel.label}</span>
@@ -89,7 +89,7 @@ export function LegacyCard({ kind, theme, variant, data, ref }: { kind: LegacyKi
   if (variant === 'compact') return <CompactLegacyCard kind={kind} theme={theme} data={data} ref={ref} />;
   const value = activityValues(data);
   if (kind === 'trio') return <TrioCard theme={theme} data={data} ref={ref} />;
-  const props = { ref, accentColor: theme.accent, ...value, streak: data.streak };
+  const props = { ref, accentColor: theme.accent, backgroundOpacity: theme.backgroundOpacity, ...value, streak: data.streak };
   if (kind === 'aura') return <AuraDomeCard {...props} />;
   if (kind === 'widget') return <WidgetStackCard {...props} />;
   return <UnifiedGlowCard {...props} />;
