@@ -438,16 +438,29 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
                     </div>
 
                     {/* Nota e mensagem da IA */}
-                    <div className="flex flex-col items-end shrink-0 pl-2">
-                      <span className="text-xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight leading-none mb-1">
-                        {nota.toFixed(1)}
-                      </span>
-                      <span className="text-neutral-400 text-[10px] italic font-bold max-w-[120px] truncate">
-                        {item.mensagem_card || t('concluído')}
-                      </span>
+                    <div className="flex items-center gap-2 shrink-0 pl-2">
+                      <div className="flex flex-col items-end">
+                        <span className="text-xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight leading-none mb-1">
+                          {nota.toFixed(1)}
+                        </span>
+                        <span className="text-neutral-400 text-[10px] italic font-bold max-w-[120px] truncate">
+                          {item.mensagem_card || t('concluído')}
+                        </span>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEditor(item);
+                        }}
+                        aria-label={t('Editar atividade')}
+                        className="w-9 h-9 rounded-[12px] flex items-center justify-center border border-[#DBDBE5]/40 dark:border-[#2A2B3D]/60 text-neutral-400 hover:text-[#34117E] dark:hover:text-[#C4B5FD] hover:border-[#34117E]/40 transition-colors cursor-pointer"
+                      >
+                        <SlidersHorizontal size={16} />
+                      </button>
                     </div>
 
                   </div>
+
                 );
               })
             )}
