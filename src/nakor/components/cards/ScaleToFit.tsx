@@ -21,10 +21,14 @@ export function ScaleToFit({
   useLayoutEffect(() => {
     const measure = () => {
       const available = outerRef.current?.clientWidth || width;
+      if (available <= 0) {
+        setHeight(0);
+        return;
+      }
       const next = Math.min(maxScale, available / width);
       setScale(next);
       const h = innerRef.current?.offsetHeight;
-      if (h) setHeight(h * next);
+      setHeight(h ? h * next : 0);
     };
     measure();
     const observer = new ResizeObserver(measure);
