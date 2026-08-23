@@ -337,7 +337,7 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
               </span>
               <div 
                 onClick={() => setSelectedProduct(featuredProduct)}
-                className="w-full bg-gradient-to-r from-[#FFFFFF] to-[#EEF2FF] border border-[#E0E7FF] rounded-[16px] overflow-hidden shadow-sm flex flex-row relative transition-all duration-300 cursor-pointer hover:shadow-md active:scale-[0.99]"
+                className="w-full bg-gradient-to-r from-[#FFFFFF] to-[#EEF2FF] dark:from-[#151622] dark:to-[#1E1B36] border border-[#E0E7FF] dark:border-[#2A2B3D] rounded-[16px] overflow-hidden shadow-sm flex flex-row relative transition-all duration-300 cursor-pointer hover:shadow-md active:scale-[0.99]"
               >
                 <div className="w-[40%] shrink-0">
                   {renderProductVisual(featuredProduct, false)}
