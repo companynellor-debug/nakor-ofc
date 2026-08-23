@@ -1,6 +1,9 @@
 import { DesktopSidebar } from './DesktopSidebar';
 import { useT } from '../lib/i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useActivities } from '../hooks/useActivities';
+import { getProgressSummary } from '../services/progressService';
+
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
