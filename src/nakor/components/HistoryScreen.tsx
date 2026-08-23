@@ -2,6 +2,12 @@ import { DesktopSidebar } from './DesktopSidebar';
 import { useT } from '../lib/i18n';
 import { useActivities } from '../hooks/useActivities';
 import { useProjects } from '../hooks/useProjects';
+import { useProgress } from '../hooks/useProgress';
+import { useCardPreferences } from '../hooks/useCardPreferences';
+import { WeeklyWorkCard } from './cards/WeeklyWorkCard';
+import { MonthlyWorkCard } from './cards/MonthlyWorkCard';
+import { copyCardToClipboard } from '../utils/cardExport';
+import { Copy, Check, Loader2 } from 'lucide-react';
 
 
 import React,
@@ -39,6 +45,46 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
   const [editName, setEditName] = useState('');
   const [editProjectId, setEditProjectId] = useState<string | null>(null);
   const [newProjectName, setNewProjectName] = useState('');
+
+  // Cards compartilháveis (semana / mês) gerados a partir do progresso real
+  const { theme } = useCardPreferences();
+  const { summary: weekSummary } = useProgress('week');
+  const { summary: monthSummary } = useProgress('month');
+  const weekCardRef = React.useRef<HTMLDivElement>(null);
+  const monthCardRef = React.useRef<HTMLDivElement>(null);
+  const [copyState, setCopyState] = useState<{ id: 'week' | 'month'; state: 'loading' | 'done' } | null>(null);
+
+  const copyPeriodCard = async (id: 'week' | 'month') => {
+    setCopyState({ id, state: 'loading' });
+    const node = id === 'week' ? weekCardRef.current : monthCardRef.current;
+    const result = await copyCardToClipboard(node, `nakor-${id === 'week' ? 'semana' : 'mes'}.png`);
+    if (result === 'error') {
+      setCopyState(null);
+      return;
+    }
+    setCopyState({ id, state: 'done' });
+    setTimeout(() => setCopyState(null), 1800);
+  };
+
+  const CopyCardButton = ({ id }: { id: 'week' | 'month' }) => {
+    const active = copyState?.id === id ? copyState.state : 'idle';
+    return (
+      <button
+        onClick={() => copyPeriodCard(id)}
+        disabled={active === 'loading'}
+        className="h-8 px-3 rounded-full bg-[#34117E] dark:bg-[#7C3AED] text-white text-[11px] font-bold flex items-center gap-1.5 active:scale-95 transition-all disabled:opacity-70 cursor-pointer shrink-0"
+      >
+        {active === 'loading' ? (
+          <Loader2 size={13} className="animate-spin" />
+        ) : active === 'done' ? (
+          <Check size={13} />
+        ) : (
+          <Copy size={13} />
+        )}
+        {active === 'done' ? t('Copiado!') : t('Copiar card')}
+      </button>
+    );
+  };
 
   const loadHistory = () => {
     const raw = localStorage.getItem('nakor_historico');
@@ -280,9 +326,12 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
         <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-7 mb-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered">
           <div className="flex justify-between items-center mb-6">
             <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold">{t('Esta semana')}</span>
-            <span className="text-2xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">
-              {weeklyData.totalHours.toFixed(1)}h
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl font-extrabold text-[#21222D] dark:text-[#F8F9FA] tracking-tight">
+                {weeklyData.totalHours.toFixed(1)}h
+              </span>
+              <CopyCardButton id="week" />
+            </div>
           </div>
 
           {/* Barras verticais */}
@@ -339,7 +388,10 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
 
         {/* Heatmap 30 dias */}
         <div className="w-full bg-white dark:bg-[#151622] rounded-[28px] p-7 mb-8 border border-[#DBDBE5]/25 dark:border-[#2A2B3D]/25 shadow-md-layered text-left">
-          <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold block mb-4">{t('Últimos 30 dias')}</span>
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-neutral-500 dark:text-neutral-400 text-sm font-bold">{t('Últimos 30 dias')}</span>
+            <CopyCardButton id="month" />
+          </div>
           
           {/* Grid of 30 squares (10 cols x 3 rows) */}
           <div className="grid grid-cols-[repeat(10,minmax(0,1fr))] gap-2 mb-4">
@@ -543,6 +595,12 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
           </div>
         </div>
       )}
+
+      {/* Cards renderizados fora da tela apenas para exportar imagem */}
+      <div aria-hidden className="fixed -left-[9999px] top-0 pointer-events-none opacity-0">
+        <WeeklyWorkCard ref={weekCardRef} theme={theme} summary={weekSummary} />
+        <MonthlyWorkCard ref={monthCardRef} theme={theme} summary={monthSummary} />
+      </div>
     </div>
 
   );

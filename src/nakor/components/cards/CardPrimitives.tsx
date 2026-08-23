@@ -39,6 +39,7 @@ export const CardShell = React.forwardRef<HTMLDivElement, CardShellProps>(
           className="pointer-events-none absolute"
           style={{
             inset: 0,
+            borderRadius: 'inherit',
             background: `radial-gradient(70% 58% at 92% 0%, ${hexToRgba(theme.accent, 0.5)} 0%, transparent 72%)`,
           }}
         />
@@ -47,6 +48,7 @@ export const CardShell = React.forwardRef<HTMLDivElement, CardShellProps>(
           className="pointer-events-none absolute"
           style={{
             inset: 0,
+            borderRadius: 'inherit',
             background: 'radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.35) 100%)',
           }}
         />

@@ -72,14 +72,16 @@ export default function App() {
     navDirRef.current = from !== -1 && to !== -1 && from !== to ? (to > from ? 1 : -1) : 0;
     prevViewRef.current = view;
   }
-  const dir = navDirRef.current;
+  
 
+  // Transição simples e limpa entre abas (sem efeito de "galeria de fotos")
   const tabAnim = {
-    initial: { opacity: 0, x: dir * 44, scale: 0.98, filter: 'blur(8px)' },
-    animate: { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' },
-    exit: { opacity: 0, x: dir * -44, scale: 0.985, filter: 'blur(8px)' },
-    transition: { type: 'spring' as const, stiffness: 340, damping: 34, mass: 0.7 },
+    initial: { opacity: 0, y: 8 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -4 },
+    transition: { duration: 0.18, ease: 'easeOut' as const },
   };
+
 
 
   useEffect(() => {
@@ -239,7 +241,7 @@ export default function App() {
   };
 
   // 1. HOME SCREEN & DASHBOARD ROUTES
-  if (['home', 'new_activity', 'tasks', 'history', 'profile', 'foco', 'diario-depois', 'resultado', 'conquistas', 'loja', 'notifications', 'account', 'focus_time', 'card_colors'].includes(view)) {
+  if (['home', 'new_activity', 'tasks', 'history', 'profile', 'foco', 'diario-depois', 'resultado', 'conquistas', 'loja', 'notifications', 'account', 'focus_time', 'card_colors', 'progress'].includes(view)) {
     return (
       <div className="w-full min-h-screen bg-[#13141C] relative overflow-x-hidden">
         {/* Background Ambient Gradients & Grid Pattern */}

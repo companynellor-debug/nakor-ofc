@@ -15,10 +15,15 @@ export interface CardRenderData {
   streak: number;
 }
 
-export type CardModelId = 'trio' | 'unificado' | 'aura' | 'widget' | 'session' | 'weekly' | 'monthly';
+export type CardModelId = 'unificado' | 'aura' | 'session' | 'weekly' | 'monthly';
 
-/** Modelos removidos por serem visualmente idênticos a outro modelo. */
-const MODEL_ALIASES: Record<string, CardModelId> = { grid: 'monthly' };
+/** Modelos removidos (idênticos a outro modelo ou descontinuados). */
+const MODEL_ALIASES: Record<string, CardModelId> = {
+  grid: 'monthly',
+  trio: 'unificado',
+  widget: 'aura',
+};
+
 
 export interface CardModelDefinition {
   id: CardModelId;
@@ -34,12 +39,6 @@ export interface CardModelDefinition {
 
 export const CARD_MODELS: CardModelDefinition[] = [
   {
-    id: 'trio',
-    name: '3 cards alinhados',
-    description: 'Antes, depois e nota no formato original',
-    render: ({ theme, variant, data, ref }) => <LegacyCard kind="trio" ref={ref} theme={theme} variant={variant} data={data} />,
-  },
-  {
     id: 'unificado',
     name: 'Card único glow',
     description: 'O modelo original com brilho intenso',
@@ -51,12 +50,7 @@ export const CARD_MODELS: CardModelDefinition[] = [
     description: 'Nota em destaque e gráfico da sessão',
     render: ({ theme, variant, data, ref }) => <LegacyCard kind="aura" ref={ref} theme={theme} variant={variant} data={data} />,
   },
-  {
-    id: 'widget',
-    name: 'Widget medidores',
-    description: 'Anéis de progresso e tempo focado',
-    render: ({ theme, variant, data, ref }) => <LegacyCard kind="widget" ref={ref} theme={theme} variant={variant} data={data} />,
-  },
+
   {
     id: 'session',
     name: 'Session Card',
