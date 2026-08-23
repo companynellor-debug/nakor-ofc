@@ -241,7 +241,7 @@ export default function App() {
   };
 
   // 1. HOME SCREEN & DASHBOARD ROUTES
-  if (['home', 'new_activity', 'tasks', 'history', 'profile', 'foco', 'diario-depois', 'resultado', 'conquistas', 'loja', 'notifications', 'account', 'focus_time', 'card_colors'].includes(view)) {
+  if (['home', 'new_activity', 'tasks', 'history', 'profile', 'foco', 'diario-depois', 'resultado', 'conquistas', 'loja', 'notifications', 'account', 'focus_time', 'card_colors', 'progress'].includes(view)) {
     return (
       <div className="w-full min-h-screen bg-[#13141C] relative overflow-x-hidden">
         {/* Background Ambient Gradients & Grid Pattern */}
