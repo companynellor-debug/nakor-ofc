@@ -12,10 +12,10 @@ export function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const VALID_MODEL_IDS = ['trio', 'unificado', 'aura', 'widget', 'session', 'weekly', 'monthly'];
+const VALID_MODEL_IDS = ['unificado', 'aura', 'session', 'weekly', 'monthly'];
 
 export function readCardPreferences(): CardPreferences {
-  const fallback: CardPreferences = { selectedModelId: 'trio', selectedColor: DEFAULT_ACCENT, bgOpacity: 100 };
+  const fallback: CardPreferences = { selectedModelId: 'unificado', selectedColor: DEFAULT_ACCENT, bgOpacity: 100 };
   if (typeof window === 'undefined') return fallback;
   try {
     const raw = localStorage.getItem(PREFS_KEY);
