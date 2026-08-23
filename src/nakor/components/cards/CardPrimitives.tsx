@@ -53,7 +53,6 @@ export const CardShell = React.forwardRef<HTMLDivElement, CardShellProps>(
         <div className="relative flex flex-col flex-1">{children}</div>
       </div>
 
-      </div>
     );
   },
 );
