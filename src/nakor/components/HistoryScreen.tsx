@@ -1,5 +1,8 @@
 import { DesktopSidebar } from './DesktopSidebar';
 import { useT } from '../lib/i18n';
+import { useActivities } from '../hooks/useActivities';
+import { useProjects } from '../hooks/useProjects';
+
 
 import React,
 
@@ -30,17 +33,70 @@ export function HistoryScreen({ onboardingData, onNavigate, onViewHistoricActivi
   const userEmail = onboardingData?.email || localStorage.getItem('nakor_user_email') || 'alex@email.com';
 
   const [history, setHistory] = useState<any[]>([]);
+  const { updateActivity, deleteActivity } = useActivities();
+  const { projects, createProject } = useProjects();
+  const [editing, setEditing] = useState<any | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editProjectId, setEditProjectId] = useState<string | null>(null);
+  const [newProjectName, setNewProjectName] = useState('');
+
+  const loadHistory = () => {
+    const raw = localStorage.getItem('nakor_historico');
+    if (!raw) {
+      setHistory([]);
+      return;
+    }
+    try {
+      const parsed = JSON.parse(raw);
+      setHistory(Array.isArray(parsed) ? parsed : []);
+    } catch (e) {
+      console.error('Failed to parse history', e);
+    }
+  };
 
   useEffect(() => {
-    const raw = localStorage.getItem('nakor_historico');
-    if (raw) {
-      try {
-        setHistory(JSON.parse(raw));
-      } catch (e) {
-        console.error('Failed to parse history', e);
+    loadHistory();
+    const handler = () => loadHistory();
+    window.addEventListener('nakor_activities_updated', handler);
+    return () => window.removeEventListener('nakor_activities_updated', handler);
+  }, []);
+
+  const openEditor = (item: any) => {
+    setEditing(item);
+    setEditName(item.nome || '');
+    setEditProjectId(item.projeto_id ?? null);
+    setNewProjectName('');
+  };
+
+  const saveEditor = async () => {
+    if (!editing) return;
+    let projectId = editProjectId;
+    let projectName = projects.find((p) => p.id === projectId)?.name ?? null;
+
+    if (newProjectName.trim()) {
+      const created = await createProject(newProjectName);
+      if (created) {
+        projectId = created.id;
+        projectName = created.name;
       }
     }
-  }, []);
+
+    await updateActivity(String(editing.id ?? editing.timestamp), {
+      title: editName.trim() || t('Atividade'),
+      projectId: projectId ?? null,
+      projectName: projectId ? projectName : null,
+    });
+    setEditing(null);
+    loadHistory();
+  };
+
+  const removeActivity = async () => {
+    if (!editing) return;
+    await deleteActivity(String(editing.id ?? editing.timestamp));
+    setEditing(null);
+    loadHistory();
+  };
+
 
   const getCategoryIcon = (nome: string) => {
     const n = nome.toLowerCase();
