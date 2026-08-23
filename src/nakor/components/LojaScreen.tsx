@@ -353,14 +353,15 @@ export function LojaScreen({ onboardingData, onNavigate, onProductDetailToggle }
                     {(() => {
                       const canAfford = coins >= featuredProduct.price;
                       return (
-                        <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg ${canAfford ? 'bg-[#4F46E5]' : 'bg-[#F3F4F6]'}`}>
+                        <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg ${canAfford ? 'bg-[#4F46E5] dark:bg-[#7C3AED]' : 'bg-[#F3F4F6] dark:bg-[#2A2B3D]'}`}>
                           <div className="w-[14px] h-[14px] rounded-full bg-gradient-to-br from-[#4F46E5] to-[#8B5CF6] flex items-center justify-center shrink-0">
                             <span className="text-white text-[6px] font-mono font-bold">NK</span>
                           </div>
-                          <span className={`text-[12px] font-mono font-bold ${canAfford ? 'text-white' : 'text-[#374151]'}`}>
+                          <span className={`text-[12px] font-mono font-bold ${canAfford ? 'text-white' : 'text-[#374151] dark:text-[#F8F9FA]'}`}>
                             {featuredProduct.price}
                           </span>
                         </div>
+
                       );
                     })()}
                   </div>
