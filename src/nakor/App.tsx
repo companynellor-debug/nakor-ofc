@@ -72,7 +72,7 @@ export default function App() {
     navDirRef.current = from !== -1 && to !== -1 && from !== to ? (to > from ? 1 : -1) : 0;
     prevViewRef.current = view;
   }
-  const dir = navDirRef.current;
+  
 
   // Transição simples e limpa entre abas (sem efeito de "galeria de fotos")
   const tabAnim = {
