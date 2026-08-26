@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
-import { 
-  BookOpen, 
-  Briefcase, 
-  BookOpenText, 
-  Target, 
-  ChevronUp, 
-  ChevronDown,
-  Brain,
-  Flame,
+import React, { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  Briefcase,
+  GraduationCap,
+  Rocket,
+  CalendarCheck,
+  Laptop,
+  BookOpenText,
+  PenTool,
+  Users,
+  Timer,
+  Hourglass,
+  Waves,
+  Shuffle,
+  Sunrise,
   Sun,
-  Clock,
-  Sparkles,
+  Moon,
+  Smartphone,
+  Hourglass as HourglassIcon,
+  Brain,
+  Repeat,
+  ChevronUp,
+  ChevronDown,
   ArrowLeft,
-  Check
-
+  Check,
+  Sparkles,
+  Clock,
+  Palette,
+  Target,
 } from 'lucide-react';
 import { useT } from '../lib/i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -22,100 +35,127 @@ import { CARD_MODELS, renderCardModel } from './cards/registry';
 import { CARD_SIZES } from './cards/CardPrimitives';
 import { ScaleToFit } from './cards/ScaleToFit';
 import { useCardData } from '../hooks/useCardData';
-import { buildCardTheme, saveCardPreferences } from '../services/cardTheme';
-
+import { buildCardTheme, saveCardPreferences, hexToRgba } from '../services/cardTheme';
+import { LoadingPreparation } from './LoadingPreparation';
 
 interface OnboardingScreenProps {
   onComplete: (data: any) => void;
   onBackToLanding?: () => void;
   userEmail?: string;
+  onThemeChange?: (theme: 'light' | 'dark') => void;
 }
 
-type GridOption = {
+type Option = {
   id: string;
   label: string;
   desc: string;
-  icon?: React.ReactNode;
-  emoji?: string;
-  badge?: string;
+  icon: React.ReactNode;
 };
+
+const CARD_COLORS = [
+  { name: 'Roxo', hex: '#7C3AED' },
+  { name: 'Azul', hex: '#3B82F6' },
+  { name: 'Verde Limão', hex: '#84CC16' },
+  { name: 'Azul Metálico', hex: '#38BDF8' },
+  { name: 'Rosa Vibrante', hex: '#EC4899' },
+  { name: 'Branco', hex: '#FFFFFF' },
+];
+
+/* ---------------- Sub-componentes ---------------- */
+
+function StepShell({
+  icon,
+  eyebrow,
+  title,
+  highlight,
+  subtitle,
+  accent,
+  children,
+  footer,
+}: {
+  icon: React.ReactNode;
+  eyebrow: string;
+  title: string;
+  highlight?: string;
+  subtitle?: string;
+  accent: string;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
+  return (
+    <div className="w-full max-w-md mx-auto flex flex-col gap-5">
+      <div className="flex flex-col gap-3">
+        <div
+          className="w-11 h-11 rounded-2xl flex items-center justify-center border border-white/10"
+          style={{ background: hexToRgba(accent, 0.16), color: accent, boxShadow: `0 0 26px ${hexToRgba(accent, 0.35)}` }}
+        >
+          {icon}
+        </div>
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">{eyebrow}</p>
+        <h2 className="font-display text-[27px] sm:text-[30px] font-bold text-white leading-[1.1] tracking-tight">
+          {title}{' '}
+          {highlight && <span style={{ color: accent }}>{highlight}</span>}
+        </h2>
+        {subtitle && <p className="text-[13px] text-white/55 font-medium leading-snug -mt-1">{subtitle}</p>}
+      </div>
+
+      {children}
+
+      {footer}
+    </div>
+  );
+}
 
 function OptionGrid({
   options,
   selected,
   onSelect,
+  accent,
 }: {
-  options: GridOption[];
+  options: Option[];
   selected: string;
   onSelect: (id: string) => void;
+  accent: string;
 }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {options.map((opt) => {
-        const isSelected = selected === opt.id;
+        const active = selected === opt.id;
         return (
           <motion.button
             key={opt.id}
             onClick={() => onSelect(opt.id)}
             whileTap={{ scale: 0.97 }}
-            className={`relative overflow-hidden text-left rounded-[22px] p-4 min-h-[150px] flex flex-col justify-between transition-all duration-300 cursor-pointer border ${
-              isSelected
-                ? 'bg-white border-brand-purple-300/80 shadow-[0_0_0_2px_rgba(91,52,199,0.12),0_18px_40px_-14px_rgba(91,52,199,0.35)]'
-                : 'bg-white/60 border-brand-purple-200/50 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_22px_-14px_rgba(91,52,199,0.18)] hover:bg-white/85 hover:border-brand-purple-300/70'
-            }`}
+            className="relative overflow-hidden text-left rounded-[22px] p-4 min-h-[136px] flex flex-col justify-between cursor-pointer border transition-colors duration-300"
+            style={{
+              background: active ? hexToRgba(accent, 0.14) : 'rgba(255,255,255,0.05)',
+              borderColor: active ? hexToRgba(accent, 0.7) : 'rgba(255,255,255,0.09)',
+              boxShadow: active ? `0 0 0 1px ${hexToRgba(accent, 0.4)}, 0 22px 46px -22px ${hexToRgba(accent, 0.8)}` : 'none',
+            }}
           >
-            {/* soft inner sheen */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/70 via-transparent to-brand-purple-100/30" />
-            {isSelected && (
-              <div className="pointer-events-none absolute -top-8 -right-8 w-28 h-28 rounded-full bg-brand-purple-100/70 blur-2xl" />
+            {active && (
+              <div
+                className="pointer-events-none absolute -top-10 -right-10 w-28 h-28 rounded-full blur-2xl"
+                style={{ background: hexToRgba(accent, 0.45) }}
+              />
             )}
-
-            <div className="relative z-10">
-              {opt.icon ? (
-                <div
-                  className={`transition-all ${
-                    isSelected
-                      ? 'text-brand-purple-500 drop-shadow-[0_0_12px_rgba(46,46,184,0.55)]'
-                      : 'text-brand-purple-500/70 drop-shadow-[0_0_8px_rgba(46,46,184,0.3)]'
-                  }`}
-                >
-                  {opt.icon}
-                </div>
-              ) : opt.emoji ? (
-                <span
-                  className={`text-[26px] leading-none block transition-all ${
-                    isSelected
-                      ? 'drop-shadow-[0_0_12px_rgba(46,46,184,0.45)]'
-                      : 'opacity-80'
-                  }`}
-                >
-                  {opt.emoji}
-                </span>
-              ) : (
-                <span
-                  className={`font-display font-extrabold text-[24px] leading-none block transition-all ${
-                    isSelected
-                      ? 'text-brand-purple-500 drop-shadow-[0_0_12px_rgba(46,46,184,0.5)]'
-                      : 'text-brand-purple-500/70'
-                  }`}
-                >
-                  {opt.badge}
-                </span>
-              )}
+            <div className="relative z-10" style={{ color: active ? accent : 'rgba(255,255,255,0.65)' }}>
+              {opt.icon}
             </div>
-
             <div className="relative z-10">
-              <p
-                className={`text-[14px] font-semibold leading-tight ${
-                  isSelected ? 'text-text-primary' : 'text-text-primary/85'
-                }`}
-              >
+              <p className={`text-[14px] font-semibold leading-tight ${active ? 'text-white' : 'text-white/85'}`}>
                 {opt.label}
               </p>
-              <p className="text-[11px] text-text-secondary mt-1 leading-snug">
-                {opt.desc}
-              </p>
+              <p className="text-[11px] text-white/45 mt-1 leading-snug">{opt.desc}</p>
             </div>
+            {active && (
+              <div
+                className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center z-10"
+                style={{ backgroundColor: accent }}
+              >
+                <Check size={12} strokeWidth={3.5} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
+              </div>
+            )}
           </motion.button>
         );
       })}
@@ -123,21 +163,39 @@ function OptionGrid({
   );
 }
 
-function hexToRgba(hex: string, alpha: number): string {
-  let c = (hex || '#7C3AED').replace('#', '');
-  if (c.length === 3) c = c.split('').map((x) => x + x).join('');
-  const r = parseInt(c.substring(0, 2), 16) || 0;
-  const g = parseInt(c.substring(2, 4), 16) || 0;
-  const b = parseInt(c.substring(4, 6), 16) || 0;
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+function PrimaryButton({
+  children,
+  onClick,
+  accent,
+  disabled,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  accent: string;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="w-full py-4 rounded-full text-[15px] font-bold transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+      style={{
+        background: `linear-gradient(135deg, ${accent}, ${hexToRgba(accent, 0.75)})`,
+        color: accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF',
+        boxShadow: `0 18px 40px -16px ${hexToRgba(accent, 0.9)}`,
+      }}
+    >
+      {children}
+    </button>
+  );
 }
 
 /** Prévia real do card de resultado (mesmos componentes usados após a atividade). */
 function ResultCardPreview({ modelId, color }: { modelId: string; color: string }) {
   const data = useCardData();
-  const theme = buildCardTheme(color);
+  const theme = useMemo(() => buildCardTheme(color), [color]);
   return (
-    <div className="w-full max-w-[240px] mx-auto pointer-events-none">
+    <div className="w-full max-w-[220px] mx-auto pointer-events-none">
       <ScaleToFit width={CARD_SIZES.normal.width}>
         {renderCardModel(modelId, { theme, variant: 'normal', data })}
       </ScaleToFit>
@@ -145,500 +203,479 @@ function ResultCardPreview({ modelId, color }: { modelId: string; color: string 
   );
 }
 
+/* ---------------- Tela principal ---------------- */
 
-export function OnboardingScreen({ onComplete, onBackToLanding, userEmail }: OnboardingScreenProps) {
+export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThemeChange }: OnboardingScreenProps) {
   const t = useT();
-  const [currentStep, setCurrentStep] = useState(0);
-  
-  // Answers state
-  const [useCase, setUseCase] = useState<string>(''); // Step 1: Singleselect
-  const [biggestChallenge, setBiggestChallenge] = useState<string>(''); // Step 2: Singleselect
-  const [focusHours, setFocusHours] = useState<string>(''); // Step 3: Singleselect
-  const [productiveTime, setProductiveTime] = useState<string>(''); // Step 4: Singleselect
-  const [hour, setHour] = useState(8); // Step 5: Drum picker hours (0-23)
-  const [minute, setMinute] = useState(0); // Step 5: Drum picker minutes (0-59)
-  const [cardLayout, setCardLayout] = useState<string>('session'); // Step 6
-  const [cardColor, setCardColor] = useState('#7C3AED'); // Step 6
+  const [step, setStep] = useState(0);
+  const [dir, setDir] = useState(1);
+  const [preparing, setPreparing] = useState(false);
 
-  const TOTAL_STEPS = 6;
+  // Respostas
+  const [goal, setGoal] = useState('');
+  const [workType, setWorkType] = useState('');
+  const [focusHours, setFocusHours] = useState('');
+  const [sessionStyle, setSessionStyle] = useState('');
+  const [productiveTime, setProductiveTime] = useState('');
+  const [obstacle, setObstacle] = useState('');
+  const [hour, setHour] = useState(8);
+  const [minute, setMinute] = useState(0);
+  const [cardLayout, setCardLayout] = useState('session');
+  const [cardColor, setCardColor] = useState('#7C3AED');
+  const [appTheme, setAppTheme] = useState<'light' | 'dark'>('dark');
 
-  // Auto-advance with a slight delay so they can see their selection feedback beautifully
-  const autoAdvance = () => {
-    setTimeout(() => {
-      setCurrentStep(prev => Math.min(prev + 1, TOTAL_STEPS - 1));
-    }, 400);
+  const accent = cardColor;
+
+  // 0 = boas-vindas, 1..10 = etapas, 11 = resumo
+  const TOTAL = 12;
+  const SEGMENTS = 11; // etapas 1..11
+
+  const go = (next: number) => {
+    setDir(next > step ? 1 : -1);
+    setStep(Math.max(0, Math.min(TOTAL - 1, next)));
   };
+
+  const advance = () => go(step + 1);
+  const autoAdvance = () => setTimeout(() => go(step + 1), 340);
 
   const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    } else if (onBackToLanding) {
-      onBackToLanding();
+    if (step > 0) go(step - 1);
+    else onBackToLanding?.();
+  };
+
+  const answers = () => ({
+    goal,
+    workType,
+    // mantém a chave legada usada em outras telas
+    useCase: workType,
+    focusHours,
+    sessionStyle,
+    productiveTime,
+    biggestChallenge: obstacle,
+    reminderTime: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
+    cardLayout,
+    cardColor,
+    theme: appTheme,
+    userEmail: userEmail || 'anonymous',
+    completedAt: new Date().toISOString(),
+  });
+
+  const startPreparing = () => {
+    const data = answers();
+    localStorage.setItem('nakor_onboarding', JSON.stringify(data));
+    saveCardPreferences({ selectedModelId: cardLayout, selectedColor: cardColor, bgOpacity: 100 });
+    localStorage.setItem('nakor_theme', appTheme);
+    onThemeChange?.(appTheme);
+    setPreparing(true);
+  };
+
+  const finish = () => onComplete(answers());
+
+  const adjust = (setter: (fn: (v: number) => number) => void, delta: number, mod: number) =>
+    setter((v) => (v + delta + mod) % mod);
+
+  /* ------- opções ------- */
+  const goalOptions: Option[] = [
+    { id: 'deliver', label: t('Entregar mais no trabalho'), desc: t('Foco em resultado real'), icon: <Briefcase size={22} /> },
+    { id: 'study', label: t('Estudar com constância'), desc: t('Rotina de estudo sólida'), icon: <GraduationCap size={22} /> },
+    { id: 'build', label: t('Criar meus projetos'), desc: t('Tirar ideias do papel'), icon: <Rocket size={22} /> },
+    { id: 'routine', label: t('Organizar minha rotina'), desc: t('Dias mais previsíveis'), icon: <CalendarCheck size={22} /> },
+  ];
+
+  const workTypeOptions: Option[] = [
+    { id: 'work', label: t('Trabalho'), desc: t('Tarefas e projetos'), icon: <Laptop size={22} /> },
+    { id: 'studies', label: t('Estudos'), desc: t('Provas e matérias'), icon: <BookOpenText size={22} /> },
+    { id: 'personal', label: t('Projeto pessoal'), desc: t('Algo seu, do zero'), icon: <PenTool size={22} /> },
+    { id: 'freelance', label: t('Freelance'), desc: t('Clientes e entregas'), icon: <Users size={22} /> },
+  ];
+
+  const hoursOptions: Option[] = [
+    { id: '5h', label: t('5 horas'), desc: t('Menos de 1h por dia'), icon: <Timer size={22} /> },
+    { id: '10h', label: t('10 horas'), desc: t('Cerca de 1.5h por dia'), icon: <Hourglass size={22} /> },
+    { id: '15h', label: t('15 horas'), desc: t('Cerca de 2h por dia'), icon: <Waves size={22} /> },
+    { id: '20h+', label: t('20h ou mais'), desc: t('Foco intenso diário'), icon: <Target size={22} /> },
+  ];
+
+  const sessionOptions: Option[] = [
+    { id: '25', label: t('Sessões curtas'), desc: t('25 minutos por bloco'), icon: <Timer size={22} /> },
+    { id: '50', label: t('Sessões médias'), desc: t('50 minutos por bloco'), icon: <HourglassIcon size={22} /> },
+    { id: '90', label: t('Sessões longas'), desc: t('90 minutos de imersão'), icon: <Waves size={22} /> },
+    { id: 'varies', label: t('Depende do dia'), desc: t('Sem duração fixa'), icon: <Shuffle size={22} /> },
+  ];
+
+  const timeOptions: Option[] = [
+    { id: 'morning', label: t('Manhã'), desc: t('Antes do meio-dia'), icon: <Sunrise size={22} /> },
+    { id: 'afternoon', label: t('Tarde'), desc: t('Entre 12h e 18h'), icon: <Sun size={22} /> },
+    { id: 'night', label: t('Noite'), desc: t('Após as 18h'), icon: <Moon size={22} /> },
+    { id: 'varies', label: t('Varia muito'), desc: t('Sem horário fixo'), icon: <Shuffle size={22} /> },
+  ];
+
+  const obstacleOptions: Option[] = [
+    { id: 'phone', label: t('Fico no celular'), desc: t('Perco tempo em redes sociais'), icon: <Smartphone size={22} /> },
+    { id: 'procrastination', label: t('Procrastino muito'), desc: t('Adio tarefas importantes'), icon: <HourglassIcon size={22} /> },
+    { id: 'shallow', label: t('Perco o foco'), desc: t('Difícil concentrar profundo'), icon: <Brain size={22} /> },
+    { id: 'routine', label: t('Sem rotina'), desc: t('Falta de constância no dia'), icon: <Repeat size={22} /> },
+  ];
+
+  const summaryRows = [
+    { label: t('Objetivo'), value: goalOptions.find((o) => o.id === goal)?.label || '—' },
+    { label: t('Tipo de work'), value: workTypeOptions.find((o) => o.id === workType)?.label || '—' },
+    { label: t('Meta semanal'), value: hoursOptions.find((o) => o.id === focusHours)?.label || '—' },
+    { label: t('Sessões'), value: sessionOptions.find((o) => o.id === sessionStyle)?.label || '—' },
+    { label: t('Melhor horário'), value: timeOptions.find((o) => o.id === productiveTime)?.label || '—' },
+    { label: t('Maior desafio'), value: obstacleOptions.find((o) => o.id === obstacle)?.label || '—' },
+    { label: t('Lembrete'), value: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}` },
+  ];
+
+  /* ------- render de cada etapa ------- */
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return (
+          <div className="w-full max-w-md mx-auto flex flex-col items-center text-center gap-5">
+            <div
+              className="w-16 h-16 rounded-[24px] flex items-center justify-center border border-white/10"
+              style={{ background: hexToRgba(accent, 0.18), color: accent, boxShadow: `0 0 40px ${hexToRgba(accent, 0.4)}` }}
+            >
+              <Sparkles size={28} />
+            </div>
+            <h1 className="font-display text-[32px] font-bold text-white leading-[1.08] tracking-tight">
+              {t('Vamos montar a sua')} <span style={{ color: accent }}>{t('Nakor')}</span>
+            </h1>
+            <p className="text-[14px] text-white/55 font-medium leading-relaxed max-w-[330px]">
+              {t('Poucas perguntas rápidas sobre o seu work para deixar o app do seu jeito. Dá menos de 1 minuto.')}
+            </p>
+            <div className="w-full mt-2">
+              <PrimaryButton onClick={advance} accent={accent}>
+                {t('Começar')}
+              </PrimaryButton>
+            </div>
+          </div>
+        );
+
+      case 1:
+        return (
+          <StepShell icon={<Target size={20} />} eyebrow={t('Seu objetivo')} title={t('O que você quer')} highlight={t('conquistar?')} accent={accent}>
+            <OptionGrid options={goalOptions} selected={goal} accent={accent} onSelect={(id) => { setGoal(id); autoAdvance(); }} />
+          </StepShell>
+        );
+
+      case 2:
+        return (
+          <StepShell icon={<Briefcase size={20} />} eyebrow={t('Tipo de work')} title={t('Qual é o seu')} highlight={t('work principal?')} accent={accent}>
+            <OptionGrid options={workTypeOptions} selected={workType} accent={accent} onSelect={(id) => { setWorkType(id); autoAdvance(); }} />
+          </StepShell>
+        );
+
+      case 3:
+        return (
+          <StepShell
+            icon={<Timer size={20} />}
+            eyebrow={t('Meta semanal')}
+            title={t('Quantas horas por semana de')}
+            highlight={t('work?')}
+            subtitle={t('Você pode ajustar isso depois')}
+            accent={accent}
+          >
+            <OptionGrid options={hoursOptions} selected={focusHours} accent={accent} onSelect={(id) => { setFocusHours(id); autoAdvance(); }} />
+          </StepShell>
+        );
+
+      case 4:
+        return (
+          <StepShell icon={<Hourglass size={20} />} eyebrow={t('Ritmo')} title={t('Como você prefere')} highlight={t('focar?')} accent={accent}>
+            <OptionGrid options={sessionOptions} selected={sessionStyle} accent={accent} onSelect={(id) => { setSessionStyle(id); autoAdvance(); }} />
+          </StepShell>
+        );
+
+      case 5:
+        return (
+          <StepShell icon={<Sun size={20} />} eyebrow={t('Melhor horário')} title={t('Quando você')} highlight={t('produz mais?')} accent={accent}>
+            <OptionGrid options={timeOptions} selected={productiveTime} accent={accent} onSelect={(id) => { setProductiveTime(id); autoAdvance(); }} />
+          </StepShell>
+        );
+
+      case 6:
+        return (
+          <StepShell icon={<Brain size={20} />} eyebrow={t('Desafio')} title={t('O que mais te')} highlight={t('atrapalha hoje?')} accent={accent}>
+            <OptionGrid options={obstacleOptions} selected={obstacle} accent={accent} onSelect={(id) => { setObstacle(id); autoAdvance(); }} />
+          </StepShell>
+        );
+
+      case 7:
+        return (
+          <StepShell
+            icon={<Clock size={20} />}
+            eyebrow={t('Lembrete diário')}
+            title={t('Que horas quer')}
+            highlight={t('lembrar do work?')}
+            subtitle={t('O Nakor vai te chamar pro foco todo dia nesse horário')}
+            accent={accent}
+            footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
+          >
+            <div className="rounded-[26px] border border-white/10 bg-white/5 h-40 flex items-center justify-center relative overflow-hidden">
+              <div
+                className="absolute inset-x-5 top-[34%] bottom-[34%] rounded-xl border-y pointer-events-none"
+                style={{ borderColor: hexToRgba(accent, 0.4), background: hexToRgba(accent, 0.12) }}
+              />
+              {[
+                { value: hour, mod: 24, set: setHour, stepBy: 1 },
+                { value: minute, mod: 60, set: setMinute, stepBy: 5 },
+              ].map((col, i) => (
+                <React.Fragment key={i}>
+                  {i === 1 && (
+                    <span className="font-display text-4xl font-extrabold mx-3 relative z-10" style={{ color: accent }}>
+                      :
+                    </span>
+                  )}
+                  <div
+                    className="flex flex-col items-center w-24 relative z-10 cursor-ns-resize select-none"
+                    onWheel={(e) => {
+                      e.preventDefault();
+                      adjust(col.set as any, e.deltaY > 0 ? col.stepBy : -col.stepBy, col.mod);
+                    }}
+                  >
+                    <button onClick={() => adjust(col.set as any, -col.stepBy, col.mod)} className="text-white/40 hover:text-white p-0.5">
+                      <ChevronUp size={15} />
+                    </button>
+                    <div className="flex flex-col items-center -space-y-1 my-0.5">
+                      <span className="text-xs font-bold text-white/30">
+                        {String((col.value - col.stepBy + col.mod) % col.mod).padStart(2, '0')}
+                      </span>
+                      <span className="font-display text-4xl font-extrabold text-white leading-tight tabular-nums">
+                        {String(col.value).padStart(2, '0')}
+                      </span>
+                      <span className="text-xs font-bold text-white/30">
+                        {String((col.value + col.stepBy) % col.mod).padStart(2, '0')}
+                      </span>
+                    </div>
+                    <button onClick={() => adjust(col.set as any, col.stepBy, col.mod)} className="text-white/40 hover:text-white p-0.5">
+                      <ChevronDown size={15} />
+                    </button>
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+            <p className="text-[11px] text-white/40 text-center font-medium">{t('você pode mudar isso quando quiser')}</p>
+          </StepShell>
+        );
+
+      case 8:
+        return (
+          <StepShell
+            icon={<Sparkles size={20} />}
+            eyebrow={t('Seu card')}
+            title={t('Escolha o modelo do seu')}
+            highlight={t('card de work')}
+            subtitle={t('Escolha o modelo e a cor — pode mudar depois nas configurações')}
+            accent={accent}
+            footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
+          >
+            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 flex items-center justify-center">
+              <ResultCardPreview modelId={cardLayout} color={cardColor} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {CARD_MODELS.map((m) => {
+                const active = cardLayout === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => setCardLayout(m.id)}
+                    className="relative text-left rounded-[20px] p-3 border transition-colors cursor-pointer"
+                    style={{
+                      background: active ? hexToRgba(accent, 0.14) : 'rgba(255,255,255,0.05)',
+                      borderColor: active ? hexToRgba(accent, 0.7) : 'rgba(255,255,255,0.09)',
+                    }}
+                  >
+                    {active && (
+                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accent }}>
+                        <Check size={12} strokeWidth={3.5} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
+                      </div>
+                    )}
+                    <p className={`text-[13px] font-semibold pr-6 ${active ? 'text-white' : 'text-white/75'}`}>{m.name}</p>
+                    <p className="text-[11px] text-white/40 mt-0.5 leading-snug">{t(m.description)}</p>
+                  </button>
+                );
+              })}
+            </div>
+          </StepShell>
+        );
+
+      case 9:
+        return (
+          <StepShell
+            icon={<Palette size={20} />}
+            eyebrow={t('Cor de destaque')}
+            title={t('Qual cor combina com o')}
+            highlight={t('seu work?')}
+            accent={accent}
+            footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
+          >
+            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 flex items-center justify-center">
+              <ResultCardPreview modelId={cardLayout} color={cardColor} />
+            </div>
+            <div className="flex flex-wrap gap-3 justify-center">
+              {CARD_COLORS.map((c) => {
+                const active = cardColor === c.hex;
+                return (
+                  <button
+                    key={c.hex}
+                    onClick={() => setCardColor(c.hex)}
+                    aria-label={t(c.name)}
+                    className="w-11 h-11 rounded-full flex items-center justify-center transition-all cursor-pointer"
+                    style={{
+                      backgroundColor: c.hex,
+                      transform: active ? 'scale(1.12)' : 'scale(1)',
+                      boxShadow: active ? `0 0 0 3px rgba(255,255,255,0.85), 0 0 26px ${hexToRgba(c.hex, 0.8)}` : 'none',
+                    }}
+                  >
+                    {active && <Check size={15} strokeWidth={3.5} color={c.hex === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />}
+                  </button>
+                );
+              })}
+            </div>
+          </StepShell>
+        );
+
+      case 10:
+        return (
+          <StepShell
+            icon={<Moon size={20} />}
+            eyebrow={t('Aparência')}
+            title={t('Prefere o Nakor')}
+            highlight={t('claro ou escuro?')}
+            subtitle={t('você pode mudar isso quando quiser')}
+            accent={accent}
+            footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
+          >
+            <div className="grid grid-cols-2 gap-3">
+              {([
+                { id: 'light' as const, label: t('Claro'), desc: t('Limpo e luminoso'), icon: <Sun size={22} />, bg: '#FFFFFF', fg: '#16131F' },
+                { id: 'dark' as const, label: t('Escuro'), desc: t('Foco total, sem brilho'), icon: <Moon size={22} />, bg: '#12111A', fg: '#FFFFFF' },
+              ]).map((opt) => {
+                const active = appTheme === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => setAppTheme(opt.id)}
+                    className="relative rounded-[22px] p-4 border text-left cursor-pointer transition-colors"
+                    style={{
+                      background: active ? hexToRgba(accent, 0.14) : 'rgba(255,255,255,0.05)',
+                      borderColor: active ? hexToRgba(accent, 0.7) : 'rgba(255,255,255,0.09)',
+                    }}
+                  >
+                    <div
+                      className="h-16 rounded-[14px] mb-3 flex items-center justify-center border border-white/10"
+                      style={{ background: opt.bg, color: opt.fg }}
+                    >
+                      {opt.icon}
+                    </div>
+                    <p className={`text-[14px] font-semibold ${active ? 'text-white' : 'text-white/80'}`}>{opt.label}</p>
+                    <p className="text-[11px] text-white/45 mt-0.5">{opt.desc}</p>
+                    {active && (
+                      <div className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accent }}>
+                        <Check size={12} strokeWidth={3.5} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </StepShell>
+        );
+
+      case 11:
+      default:
+        return (
+          <StepShell
+            icon={<Check size={20} />}
+            eyebrow={t('Resumo')}
+            title={t('Tudo certo com a')}
+            highlight={t('sua Nakor?')}
+            subtitle={t('Revise e confirme — dá para mudar tudo depois')}
+            accent={accent}
+            footer={<PrimaryButton onClick={startPreparing} accent={accent}>{t('Criar minha Nakor')}</PrimaryButton>}
+          >
+            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] divide-y divide-white/[0.07]">
+              {summaryRows.map((row) => (
+                <div key={row.label} className="flex items-center justify-between gap-3 px-4 py-3">
+                  <span className="text-[12px] font-semibold uppercase tracking-wide text-white/40">{row.label}</span>
+                  <span className="text-[13px] font-semibold text-white text-right min-w-0 truncate">{row.value}</span>
+                </div>
+              ))}
+            </div>
+          </StepShell>
+        );
     }
   };
 
-  const handleComplete = () => {
-    const answers = {
-      useCase,
-      biggestChallenge,
-      focusHours,
-      productiveTime,
-      reminderTime: `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`,
-      cardLayout,
-      cardColor,
-      userEmail: userEmail || 'anonymous',
-      completedAt: new Date().toISOString()
-    };
-
-    localStorage.setItem('nakor_onboarding', JSON.stringify(answers));
-
-    // Salva o estilo dos cards escolhido aqui, para já ficar na conta do usuário
-    saveCardPreferences({ selectedModelId: cardLayout, selectedColor: cardColor });
-
-    onComplete(answers);
-  };
-
-
-  // Selection handlers with auto-advance for single-select steps
-  const handleSelectUseCase = (optionId: string) => {
-    setUseCase(optionId);
-    autoAdvance();
-  };
-
-  const handleSelectChallenge = (optionId: string) => {
-    setBiggestChallenge(optionId);
-    autoAdvance();
-  };
-
-  const handleSelectHours = (option: string) => {
-    setFocusHours(option);
-    autoAdvance();
-  };
-
-  const handleSelectProductiveTime = (optionId: string) => {
-    setProductiveTime(optionId);
-    autoAdvance();
-  };
-
-  // Drum picker scroll helpers
-  const incrementHour = () => setHour(prev => (prev + 1) % 24);
-  const decrementHour = () => setHour(prev => (prev - 1 + 24) % 24);
-  const incrementMinute = () => setMinute(prev => (prev + 5) % 60);
-  const decrementMinute = () => setMinute(prev => (prev - 5 + 60) % 60);
-
-  // Wheel scroll event handlers
-  const handleHourWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    if (e.deltaY < 0) {
-      decrementHour();
-    } else {
-      incrementHour();
-    }
-  };
-
-  const handleMinuteWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    if (e.deltaY < 0) {
-      decrementMinute();
-    } else {
-      incrementMinute();
-    }
-  };
-
-  // Options Definitions with specific layout descriptions matching the exact style
-  const step1Options: GridOption[] = [
-    { id: 'Estudos', label: t('Estudos'), desc: t('Organizar meus estudos e materiais'), icon: <BookOpen size={26} strokeWidth={2} /> },
-    { id: 'Trabalho', label: t('Trabalho'), desc: t('Gerenciar tarefas e projetos'), icon: <Briefcase size={26} strokeWidth={2} /> },
-    { id: 'Leitura', label: t('Leitura'), desc: t('Acompanhar minhas leituras'), icon: <BookOpenText size={26} strokeWidth={2} /> },
-    { id: 'Múltiplos objetivos', label: t('Múltiplos objetivos'), desc: t('Diferentes áreas da vida'), icon: <Target size={26} strokeWidth={2} /> }
-  ];
-
-  const step2Options: GridOption[] = [
-    { id: 'Fico no celular sem querer', label: t('Fico no celular'), desc: t('Perco tempo em redes sociais'), emoji: '📱' },
-    { id: 'Procrastino muito', label: t('Procrastino muito'), desc: t('Adio tarefas importantes'), emoji: '😵' },
-    { id: 'Perco o foco rápido', label: t('Perco o foco'), desc: t('Difícil concentrar profundo'), emoji: '🧠' },
-    { id: 'Não consigo manter uma rotina', label: t('Sem rotina'), desc: t('Falta de constância no dia'), emoji: '🕐' }
-  ];
-
-  const step3Options: GridOption[] = [
-    { id: '5h', label: t('5 horas'), desc: t('Menos de 1h por dia'), badge: '5h' },
-    { id: '10h', label: t('10 horas'), desc: t('Cerca de 1.5h por dia'), badge: '10h' },
-    { id: '15h', label: t('15 horas'), desc: t('Cerca de 2h por dia'), badge: '15h' },
-    { id: '20h+', label: t('20h ou mais'), desc: t('Foco intenso diário'), badge: '20h+' }
-  ];
-
-  const step4Options: GridOption[] = [
-    { id: 'Manhã', label: t('Manhã'), desc: t('Antes do meio-dia'), emoji: '🌅' },
-    { id: 'Tarde', label: t('Tarde'), desc: t('Entre 12h e 18h'), emoji: '☀️' },
-    { id: 'Noite', label: t('Noite'), desc: t('Após as 18h'), emoji: '🌙' },
-    { id: 'Varia muito', label: t('Varia muito'), desc: t('Sem horário fixo'), emoji: '🔀' }
-  ];
-
-  const cardColors = [
-    { name: t('Roxo'), hex: '#7C3AED' },
-    { name: t('Azul'), hex: '#2563EB' },
-    { name: t('Verde Limão'), hex: '#A5CE00' },
-    { name: t('Azul Metálico'), hex: '#0CB6D7' },
-    { name: t('Rosa Vibrante'), hex: '#EC4899' },
-    { name: t('Branco'), hex: '#FFFFFF' }
-  ];
-
-
+  if (preparing) {
+    return <LoadingPreparation accent={accent} onDone={finish} />;
+  }
 
   return (
-    <div className="w-full h-screen bg-brand-bg text-text-primary font-sans overflow-hidden flex flex-col relative select-none">
-      
-      {/* Ambient glows */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-brand-bg to-brand-bg" />
-        <div className="absolute top-[-15%] left-[-20%] w-[90%] h-[70%] rounded-full bg-brand-purple-100/60 blur-[140px]" />
-        <div className="absolute top-[35%] right-[-25%] w-[70%] h-[60%] rounded-full bg-brand-purple-100/40 blur-[120px]" />
-        <div className="absolute inset-0 brand-dot-grid opacity-60" />
-      </div>
-      
-      {/* HEADER */}
-      <div className="relative z-50 shrink-0 px-4 sm:px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-3 bg-transparent grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-2 sm:gap-3 max-w-lg mx-auto w-full">
-        {/* Back Button */}
-        <button 
-          onClick={handleBack}
-          className="p-2.5 bg-white/80 hover:bg-white text-text-primary rounded-full transition-all cursor-pointer shrink-0 border border-brand-border shadow-sm-layered backdrop-blur-md"
-          aria-label={t('Voltar')}
-        >
-          <ArrowLeft size={18} />
-        </button>
+    <div className="relative h-[100dvh] w-full bg-[#08070E] overflow-hidden font-sans flex flex-col">
+      {/* glows de fundo */}
+      <div
+        className="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[120%] h-[55%] rounded-full blur-[130px] opacity-60 pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${hexToRgba(accent, 0.45)}, transparent 70%)` }}
+      />
+      <div
+        className="absolute -bottom-[20%] -right-[10%] w-[70%] h-[45%] rounded-full blur-[120px] opacity-40 pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${hexToRgba(accent, 0.35)}, transparent 70%)` }}
+      />
 
-        {/* Progress Bar */}
-        <div className="flex min-w-0 gap-1.5">
-          {[0, 1, 2, 3, 4, 5].map((stepIdx) => (
-            <div 
-              key={stepIdx} 
-              className={`h-1.5 flex-1 min-w-0 rounded-full transition-all duration-300 ${
-                stepIdx <= currentStep ? 'bg-brand-purple-500' : 'bg-brand-border'
-              }`}
-            />
-          ))}
+      {/* Header */}
+      <div className="relative z-20 shrink-0 pt-[max(1rem,env(safe-area-inset-top))] px-5">
+        <div className="max-w-md mx-auto flex items-center gap-3">
+          <button
+            onClick={handleBack}
+            className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
+            aria-label={t('Voltar')}
+          >
+            <ArrowLeft size={17} />
+          </button>
+
+          <div className="flex-1 min-w-0 flex gap-1.5">
+            {Array.from({ length: SEGMENTS }).map((_, i) => {
+              const done = step >= i + 1;
+              return (
+                <div key={i} className="h-1.5 flex-1 rounded-full overflow-hidden bg-white/10">
+                  <motion.div
+                    className="h-full rounded-full"
+                    initial={false}
+                    animate={{ width: done ? '100%' : '0%' }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
+                    style={{ background: accent, boxShadow: `0 0 12px ${hexToRgba(accent, 0.9)}` }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <LanguageSwitcher variant="dark" />
         </div>
-        {/* Step Indicator */}
-        <span className="text-xs font-medium text-text-secondary shrink-0 tabular-nums">
-          {t('{n} de 6', { n: currentStep + 1 })}
-        </span>
-        <LanguageSwitcher />
+        <div className="max-w-md mx-auto mt-2 text-[11px] font-semibold text-white/35 pl-12">
+          {step === 0 ? t('Configuração inicial') : t('{n} de {total}', { n: Math.min(step, SEGMENTS), total: SEGMENTS })}
+        </div>
       </div>
 
-      {/* SLIDER */}
-      <div className="relative z-10 flex-1 min-h-0 overflow-hidden">
-      <div 
-        className="w-full h-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col"
-        style={{ transform: `translateY(-${currentStep * 100}%)` }}
-      >
-
-        
-        {/* --- ETAPA 1 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
-          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
-                <Target size={22} className="text-brand-purple-500" />
-              </div>
-
-              <div>
-                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  {t('Para que você')} <br />{t('vai usar o')} <span className="text-brand-purple-500">Nakor?</span>
-                </h2>
-                <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  {t('Selecione uma opção')}
-                </p>
-              </div>
-
-              <OptionGrid options={step1Options} selected={useCase} onSelect={handleSelectUseCase} />
-
-            </div>
-          </div>
-        </section>
-
-        {/* --- ETAPA 2 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
-          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
-                <Brain size={22} className="text-brand-purple-500" />
-              </div>
-
-              <div>
-                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  {t('Qual é o seu')} <br />{t('maior')} <span className="text-brand-purple-500">{t('desafio')}</span> {t('hoje?')}
-                </h2>
-                <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  {t('Selecione uma opção')}
-                </p>
-              </div>
-
-              <OptionGrid options={step2Options} selected={biggestChallenge} onSelect={handleSelectChallenge} />
-
-            </div>
-          </div>
-        </section>
-
-        {/* --- ETAPA 3 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
-          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
-                <Flame size={22} className="text-brand-purple-500" />
-              </div>
-
-              <div>
-                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  {t('Quantas horas por')} <br />{t('semana quer')} <span className="text-brand-purple-500">{t('focar?')}</span>
-                </h2>
-                <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  {t('Você pode ajustar isso depois')}
-                </p>
-              </div>
-
-              <OptionGrid options={step3Options} selected={focusHours} onSelect={handleSelectHours} />
-
-            </div>
-          </div>
-        </section>
-
-        {/* --- ETAPA 4 --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
-          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
-                <Sun size={22} className="text-brand-purple-500" />
-              </div>
-
-              <div>
-                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  {t('Quando você')} <br />{t('costuma ser')} <span className="text-brand-purple-500">{t('produtivo?')}</span>
-                </h2>
-                <p className="text-[13px] text-text-secondary mt-2 font-medium">
-                  {t('Selecione uma opção')}
-                </p>
-              </div>
-
-              <OptionGrid options={step4Options} selected={productiveTime} onSelect={handleSelectProductiveTime} />
-
-            </div>
-          </div>
-        </section>
-
-        {/* --- ETAPA 5: DRUM PICKER --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
-          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col h-full max-h-[520px] justify-between">
-            <div className="space-y-5">
-              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
-                <Clock size={22} className="text-brand-purple-500" />
-              </div>
-
-              <div>
-                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  {t('Que horas quer')} <br />{t('receber o')} <span className="text-brand-purple-500">{t('lembrete?')}</span>
-                </h2>
-                <p className="text-[13px] text-text-secondary mt-2 font-medium leading-normal">
-                  {t('O Nakor vai te chamar pro foco todo dia nesse horário')}
-                </p>
-              </div>
-
-              <div className="bg-brand-bg border border-brand-border rounded-[24px] p-4 flex items-center justify-center relative overflow-hidden select-none h-40">
-                <div className="absolute inset-x-4 top-[35%] bottom-[35%] border-y border-brand-purple-100 bg-brand-purple-50/50 pointer-events-none rounded-lg" />
-                
-                <div 
-                  onWheel={handleHourWheel}
-                  className="flex flex-col items-center w-24 relative z-10 py-1 cursor-ns-resize"
-                >
-                  <button onClick={decrementHour} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
-                    <ChevronUp size={14} />
-                  </button>
-
-                  <div className="flex flex-col items-center -space-y-1 my-0.5">
-                    <span className="text-xs font-bold text-text-placeholder">
-                      {((hour - 1 + 24) % 24).toString().padStart(2, '0')}
-                    </span>
-                    <span className="text-4xl font-display font-extrabold text-text-primary leading-tight">
-                      {hour.toString().padStart(2, '0')}
-                    </span>
-                    <span className="text-xs font-bold text-text-placeholder">
-                      {((hour + 1) % 24).toString().padStart(2, '0')}
-                    </span>
-                  </div>
-
-                  <button onClick={incrementHour} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
-                    <ChevronDown size={14} />
-                  </button>
-                </div>
-
-                <span className="text-4xl font-display font-extrabold text-brand-purple-500 mx-3 animate-pulse select-none">
-                  :
-                </span>
-
-                <div 
-                  onWheel={handleMinuteWheel}
-                  className="flex flex-col items-center w-24 relative z-10 py-1 cursor-ns-resize"
-                >
-                  <button onClick={decrementMinute} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
-                    <ChevronUp size={14} />
-                  </button>
-
-                  <div className="flex flex-col items-center -space-y-1 my-0.5">
-                    <span className="text-xs font-bold text-text-placeholder">
-                      {((minute - 5 + 60) % 60).toString().padStart(2, '0')}
-                    </span>
-                    <span className="text-4xl font-display font-extrabold text-text-primary leading-tight">
-                      {minute.toString().padStart(2, '0')}
-                    </span>
-                    <span className="text-xs font-bold text-text-placeholder">
-                      {((minute + 5) % 60).toString().padStart(2, '0')}
-                    </span>
-                  </div>
-
-                  <button onClick={incrementMinute} className="text-text-placeholder hover:text-brand-purple-500 transition-colors p-0.5 shrink-0">
-                    <ChevronDown size={14} />
-                  </button>
-                </div>
-                
-                <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-brand-card/95 to-transparent pointer-events-none" />
-                <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-brand-card/95 to-transparent pointer-events-none" />
-              </div>
-
-              <div className="text-center">
-                <p className="text-[11px] font-medium text-text-secondary">
-                  {t('você pode mudar isso quando quiser')}
-                </p>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setCurrentStep(5)}
-              className="w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
+      {/* Conteúdo */}
+      <div className="relative z-10 flex-1 min-h-0 overflow-y-auto px-5 py-6 flex items-start sm:items-center">
+        <div className="w-full">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: dir * 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: dir * -30 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
             >
-              {t('Continuar')}
-            </button>
-          </div>
-        </section>
-
-        {/* --- ETAPA 6: PERSONALIZAR O CARD --- */}
-        <section className="w-full h-full flex-shrink-0 overflow-y-auto flex flex-col justify-center items-center px-4 sm:px-5 py-4">
-          <div className="w-full max-w-md bg-brand-card backdrop-blur-2xl rounded-[28px] p-6 sm:p-8 border border-brand-border shadow-lg-layered flex flex-col">
-            <div className="space-y-5">
-              <div className="w-12 h-12 rounded-full bg-brand-purple-50 border border-brand-purple-100 flex items-center justify-center">
-                <Sparkles size={22} className="text-brand-purple-500" />
-              </div>
-
-              <div>
-                <h2 className="text-[28px] font-bold text-text-primary tracking-tight leading-[1.1]">
-                  {t('Personalize o seu')} <br /><span className="text-brand-purple-500">{t('card')}</span> {t('de resultado')}
-                </h2>
-                <p className="text-[13px] text-text-secondary mt-2 font-medium leading-normal">
-                  {t('Escolha o modelo e a cor — pode mudar depois nas configurações')}
-                </p>
-              </div>
-
-              {/* Prévia real do card */}
-              <div className="space-y-2">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-                  {t('Prévia')}
-                </p>
-                <div className="rounded-[22px] p-4 bg-brand-card border border-brand-border/60 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.12)] flex items-center justify-center">
-                  <ResultCardPreview modelId={cardLayout} color={cardColor} />
-                </div>
-                <p className="text-[10.5px] text-text-secondary text-center">
-                  {t(CARD_MODELS.find((m) => m.id === cardLayout)?.description || '')}
-                </p>
-              </div>
-
-              {/* Modelo */}
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-                  {t('Modelo')}
-                </p>
-                <div className="grid grid-cols-2 gap-3">
-                  {CARD_MODELS.map((opt) => {
-                    const isSelected = cardLayout === opt.id;
-                    return (
-                      <motion.button
-                        key={opt.id}
-                        onClick={() => setCardLayout(opt.id)}
-                        whileTap={{ scale: 0.97 }}
-                        animate={{ scale: isSelected ? 1.02 : 1 }}
-                        transition={{ type: 'spring', stiffness: 340, damping: 24 }}
-                        className="relative overflow-hidden text-left rounded-[22px] p-3 pt-3 transition-all duration-300 cursor-pointer bg-white"
-                        style={{
-                          border: `2px solid ${isSelected ? cardColor : 'rgba(219,219,229,0.7)'}`,
-                          boxShadow: isSelected
-                            ? `0 0 0 4px ${hexToRgba(cardColor, 0.14)}, 0 18px 36px -16px ${hexToRgba(cardColor, 0.5)}`
-                            : '0 1px 2px rgba(0,0,0,0.04)',
-                        }}
-                      >
-                        {isSelected && (
-                          <div
-                            className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center z-10"
-                            style={{ backgroundColor: cardColor, border: '1px solid rgba(255,255,255,0.6)' }}
-                          >
-                            <Check size={12} strokeWidth={3.5} color={cardColor === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
-                          </div>
-                        )}
-                        <p
-                          className={`text-[13px] font-semibold leading-tight ${
-                            isSelected ? 'text-text-primary' : 'text-text-primary/60'
-                          }`}
-                        >
-                          {opt.name}
-                        </p>
-                        <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">{t(opt.description)}</p>
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Cor */}
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-                  {t('Cor de destaque')}
-                </p>
-                <div className="flex flex-wrap gap-2.5">
-                  {cardColors.map((c) => {
-                    const isSelected = cardColor === c.hex;
-                    return (
-                      <button
-                        key={c.hex}
-                        onClick={() => setCardColor(c.hex)}
-                        aria-label={c.name}
-                        className="w-10 h-10 rounded-full cursor-pointer transition-all flex items-center justify-center hover:scale-105"
-                        style={{
-                          backgroundColor: c.hex,
-                          border: isSelected ? '3px solid #21222D' : '1px solid rgba(219,219,229,0.9)',
-                          transform: isSelected ? 'scale(1.1)' : 'scale(1)',
-                          boxShadow: isSelected ? `0 0 0 4px ${hexToRgba(c.hex, 0.22)}` : 'none',
-                        }}
-                      >
-                        {isSelected && (
-                          <Check size={14} strokeWidth={3.5} color={c.hex === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-
-            <button
-              onClick={handleComplete}
-              className="mt-6 w-full bg-brand-purple-500 hover:bg-brand-purple-600 hover:brightness-110 active:scale-[0.98] text-white font-semibold py-4 rounded-full text-[15px] transition-all shadow-[0_4px_30px_rgba(46,46,184,0.25)] cursor-pointer"
-            >
-              {t('Começar agora')}
-            </button>
-          </div>
-        </section>
-
-
+              {renderStep()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
-      </div>
-
     </div>
   );
 }
