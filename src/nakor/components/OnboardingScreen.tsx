@@ -338,14 +338,14 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
 
       case 1:
         return (
-          <StepShell icon={<Target size={20} />} eyebrow={t('Seu objetivo')} title={t('O que você quer')} highlight={t('conquistar?')} accent={accent}>
+          <StepShell eyebrow={t('Seu objetivo')} title={t('O que você quer')} highlight={t('conquistar?')} accent={accent}>
             <OptionGrid options={goalOptions} selected={goal} accent={accent} onSelect={(id) => { setGoal(id); autoAdvance(); }} />
           </StepShell>
         );
 
       case 2:
         return (
-          <StepShell icon={<Briefcase size={20} />} eyebrow={t('Tipo de work')} title={t('Qual é o seu')} highlight={t('work principal?')} accent={accent}>
+          <StepShell eyebrow={t('Tipo de work')} title={t('Qual é o seu')} highlight={t('work principal?')} accent={accent}>
             <OptionGrid options={workTypeOptions} selected={workType} accent={accent} onSelect={(id) => { setWorkType(id); autoAdvance(); }} />
           </StepShell>
         );
@@ -353,7 +353,6 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
       case 3:
         return (
           <StepShell
-            icon={<Timer size={20} />}
             eyebrow={t('Meta semanal')}
             title={t('Quantas horas por semana de')}
             highlight={t('work?')}
@@ -366,21 +365,21 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
 
       case 4:
         return (
-          <StepShell icon={<Hourglass size={20} />} eyebrow={t('Ritmo')} title={t('Como você prefere')} highlight={t('focar?')} accent={accent}>
+          <StepShell eyebrow={t('Ritmo')} title={t('Como você prefere')} highlight={t('focar?')} accent={accent}>
             <OptionGrid options={sessionOptions} selected={sessionStyle} accent={accent} onSelect={(id) => { setSessionStyle(id); autoAdvance(); }} />
           </StepShell>
         );
 
       case 5:
         return (
-          <StepShell icon={<Sun size={20} />} eyebrow={t('Melhor horário')} title={t('Quando você')} highlight={t('produz mais?')} accent={accent}>
+          <StepShell eyebrow={t('Melhor horário')} title={t('Quando você')} highlight={t('produz mais?')} accent={accent}>
             <OptionGrid options={timeOptions} selected={productiveTime} accent={accent} onSelect={(id) => { setProductiveTime(id); autoAdvance(); }} />
           </StepShell>
         );
 
       case 6:
         return (
-          <StepShell icon={<Brain size={20} />} eyebrow={t('Desafio')} title={t('O que mais te')} highlight={t('atrapalha hoje?')} accent={accent}>
+          <StepShell eyebrow={t('Desafio')} title={t('O que mais te')} highlight={t('atrapalha hoje?')} accent={accent}>
             <OptionGrid options={obstacleOptions} selected={obstacle} accent={accent} onSelect={(id) => { setObstacle(id); autoAdvance(); }} />
           </StepShell>
         );
@@ -388,7 +387,6 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
       case 7:
         return (
           <StepShell
-            icon={<Clock size={20} />}
             eyebrow={t('Lembrete diário')}
             title={t('Que horas quer')}
             highlight={t('lembrar do work?')}
@@ -446,7 +444,6 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
       case 8:
         return (
           <StepShell
-            icon={<Sparkles size={20} />}
             eyebrow={t('Seu card')}
             title={t('Escolha o modelo do seu')}
             highlight={t('card de work')}
@@ -494,7 +491,6 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
       case 9:
         return (
           <StepShell
-            icon={<Palette size={20} />}
             eyebrow={t('Cor de destaque')}
             title={t('Qual cor combina com o')}
             highlight={t('seu work?')}
