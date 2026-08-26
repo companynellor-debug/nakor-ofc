@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Check, Sparkles, X } from 'lucide-react';
-import { t } from '../lib/i18n';
+import { useT } from '../lib/i18n';
 
 export interface TourStep {
   /** Tela do app onde o passo acontece */
@@ -12,7 +12,7 @@ export interface TourStep {
   description: string;
 }
 
-export const TOUR_STEPS: TourStep[] = [
+export const buildTourSteps = (t: (s: string) => string): TourStep[] => [
   {
     view: 'home',
     title: t('Bem-vindo ao Nakor'),
@@ -89,6 +89,8 @@ export function GuidedTour({
   onNavigate: (view: string) => void;
   onFinish: () => void;
 }) {
+  const t = useT();
+  const TOUR_STEPS = buildTourSteps(t);
   const [index, setIndex] = useState(0);
   const [rect, setRect] = useState<Rect | null>(null);
   const [ready, setReady] = useState(false);
