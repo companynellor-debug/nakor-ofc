@@ -628,14 +628,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
 
   return (
     <div className="relative h-[100dvh] w-full bg-[#08070E] overflow-hidden font-sans flex flex-col">
-      {/* glows de fundo */}
+      {/* glow discreto de fundo */}
       <div
-        className="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[120%] h-[55%] rounded-full blur-[130px] opacity-60 pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${hexToRgba(accent, 0.45)}, transparent 70%)` }}
-      />
-      <div
-        className="absolute -bottom-[20%] -right-[10%] w-[70%] h-[45%] rounded-full blur-[120px] opacity-40 pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${hexToRgba(accent, 0.35)}, transparent 70%)` }}
+        className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[110%] h-[45%] rounded-full blur-[150px] opacity-30 pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${hexToRgba(accent, 0.28)}, transparent 70%)` }}
       />
 
       {/* Header */}
@@ -643,35 +639,29 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
         <div className="max-w-md mx-auto flex items-center gap-3">
           <button
             onClick={handleBack}
-            className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
+            className="w-8 h-8 -ml-1 flex items-center justify-center text-white/45 hover:text-white transition-colors cursor-pointer"
             aria-label={t('Voltar')}
           >
-            <ArrowLeft size={17} />
+            <ArrowLeft size={18} />
           </button>
 
-          <div className="flex-1 min-w-0 flex gap-1.5">
-            {Array.from({ length: SEGMENTS }).map((_, i) => {
-              const done = step >= i + 1;
-              return (
-                <div key={i} className="h-1.5 flex-1 rounded-full overflow-hidden bg-white/10">
-                  <motion.div
-                    className="h-full rounded-full"
-                    initial={false}
-                    animate={{ width: done ? '100%' : '0%' }}
-                    transition={{ duration: 0.35, ease: 'easeOut' }}
-                    style={{ background: accent, boxShadow: `0 0 12px ${hexToRgba(accent, 0.9)}` }}
-                  />
-                </div>
-              );
-            })}
+          <div className="flex-1 min-w-0 h-[2px] rounded-full bg-white/[0.09] overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              initial={false}
+              animate={{ width: `${(Math.min(step, SEGMENTS) / SEGMENTS) * 100}%` }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              style={{ background: accent }}
+            />
           </div>
 
           <LanguageSwitcher variant="dark" />
         </div>
-        <div className="max-w-md mx-auto mt-2 text-[11px] font-semibold text-white/35 pl-12">
+        <div className="max-w-md mx-auto mt-2.5 text-[10.5px] font-normal tracking-[0.18em] uppercase text-white/25 pl-7">
           {step === 0 ? t('Configuração inicial') : t('{n} de {total}', { n: Math.min(step, SEGMENTS), total: SEGMENTS })}
         </div>
       </div>
+
 
       {/* Conteúdo */}
       <div className="relative z-10 flex-1 min-h-0 overflow-y-auto px-5 py-6 flex items-start sm:items-center">
