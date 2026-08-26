@@ -2,6 +2,7 @@ import React from 'react';
 import type { CardTheme, CardVariant, ProgressSummary } from '../../domain/types';
 import { formatDuration, formatDurationSplit } from '../../utils/duration';
 import { formatRangeShort, isoWeekNumber, WEEKDAYS_SHORT_PT } from '../../utils/dates';
+import { useT } from '../../lib/i18n';
 import {
   CardBars,
   CardBigMetric,
@@ -20,6 +21,7 @@ interface Props {
 
 export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
   ({ theme, variant = 'normal', summary }, ref) => {
+    const t = useT();
     const start = new Date(summary.rangeStart);
     const end = new Date(summary.rangeEnd);
     const data = summary.dailyBreakdown.map((p) => p.focusTime);
@@ -34,7 +36,7 @@ export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
         <CardShell ref={ref} theme={theme} variant="compact">
           <CardEyebrow
             theme={theme}
-            label={`Semana ${isoWeekNumber(start)}`}
+            label={t('Semana {n}', { n: isoWeekNumber(start) })}
             right={
               change !== null ? (
                 <CardChip theme={theme}>{`${change >= 0 ? '+' : ''}${change}%`}</CardChip>
@@ -46,7 +48,7 @@ export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
               theme={theme}
               value={`${split.hours}h`}
               suffix={`${split.minutes}m`}
-              caption="tempo de trabalho"
+              caption={t('tempo de trabalho')}
             />
             <div className="flex-1 max-w-[150px]">
               <CardBars theme={theme} data={data} labels={labels} height={62} />
@@ -60,8 +62,8 @@ export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
       <CardShell ref={ref} theme={theme} variant="normal">
         <CardEyebrow
           theme={theme}
-          label="Resumo semanal"
-          right={<CardChip theme={theme}>{`SEMANA ${isoWeekNumber(start)}`}</CardChip>}
+          label={t('Resumo semanal')}
+          right={<CardChip theme={theme}>{t('SEMANA {n}', { n: isoWeekNumber(start) })}</CardChip>}
         />
         <span className="text-[11px] font-semibold mb-5" style={{ color: theme.textSecondary }}>
           {formatRangeShort(start, end)}
@@ -71,12 +73,12 @@ export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
           theme={theme}
           value={`${split.hours}h`}
           suffix={`${split.minutes}m`}
-          caption="tempo total de trabalho"
+          caption={t('tempo total de trabalho')}
         />
 
         {change !== null && (
           <span className="mt-3 text-[12px] font-bold" style={{ color: theme.accent }}>
-            {change >= 0 ? '▲' : '▼'} {Math.abs(change)}% vs semana anterior
+            {change >= 0 ? '▲' : '▼'} {t('{n}% vs semana anterior', { n: Math.abs(change) })}
           </span>
         )}
 
@@ -89,14 +91,14 @@ export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
           <CardStat theme={theme} label="Dias ativos" value={`${summary.activeDays}/7`} />
           <CardStat
             theme={theme}
-            label="Média de foco"
+            label={t('Média de foco')}
             value={summary.averageFocusScore !== null ? `${summary.averageFocusScore}` : '—'}
           />
-          <CardStat theme={theme} label="Sequência" value={`${summary.currentStreak}d`} />
+          <CardStat theme={theme} label={t('Sequência')} value={`${summary.currentStreak}d`} />
         </div>
 
         <span className="mt-4 text-[11px] font-semibold" style={{ color: theme.textSecondary }}>
-          Média diária: {formatDuration(summary.totalFocusTime / 7)}
+          {t('Média diária: {v}', { v: formatDuration(summary.totalFocusTime / 7) })}
         </span>
 
         <CardFooterBrand theme={theme} />
