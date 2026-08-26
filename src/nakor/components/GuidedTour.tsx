@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Check, Sparkles, X } from 'lucide-react';
 import { useT } from '../lib/i18n';
@@ -90,17 +90,18 @@ export function GuidedTour({
   onFinish: () => void;
 }) {
   const t = useT();
-  const TOUR_STEPS = buildTourSteps(t);
+  const TOUR_STEPS = useMemo(() => buildTourSteps(t), [t]);
   const [index, setIndex] = useState(0);
   const [rect, setRect] = useState<Rect | null>(null);
   const [ready, setReady] = useState(false);
   const rafRef = useRef<number | null>(null);
   const step = TOUR_STEPS[index];
+  const target = step?.target;
 
   // Garante que estamos na tela correta do passo
   useEffect(() => {
     if (step && currentView !== step.view) onNavigate(step.view);
-  }, [step, currentView, onNavigate]);
+  }, [step?.view, currentView, onNavigate]);
 
   const measure = useCallback(() => {
     if (!step?.target) {
@@ -115,7 +116,7 @@ export function GuidedTour({
     setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
     setReady(true);
     return true;
-  }, [step]);
+  }, [step?.target]);
 
   // Espera o elemento aparecer (troca de tela + animação) e mede
   useLayoutEffect(() => {
@@ -126,8 +127,8 @@ export function GuidedTour({
 
     const attempt = () => {
       if (cancelled) return;
-      const el = step?.target
-        ? document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`)
+      const el = target
+        ? document.querySelector<HTMLElement>(`[data-tour="${target}"]`)
         : null;
       if (el) {
         const r = el.getBoundingClientRect();
@@ -140,7 +141,11 @@ export function GuidedTour({
       tries += 1;
       if (!ok && tries < 90) {
         rafRef.current = requestAnimationFrame(attempt);
-      } else if (ok && tries < 25) {
+      } else if (!ok) {
+        // fallback: mostra o passo centralizado caso o alvo não exista
+        setRect(null);
+        setReady(true);
+      } else if (tries < 25) {
         // continua remedindo por alguns frames enquanto animações terminam
         rafRef.current = requestAnimationFrame(attempt);
       }
@@ -151,7 +156,7 @@ export function GuidedTour({
       cancelled = true;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [index, step, currentView, measure]);
+  }, [index, target, currentView, measure]);
 
   // Reage a resize/scroll
   useEffect(() => {
