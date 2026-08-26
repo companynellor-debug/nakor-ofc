@@ -59,7 +59,9 @@ export function WorkGridSquares({
 
 export const WorkGridCard = React.forwardRef<HTMLDivElement, Props>(
   ({ theme, variant = 'normal', cells, currentStreak = 0, columns = 7 }, ref) => {
+    const t = useT();
     const total = cells.reduce((s, c) => s + c.focusTime, 0);
+
     const activeDays = cells.filter((c) => c.focusTime > 0).length;
     const sessions = cells.reduce((s, c) => s + c.sessions, 0);
     const split = formatDurationSplit(total);
