@@ -64,7 +64,6 @@ const CARD_COLORS = [
 /* ---------------- Sub-componentes ---------------- */
 
 function StepShell({
-  icon,
   eyebrow,
   title,
   highlight,
@@ -73,7 +72,7 @@ function StepShell({
   children,
   footer,
 }: {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   eyebrow: string;
   title: string;
   highlight?: string;
@@ -83,20 +82,14 @@ function StepShell({
   footer?: React.ReactNode;
 }) {
   return (
-    <div className="w-full max-w-md mx-auto flex flex-col gap-5">
+    <div className="w-full max-w-md mx-auto flex flex-col gap-8">
       <div className="flex flex-col gap-3">
-        <div
-          className="w-11 h-11 rounded-2xl flex items-center justify-center border border-white/10"
-          style={{ background: hexToRgba(accent, 0.16), color: accent, boxShadow: `0 0 26px ${hexToRgba(accent, 0.35)}` }}
-        >
-          {icon}
-        </div>
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">{eyebrow}</p>
-        <h2 className="font-display text-[27px] sm:text-[30px] font-bold text-white leading-[1.1] tracking-tight">
-          {title}{' '}
-          {highlight && <span style={{ color: accent }}>{highlight}</span>}
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.26em] text-white/30">{eyebrow}</p>
+        <h2 className="font-display text-[28px] sm:text-[32px] font-medium text-white leading-[1.14] tracking-[-0.01em]">
+          {title}
+          {highlight ? <> {highlight}</> : null}
         </h2>
-        {subtitle && <p className="text-[13px] text-white/55 font-medium leading-snug -mt-1">{subtitle}</p>}
+        {subtitle && <p className="text-[13.5px] text-white/45 font-normal leading-relaxed">{subtitle}</p>}
       </div>
 
       {children}
@@ -118,45 +111,36 @@ function OptionGrid({
   accent: string;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="flex flex-col border-t border-white/[0.07]">
       {options.map((opt) => {
         const active = selected === opt.id;
         return (
-          <motion.button
+          <button
             key={opt.id}
             onClick={() => onSelect(opt.id)}
-            whileTap={{ scale: 0.97 }}
-            className="relative overflow-hidden text-left rounded-[22px] p-4 min-h-[136px] flex flex-col justify-between cursor-pointer border transition-colors duration-300"
-            style={{
-              background: active ? hexToRgba(accent, 0.14) : 'rgba(255,255,255,0.05)',
-              borderColor: active ? hexToRgba(accent, 0.7) : 'rgba(255,255,255,0.09)',
-              boxShadow: active ? `0 0 0 1px ${hexToRgba(accent, 0.4)}, 0 22px 46px -22px ${hexToRgba(accent, 0.8)}` : 'none',
-            }}
+            className="group relative w-full text-left border-b border-white/[0.07] py-4 pl-4 pr-3 flex items-center gap-4 cursor-pointer transition-colors"
+            style={{ background: active ? hexToRgba(accent, 0.07) : 'transparent' }}
           >
-            {active && (
-              <div
-                className="pointer-events-none absolute -top-10 -right-10 w-28 h-28 rounded-full blur-2xl"
-                style={{ background: hexToRgba(accent, 0.45) }}
-              />
-            )}
-            <div className="relative z-10" style={{ color: active ? accent : 'rgba(255,255,255,0.65)' }}>
-              {opt.icon}
-            </div>
-            <div className="relative z-10">
-              <p className={`text-[14px] font-semibold leading-tight ${active ? 'text-white' : 'text-white/85'}`}>
+            <span
+              className="absolute left-0 top-0 bottom-0 w-[2px] transition-opacity"
+              style={{ background: accent, opacity: active ? 1 : 0 }}
+            />
+            <span className="flex-1 min-w-0">
+              <span className={`block text-[15.5px] leading-tight ${active ? 'text-white font-medium' : 'text-white/75 font-normal'}`}>
                 {opt.label}
-              </p>
-              <p className="text-[11px] text-white/45 mt-1 leading-snug">{opt.desc}</p>
-            </div>
-            {active && (
-              <div
-                className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center z-10"
-                style={{ backgroundColor: accent }}
-              >
-                <Check size={12} strokeWidth={3.5} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
-              </div>
-            )}
-          </motion.button>
+              </span>
+              <span className="block text-[12.5px] text-white/35 mt-1 leading-snug">{opt.desc}</span>
+            </span>
+            <span
+              className="w-[18px] h-[18px] rounded-full border shrink-0 flex items-center justify-center transition-colors"
+              style={{
+                borderColor: active ? accent : 'rgba(255,255,255,0.18)',
+                background: active ? accent : 'transparent',
+              }}
+            >
+              {active && <Check size={11} strokeWidth={3} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />}
+            </span>
+          </button>
         );
       })}
     </div>
@@ -178,11 +162,10 @@ function PrimaryButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full py-4 rounded-full text-[15px] font-bold transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+      className="w-full py-[15px] rounded-full text-[14.5px] font-medium transition-all active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
       style={{
-        background: `linear-gradient(135deg, ${accent}, ${hexToRgba(accent, 0.75)})`,
+        background: accent,
         color: accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF',
-        boxShadow: `0 18px 40px -16px ${hexToRgba(accent, 0.9)}`,
       }}
     >
       {children}
@@ -202,6 +185,7 @@ function ResultCardPreview({ modelId, color }: { modelId: string; color: string 
     </div>
   );
 }
+
 
 /* ---------------- Tela principal ---------------- */
 
