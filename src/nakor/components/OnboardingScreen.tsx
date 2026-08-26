@@ -454,33 +454,40 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
             accent={accent}
             footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
           >
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 flex items-center justify-center">
+            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.02] p-4 flex items-center justify-center">
               <ResultCardPreview modelId={cardLayout} color={cardColor} />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col border-t border-white/[0.07]">
               {CARD_MODELS.map((m) => {
                 const active = cardLayout === m.id;
                 return (
                   <button
                     key={m.id}
                     onClick={() => setCardLayout(m.id)}
-                    className="relative text-left rounded-[20px] p-3 border transition-colors cursor-pointer"
-                    style={{
-                      background: active ? hexToRgba(accent, 0.14) : 'rgba(255,255,255,0.05)',
-                      borderColor: active ? hexToRgba(accent, 0.7) : 'rgba(255,255,255,0.09)',
-                    }}
+                    className="relative w-full text-left border-b border-white/[0.07] py-3.5 pl-4 pr-3 flex items-center gap-4 cursor-pointer transition-colors"
+                    style={{ background: active ? hexToRgba(accent, 0.07) : 'transparent' }}
                   >
-                    {active && (
-                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accent }}>
-                        <Check size={12} strokeWidth={3.5} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
-                      </div>
-                    )}
-                    <p className={`text-[13px] font-semibold pr-6 ${active ? 'text-white' : 'text-white/75'}`}>{m.name}</p>
-                    <p className="text-[11px] text-white/40 mt-0.5 leading-snug">{t(m.description)}</p>
+                    <span
+                      className="absolute left-0 top-0 bottom-0 w-[2px]"
+                      style={{ background: accent, opacity: active ? 1 : 0 }}
+                    />
+                    <span className="flex-1 min-w-0">
+                      <span className={`block text-[15px] leading-tight ${active ? 'text-white font-medium' : 'text-white/75 font-normal'}`}>
+                        {t(m.name)}
+                      </span>
+                      <span className="block text-[12.5px] text-white/35 mt-1 leading-snug">{t(m.description)}</span>
+                    </span>
+                    <span
+                      className="w-[18px] h-[18px] rounded-full border shrink-0 flex items-center justify-center"
+                      style={{ borderColor: active ? accent : 'rgba(255,255,255,0.18)', background: active ? accent : 'transparent' }}
+                    >
+                      {active && <Check size={11} strokeWidth={3} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />}
+                    </span>
                   </button>
                 );
               })}
             </div>
+
           </StepShell>
         );
 
