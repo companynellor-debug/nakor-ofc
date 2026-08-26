@@ -647,6 +647,12 @@ export default function App() {
           onComplete={handleCompleteOnboarding}
           onBackToLanding={() => setView('landing')}
           userEmail={userEmail || 'warcallapp@gmail.com'}
+          onThemeChange={(next) => {
+            setTheme(next);
+            localStorage.setItem('nakor_theme', next);
+            if (next === 'dark') document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+          }}
         />
       </motion.div>
     );
