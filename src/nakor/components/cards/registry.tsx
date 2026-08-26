@@ -53,7 +53,7 @@ export const CARD_MODELS: CardModelDefinition[] = [
 
   {
     id: 'session',
-    name: 'Session Card',
+    name: 'Card da sessão',
     description: 'Resultado da sessão que você acabou de concluir',
     render: ({ theme, variant, data, ref }) => (
       <SessionWorkCard
@@ -67,7 +67,7 @@ export const CARD_MODELS: CardModelDefinition[] = [
   },
   {
     id: 'weekly',
-    name: 'Weekly Work',
+    name: 'Resumo semanal',
     description: 'Resumo da sua semana de trabalho',
     render: ({ theme, variant, data, ref }) => (
       <WeeklyWorkCard ref={ref} theme={theme} variant={variant} summary={data.weekly} />
@@ -75,7 +75,7 @@ export const CARD_MODELS: CardModelDefinition[] = [
   },
   {
     id: 'monthly',
-    name: 'Monthly Work',
+    name: 'Resumo mensal',
     description: 'Resumo do mês com evolução',
     render: ({ theme, variant, data, ref }) => (
       <MonthlyWorkCard ref={ref} theme={theme} variant={variant} summary={data.monthly} />
