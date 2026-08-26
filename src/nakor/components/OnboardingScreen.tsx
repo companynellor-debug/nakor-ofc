@@ -501,10 +501,10 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
             accent={accent}
             footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
           >
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 flex items-center justify-center">
+            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.02] p-4 flex items-center justify-center">
               <ResultCardPreview modelId={cardLayout} color={cardColor} />
             </div>
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="flex flex-wrap gap-3">
               {CARD_COLORS.map((c) => {
                 const active = cardColor === c.hex;
                 return (
@@ -512,14 +512,13 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
                     key={c.hex}
                     onClick={() => setCardColor(c.hex)}
                     aria-label={t(c.name)}
-                    className="w-11 h-11 rounded-full flex items-center justify-center transition-all cursor-pointer"
+                    className="w-10 h-10 rounded-full flex items-center justify-center transition-all cursor-pointer"
                     style={{
                       backgroundColor: c.hex,
-                      transform: active ? 'scale(1.12)' : 'scale(1)',
-                      boxShadow: active ? `0 0 0 3px rgba(255,255,255,0.85), 0 0 26px ${hexToRgba(c.hex, 0.8)}` : 'none',
+                      boxShadow: active ? `0 0 0 1.5px rgba(255,255,255,0.9)` : 'none',
                     }}
                   >
-                    {active && <Check size={15} strokeWidth={3.5} color={c.hex === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />}
+                    {active && <Check size={14} strokeWidth={3} color={c.hex === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />}
                   </button>
                 );
               })}
@@ -530,7 +529,6 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
       case 10:
         return (
           <StepShell
-            icon={<Moon size={20} />}
             eyebrow={t('Aparência')}
             title={t('Prefere o Nakor')}
             highlight={t('claro ou escuro?')}
@@ -538,35 +536,38 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
             accent={accent}
             footer={<PrimaryButton onClick={advance} accent={accent}>{t('Continuar')}</PrimaryButton>}
           >
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               {([
-                { id: 'light' as const, label: t('Claro'), desc: t('Limpo e luminoso'), icon: <Sun size={22} />, bg: '#FFFFFF', fg: '#16131F' },
-                { id: 'dark' as const, label: t('Escuro'), desc: t('Foco total, sem brilho'), icon: <Moon size={22} />, bg: '#12111A', fg: '#FFFFFF' },
+                { id: 'light' as const, label: t('Claro'), desc: t('Limpo e luminoso'), bg: '#FFFFFF', fg: '#16131F' },
+                { id: 'dark' as const, label: t('Escuro'), desc: t('Foco total, sem brilho'), bg: '#12111A', fg: '#FFFFFF' },
               ]).map((opt) => {
                 const active = appTheme === opt.id;
                 return (
                   <button
                     key={opt.id}
                     onClick={() => setAppTheme(opt.id)}
-                    className="relative rounded-[22px] p-4 border text-left cursor-pointer transition-colors"
-                    style={{
-                      background: active ? hexToRgba(accent, 0.14) : 'rgba(255,255,255,0.05)',
-                      borderColor: active ? hexToRgba(accent, 0.7) : 'rgba(255,255,255,0.09)',
-                    }}
+                    className="text-left cursor-pointer flex flex-col gap-3"
                   >
                     <div
-                      className="h-16 rounded-[14px] mb-3 flex items-center justify-center border border-white/10"
-                      style={{ background: opt.bg, color: opt.fg }}
+                      className="h-24 rounded-[14px] flex flex-col justify-end gap-1.5 p-3 transition-all"
+                      style={{
+                        background: opt.bg,
+                        boxShadow: active ? `0 0 0 1.5px ${accent}` : '0 0 0 1px rgba(255,255,255,0.09)',
+                      }}
                     >
-                      {opt.icon}
+                      <span className="block h-1.5 w-2/3 rounded-full" style={{ background: opt.fg, opacity: 0.85 }} />
+                      <span className="block h-1.5 w-1/3 rounded-full" style={{ background: opt.fg, opacity: 0.35 }} />
                     </div>
-                    <p className={`text-[14px] font-semibold ${active ? 'text-white' : 'text-white/80'}`}>{opt.label}</p>
-                    <p className="text-[11px] text-white/45 mt-0.5">{opt.desc}</p>
-                    {active && (
-                      <div className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accent }}>
-                        <Check size={12} strokeWidth={3.5} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />
-                      </div>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="w-[16px] h-[16px] rounded-full border shrink-0 flex items-center justify-center"
+                        style={{ borderColor: active ? accent : 'rgba(255,255,255,0.18)', background: active ? accent : 'transparent' }}
+                      >
+                        {active && <Check size={10} strokeWidth={3} color={accent === '#FFFFFF' ? '#0B0B12' : '#FFFFFF'} />}
+                      </span>
+                      <span className={`text-[14px] ${active ? 'text-white font-medium' : 'text-white/70 font-normal'}`}>{opt.label}</span>
+                    </div>
+                    <p className="text-[12px] text-white/35 -mt-2 pl-6">{opt.desc}</p>
                   </button>
                 );
               })}
@@ -578,7 +579,6 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
       default:
         return (
           <StepShell
-            icon={<Check size={20} />}
             eyebrow={t('Resumo')}
             title={t('Tudo certo com a')}
             highlight={t('sua Nakor?')}
@@ -586,16 +586,43 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
             accent={accent}
             footer={<PrimaryButton onClick={startPreparing} accent={accent}>{t('Criar minha Nakor')}</PrimaryButton>}
           >
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] divide-y divide-white/[0.07]">
-              {summaryRows.map((row) => (
-                <div key={row.label} className="flex items-center justify-between gap-3 px-4 py-3">
-                  <span className="text-[12px] font-semibold uppercase tracking-wide text-white/40">{row.label}</span>
-                  <span className="text-[13px] font-semibold text-white text-right min-w-0 truncate">{row.value}</span>
+            <div className="flex flex-col gap-6">
+              <div className="flex items-end justify-between gap-4 pb-5 border-b border-white/[0.07]">
+                <div className="flex flex-col">
+                  <span className="text-[10.5px] font-medium uppercase tracking-[0.24em] text-white/30">
+                    {t('Meta semanal')}
+                  </span>
+                  <span className="font-display text-[34px] font-medium text-white leading-none mt-2 tracking-tight">
+                    {hoursOptions.find((o) => o.id === focusHours)?.label || '—'}
+                  </span>
                 </div>
-              ))}
+                <div className="flex flex-col items-end">
+                  <span className="text-[10.5px] font-medium uppercase tracking-[0.24em] text-white/30">
+                    {t('Lembrete')}
+                  </span>
+                  <span className="font-display text-[24px] font-medium leading-none mt-2 tabular-nums" style={{ color: accent }}>
+                    {String(hour).padStart(2, '0')}:{String(minute).padStart(2, '0')}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                {summaryRows
+                  .filter((row) => row.label !== t('Meta semanal') && row.label !== t('Lembrete'))
+                  .map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex items-baseline justify-between gap-4 py-3 border-b border-white/[0.05]"
+                    >
+                      <span className="text-[12.5px] font-normal text-white/35">{row.label}</span>
+                      <span className="text-[13.5px] font-normal text-white/90 text-right min-w-0 truncate">{row.value}</span>
+                    </div>
+                  ))}
+              </div>
             </div>
           </StepShell>
         );
+
     }
   };
 
