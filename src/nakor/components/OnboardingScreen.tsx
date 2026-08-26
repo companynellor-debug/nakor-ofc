@@ -316,26 +316,25 @@ export function OnboardingScreen({ onComplete, onBackToLanding, userEmail, onThe
     switch (step) {
       case 0:
         return (
-          <div className="w-full max-w-md mx-auto flex flex-col items-center text-center gap-5">
-            <div
-              className="w-16 h-16 rounded-[24px] flex items-center justify-center border border-white/10"
-              style={{ background: hexToRgba(accent, 0.18), color: accent, boxShadow: `0 0 40px ${hexToRgba(accent, 0.4)}` }}
-            >
-              <Sparkles size={28} />
-            </div>
-            <h1 className="font-display text-[32px] font-bold text-white leading-[1.08] tracking-tight">
-              {t('Vamos montar a sua')} <span style={{ color: accent }}>{t('Nakor')}</span>
+          <div className="w-full max-w-md mx-auto flex flex-col gap-7">
+            <p className="text-[10.5px] font-medium uppercase tracking-[0.26em] text-white/30">
+              {t('Configuração inicial')}
+            </p>
+            <h1 className="font-display text-[34px] sm:text-[38px] font-medium text-white leading-[1.08] tracking-[-0.015em]">
+              {t('Vamos montar a sua')} {t('Nakor')}
             </h1>
-            <p className="text-[14px] text-white/55 font-medium leading-relaxed max-w-[330px]">
+            <p className="text-[14px] text-white/45 font-normal leading-relaxed max-w-[340px]">
               {t('Poucas perguntas rápidas sobre o seu work para deixar o app do seu jeito. Dá menos de 1 minuto.')}
             </p>
-            <div className="w-full mt-2">
+            <div className="h-px w-full bg-white/[0.07]" />
+            <div className="w-full">
               <PrimaryButton onClick={advance} accent={accent}>
                 {t('Começar')}
               </PrimaryButton>
             </div>
           </div>
         );
+
 
       case 1:
         return (
