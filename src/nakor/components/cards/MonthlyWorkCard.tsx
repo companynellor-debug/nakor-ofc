@@ -2,6 +2,7 @@ import React from 'react';
 import type { CardTheme, CardVariant, ProgressSummary } from '../../domain/types';
 import { formatDuration, formatDurationSplit } from '../../utils/duration';
 import { MONTHS_PT } from '../../utils/dates';
+import { useT } from '../../lib/i18n';
 import {
   CardBigMetric,
   CardChip,
@@ -44,8 +45,9 @@ function MonthHeatmap({ summary, theme }: { summary: ProgressSummary; theme: Car
 
 export const MonthlyWorkCard = React.forwardRef<HTMLDivElement, Props>(
   ({ theme, variant = 'normal', summary }, ref) => {
+    const t = useT();
     const start = new Date(summary.rangeStart);
-    const monthLabel = `${MONTHS_PT[start.getMonth()]} ${start.getFullYear()}`;
+    const monthLabel = `${t(MONTHS_PT[start.getMonth()])} ${start.getFullYear()}`;
     const split = formatDurationSplit(summary.totalFocusTime);
     const change = summary.previousPeriodChange;
     const daysInMonth = summary.dailyBreakdown.length;
@@ -67,7 +69,7 @@ export const MonthlyWorkCard = React.forwardRef<HTMLDivElement, Props>(
               theme={theme}
               value={`${split.hours}h`}
               suffix={`${split.minutes}m`}
-              caption={`${summary.sessionCount} sessões · ${summary.activeDays} dias`}
+              caption={`${t('{n} sessões', { n: summary.sessionCount })} · ${t('{n} dias', { n: summary.activeDays })}`}
             />
             <div className="w-[128px]">
               <MonthHeatmap summary={summary} theme={theme} />
@@ -81,7 +83,7 @@ export const MonthlyWorkCard = React.forwardRef<HTMLDivElement, Props>(
       <CardShell ref={ref} theme={theme} variant="normal">
         <CardEyebrow
           theme={theme}
-          label="Resumo mensal"
+          label={t('Resumo mensal')}
           right={<CardChip theme={theme}>{monthLabel.toUpperCase()}</CardChip>}
         />
 
@@ -89,12 +91,12 @@ export const MonthlyWorkCard = React.forwardRef<HTMLDivElement, Props>(
           theme={theme}
           value={`${split.hours}h`}
           suffix={`${split.minutes}m`}
-          caption="tempo total de trabalho"
+          caption={t('tempo total de trabalho')}
         />
 
         {change !== null && (
           <span className="mt-3 text-[12px] font-bold" style={{ color: theme.accent }}>
-            {change >= 0 ? '▲' : '▼'} {Math.abs(change)}% vs mês anterior
+            {change >= 0 ? '▲' : '▼'} {t('{n}% vs mês anterior', { n: Math.abs(change) })}
           </span>
         )}
 
@@ -103,18 +105,18 @@ export const MonthlyWorkCard = React.forwardRef<HTMLDivElement, Props>(
         </div>
 
         <div className="grid grid-cols-2 gap-2.5 mt-6">
-          <CardStat theme={theme} label="Sessões" value={String(summary.sessionCount)} />
+          <CardStat theme={theme} label={t('Sessões')} value={String(summary.sessionCount)} />
           <CardStat
             theme={theme}
-            label="Dias ativos"
+            label={t('Dias ativos')}
             value={`${summary.activeDays}/${daysInMonth}`}
           />
           <CardStat
             theme={theme}
-            label="Média diária"
+            label={t('Média diária')}
             value={formatDuration(summary.totalFocusTime / Math.max(1, summary.activeDays))}
           />
-          <CardStat theme={theme} label="Maior sequência" value={`${summary.longestStreak}d`} />
+          <CardStat theme={theme} label={t('Maior sequência')} value={`${summary.longestStreak}d`} />
         </div>
 
         <CardFooterBrand theme={theme} />

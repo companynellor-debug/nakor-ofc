@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../../lib/i18n';
 import type { CardTheme, CardVariant } from '../../domain/types';
 import type { WorkGridCell } from '../../services/progressService';
 import { formatDurationSplit } from '../../utils/duration';
@@ -58,7 +59,9 @@ export function WorkGridSquares({
 
 export const WorkGridCard = React.forwardRef<HTMLDivElement, Props>(
   ({ theme, variant = 'normal', cells, currentStreak = 0, columns = 7 }, ref) => {
+    const t = useT();
     const total = cells.reduce((s, c) => s + c.focusTime, 0);
+
     const activeDays = cells.filter((c) => c.focusTime > 0).length;
     const sessions = cells.reduce((s, c) => s + c.sessions, 0);
     const split = formatDurationSplit(total);
@@ -68,7 +71,7 @@ export const WorkGridCard = React.forwardRef<HTMLDivElement, Props>(
         <CardShell ref={ref} theme={theme} variant="compact">
           <CardEyebrow
             theme={theme}
-            label="Grade de trabalho"
+            label={t('Grade de trabalho')}
             right={<CardChip theme={theme}>{`${activeDays} dias`}</CardChip>}
           />
           <div className="flex items-end justify-between gap-4">
@@ -90,7 +93,7 @@ export const WorkGridCard = React.forwardRef<HTMLDivElement, Props>(
       <CardShell ref={ref} theme={theme} variant="normal">
         <CardEyebrow
           theme={theme}
-          label="Grade de trabalho"
+          label={t('Grade de trabalho')}
           right={<CardChip theme={theme}>{`${cells.length} DIAS`}</CardChip>}
         />
 
@@ -125,9 +128,9 @@ export const WorkGridCard = React.forwardRef<HTMLDivElement, Props>(
         </div>
 
         <div className="grid grid-cols-3 gap-2.5 mt-6">
-          <CardStat theme={theme} label="Dias ativos" value={String(activeDays)} />
-          <CardStat theme={theme} label="Sessões" value={String(sessions)} />
-          <CardStat theme={theme} label="Sequência" value={`${currentStreak}d`} />
+          <CardStat theme={theme} label={t('Dias ativos')} value={String(activeDays)} />
+          <CardStat theme={theme} label={t('Sessões')} value={String(sessions)} />
+          <CardStat theme={theme} label={t('Sequência')} value={`${currentStreak}d`} />
         </div>
 
         <CardFooterBrand theme={theme} />

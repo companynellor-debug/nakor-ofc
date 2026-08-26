@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Activity, CardTheme, CardVariant } from '../../domain/types';
 import { formatDuration, formatDurationSplit } from '../../utils/duration';
+import { useT } from '../../lib/i18n';
 import { formatTime } from '../../utils/dates';
 import { hexToRgba } from '../../services/cardTheme';
 import {
@@ -87,6 +88,7 @@ function ProgressLine({
 
 export const SessionWorkCard = React.forwardRef<HTMLDivElement, Props>(
   ({ theme, variant = 'normal', activity, streak = 0 }, ref) => {
+    const t = useT();
     const split = formatDurationSplit(activity.actualDuration);
     const score = activity.focusScore;
     const finishedAt = activity.completedAt ? formatTime(activity.completedAt) : '';
@@ -99,7 +101,7 @@ export const SessionWorkCard = React.forwardRef<HTMLDivElement, Props>(
         <CardShell ref={ref} theme={theme} variant="compact">
           <CardEyebrow
             theme={theme}
-            label="Sessão concluída"
+            label={t('Sessão concluída')}
             right={
               score !== null && score !== undefined ? (
                 <CardChip theme={theme}>{`${Number(score).toFixed(1)}/10`}</CardChip>
@@ -123,10 +125,10 @@ export const SessionWorkCard = React.forwardRef<HTMLDivElement, Props>(
             </div>
             <div className="text-right">
               <span className="text-[11px] font-semibold block" style={{ color: theme.textSecondary }}>
-                {activity.exitCount ?? 0} saídas · {finishedAt}
+                {t('{n} saídas', { n: activity.exitCount ?? 0 })} · {finishedAt}
               </span>
               <span className="text-[11px] font-bold" style={{ color: theme.accent }}>
-                {streak}d de sequência
+                {t('{n}d de sequência', { n: streak })}
               </span>
             </div>
           </div>
@@ -141,18 +143,18 @@ export const SessionWorkCard = React.forwardRef<HTMLDivElement, Props>(
       <CardShell ref={ref} theme={theme} variant="normal">
         <CardEyebrow
           theme={theme}
-          label="Sessão concluída"
-          right={<CardChip theme={theme}>{`${formatDuration(activity.actualDuration)} focados`}</CardChip>}
+          label={t('Sessão concluída')}
+          right={<CardChip theme={theme}>{t('{v} focados', { v: formatDuration(activity.actualDuration) })}</CardChip>}
         />
 
         <ScoreHero theme={theme} score={score} />
 
         <div className="flex items-center justify-between mt-4 mb-1">
           <span className="text-[11px] font-bold tracking-[0.18em] uppercase" style={{ color: theme.accent }}>
-            {focusLabel(score)}
+            {t(focusLabel(score))}
           </span>
           <span className="text-[11px] font-semibold" style={{ color: theme.textSecondary }}>
-            {activity.exitCount ?? 0} saídas
+            {t('{n} saídas', { n: activity.exitCount ?? 0 })}
           </span>
         </div>
 
@@ -170,20 +172,20 @@ export const SessionWorkCard = React.forwardRef<HTMLDivElement, Props>(
         <ProgressLine
           theme={theme}
           ratio={ratio}
-          caption={`${formatDuration(activity.actualDuration)} de ${formatDuration(planned)} planejados`}
+          caption={t('{a} de {b} planejados', { a: formatDuration(activity.actualDuration), b: formatDuration(planned) })}
         />
 
         <div className="grid grid-cols-2 gap-2.5 mt-5">
           <CardStat
             theme={theme}
-            label="Subtarefas"
+            label={t('Subtarefas')}
             value={`${activity.tasksCompleted ?? 0}/${activity.tasksTotal ?? 0}`}
           />
-          <CardStat theme={theme} label="Moedas" value={`+${activity.coinsEarned ?? 0}`} />
-          <CardStat theme={theme} label="Sequência" value={`${streak}d`} />
+          <CardStat theme={theme} label={t('Moedas')} value={`+${activity.coinsEarned ?? 0}`} />
+          <CardStat theme={theme} label={t('Sequência')} value={`${streak}d`} />
           <CardStat
             theme={theme}
-            label="Nota"
+            label={t('Nota')}
             value={score !== null && score !== undefined ? Number(score).toFixed(1) : '—'}
           />
         </div>

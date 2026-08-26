@@ -22,7 +22,7 @@ export function ResultCardsPanel({ activity }: { activity?: Activity | null }) {
     <div className="w-full flex flex-col gap-8">
       <div className="flex flex-col gap-3">
         <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400 pl-1">
-          {t('Normal')} · {model.name}
+          {t('Normal')} · {t(model.name)}
         </span>
         <CopyableCard fileName={`nakor-${model.id}-normal.png`}>
           {(ref) => (
@@ -35,7 +35,7 @@ export function ResultCardsPanel({ activity }: { activity?: Activity | null }) {
 
       <div className="flex flex-col gap-3">
         <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400 pl-1">
-          {t('Compacto')} · {model.name}
+          {t('Compacto')} · {t(model.name)}
         </span>
         <CopyableCard fileName={`nakor-${model.id}-compacto.png`}>
           {(ref) => (

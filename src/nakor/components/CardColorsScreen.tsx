@@ -124,7 +124,7 @@ export function CardColorsScreen({ onBack }: CardColorsScreenProps) {
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-[14px] font-bold">{model.name}</span>
+                      <span className="text-[14px] font-bold">{t(model.name)}</span>
                       {active && (
                         <span className="w-5 h-5 rounded-full bg-[#7C3AED] flex items-center justify-center">
                           <Check size={12} className="text-white" />
