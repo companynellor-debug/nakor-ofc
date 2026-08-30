@@ -42,7 +42,7 @@ export const miscDict: Dict = {
   'PROJETO': { en: 'PROJECT', es: 'PROYECTO' },
   'opcional': { en: 'optional', es: 'opcional' },
   'Nome do projeto': { en: 'Project name', es: 'Nombre del proyecto' },
-  'O que você espera dessa atividade?\nQual é sua meta agora?': {
+  'O que você espera dessa atividade?\\nQual é sua meta agora?': {
     en: 'What do you expect from this activity?\nWhat is your goal right now?',
     es: '¿Qué esperas de esta actividad?\n¿Cuál es tu meta ahora?',
   },
