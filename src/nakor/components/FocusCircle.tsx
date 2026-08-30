@@ -21,6 +21,7 @@ export function FocusCircle({
   size = 256,
   variant = 'mobile',
 }: FocusCircleProps) {
+  const t = useT();
   const isMobile = variant === 'mobile';
   const isEmpty = todaySeconds === 0;
   const isComplete = progressPercent >= 1;
