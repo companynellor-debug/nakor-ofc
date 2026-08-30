@@ -11,6 +11,7 @@ import { resultDict } from './result';
 import { profileDict } from './profile';
 import { lojaDict } from './loja';
 import { cardsDict } from './cards';
+import { miscDict } from './misc';
 
 export const DICTIONARY: Dict = {
   ...commonDict,
@@ -24,4 +25,5 @@ export const DICTIONARY: Dict = {
   ...profileDict,
   ...lojaDict,
   ...cardsDict,
+  ...miscDict,
 };
