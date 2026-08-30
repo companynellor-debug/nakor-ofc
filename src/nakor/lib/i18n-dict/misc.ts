@@ -28,6 +28,24 @@ export const miscDict: Dict = {
   'Sessões': { en: 'Sessions', es: 'Sesiones' },
   'Dias ativos ': { en: 'Active days ', es: 'Días activos ' },
 
+  // Landing mockups
+  'Nova Atividade': { en: 'New Activity', es: 'Nueva Actividad' },
+  'Nome da atividade': { en: 'Activity name', es: 'Nombre de la actividad' },
+  'Revisar conteúdo teórico': { en: 'Review theory notes', es: 'Revisar contenido teórico' },
+  'Fazer exercícios práticos': { en: 'Do practice exercises', es: 'Hacer ejercicios prácticos' },
+  '+ nova subtarefa': { en: '+ new subtask', es: '+ nueva subtarea' },
+  'Iniciar': { en: 'Start', es: 'Iniciar' },
+  'Trabalho Focado': { en: 'Focused Work', es: 'Trabajo Enfocado' },
+  '2 saídas': { en: '2 exits', es: '2 salidas' },
+  'Restantes': { en: 'Remaining', es: 'Restantes' },
+  '1 de 3 subtarefas concluídas': { en: '1 of 3 subtasks done', es: '1 de 3 subtareas hechas' },
+  'monitorando distrações': { en: 'tracking distractions', es: 'monitoreando distracciones' },
+  'Atividade concluída': { en: 'Activity completed', es: 'Actividad completada' },
+  'duração': { en: 'duration', es: 'duración' },
+  'sua nota': { en: 'your score', es: 'tu nota' },
+  '1 saída': { en: '1 exit', es: '1 salida' },
+  'distrações': { en: 'distractions', es: 'distracciones' },
+
   // History / sharing
   'Copiado!': { en: 'Copied!', es: '¡Copiado!' },
   'Copiar card': { en: 'Copy card', es: 'Copiar tarjeta' },
