@@ -87,8 +87,8 @@ export const WeeklyWorkCard = React.forwardRef<HTMLDivElement, Props>(
         </div>
 
         <div className="grid grid-cols-2 gap-2.5 mt-6">
-          <CardStat theme={theme} label="Sessões" value={String(summary.sessionCount)} />
-          <CardStat theme={theme} label="Dias ativos" value={`${summary.activeDays}/7`} />
+          <CardStat theme={theme} label={t('Sessões')} value={String(summary.sessionCount)} />
+          <CardStat theme={theme} label={t('Dias ativos')} value={`${summary.activeDays}/7`} />
           <CardStat
             theme={theme}
             label={t('Média de foco')}

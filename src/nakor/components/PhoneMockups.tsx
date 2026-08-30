@@ -1,6 +1,8 @@
+import { useT } from '../lib/i18n';
 import { Lock, Check, ChevronRight, ArrowLeft, Pencil, Circle, X, Eye, Home, BarChart3, CheckSquare, User } from 'lucide-react';
 
 export function PhoneMockups() {
+  const t = useT();
   return (
     <div className="relative w-full flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12 py-12">
       
@@ -19,14 +21,14 @@ export function PhoneMockups() {
             <button className="p-1 rounded-full bg-[#16181E] text-white">
               <ArrowLeft size={14} />
             </button>
-            <h4 className="text-xs font-bold text-white font-sans">Nova Atividade</h4>
+            <h4 className="text-xs font-bold text-white font-sans">{t('Nova Atividade')}</h4>
             <div className="w-6" /> {/* Spacer */}
           </div>
 
           {/* Activity Name Input */}
           <div className="bg-[#16181E] border border-neutral-800/80 rounded-xl px-3 py-2.5 flex items-center gap-2 mt-4">
             <Pencil size={13} className="text-neutral-500 dark:text-neutral-400 shrink-0" />
-            <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">Nome da atividade</span>
+            <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">{t('Nome da atividade')}</span>
           </div>
 
           {/* Duration Section */}
@@ -65,16 +67,16 @@ export function PhoneMockups() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Circle size={12} className="text-neutral-600" />
-                <span className="text-[10px] text-neutral-300 font-medium">Revisar conteúdo teórico</span>
+                <span className="text-[10px] text-neutral-300 font-medium">{t('Revisar conteúdo teórico')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Circle size={12} className="text-neutral-600" />
-                <span className="text-[10px] text-neutral-300 font-medium">Fazer exercícios práticos</span>
+                <span className="text-[10px] text-neutral-300 font-medium">{t('Fazer exercícios práticos')}</span>
               </div>
             </div>
 
             <div className="border border-dashed border-neutral-800 bg-[#000000]/40 rounded-lg py-1.5 text-center text-neutral-500 dark:text-neutral-400 text-[9px] font-semibold flex items-center justify-center gap-1">
-              <span>+ nova subtarefa</span>
+              <span>{t('+ nova subtarefa')}</span>
             </div>
           </div>
 
@@ -98,7 +100,7 @@ export function PhoneMockups() {
 
           {/* Start Button */}
           <button className="w-full bg-[#34117E] hover:bg-[#260b61] text-white py-2.5 rounded-full text-xs font-bold text-center mt-auto shadow-lg shadow-[#34117E]/15 flex items-center justify-center gap-1.5">
-            <span>Iniciar</span>
+            <span>{t('Iniciar')}</span>
           </button>
         </div>
       </div>
@@ -118,9 +120,9 @@ export function PhoneMockups() {
             <button className="p-1 rounded-full bg-[#16181E] text-neutral-400">
               <X size={13} />
             </button>
-            <h4 className="text-xs font-bold text-white font-sans">Trabalho Focado</h4>
+            <h4 className="text-xs font-bold text-white font-sans">{t('Trabalho Focado')}</h4>
             <div className="bg-[#16181E] border border-neutral-800 px-2 py-0.5 rounded-full shrink-0">
-              <span className="text-[8px] font-bold text-neutral-400 font-mono">2 saídas</span>
+              <span className="text-[8px] font-bold text-neutral-400 font-mono">{t('2 saídas')}</span>
             </div>
           </div>
 
@@ -135,13 +137,13 @@ export function PhoneMockups() {
               {/* Timer metrics */}
               <div className="flex flex-col items-center">
                 <span className="text-3xl font-display font-black text-white tracking-tight">24:59</span>
-                <span className="text-[8px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest mt-0.5">Restantes</span>
+                <span className="text-[8px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest mt-0.5">{t('Restantes')}</span>
               </div>
             </div>
 
             {/* Subtasks Progress Card */}
             <div className="bg-[#16181E]/90 border border-neutral-800/80 rounded-2xl p-3 mt-4 w-full flex justify-between items-center text-left">
-              <span className="text-[9px] text-neutral-300 font-semibold">1 de 3 subtarefas concluídas</span>
+              <span className="text-[9px] text-neutral-300 font-semibold">{t('1 de 3 subtarefas concluídas')}</span>
               <div className="flex items-center gap-1 shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#34117E]" />
                 <span className="w-1.5 h-1.5 rounded-full bg-neutral-700" />
@@ -158,7 +160,7 @@ export function PhoneMockups() {
             <div className="flex justify-center mt-3">
               <div className="inline-flex items-center gap-1.5 bg-[#16181E] border border-neutral-800/60 px-3 py-1 rounded-full">
                 <Eye size={10} className="text-neutral-400" />
-                <span className="text-[8px] font-bold text-neutral-400 font-sans">monitorando distrações</span>
+                <span className="text-[8px] font-bold text-neutral-400 font-sans">{t('monitorando distrações')}</span>
               </div>
             </div>
           </div>
@@ -188,7 +190,7 @@ export function PhoneMockups() {
           {/* Header */}
           <div className="pt-6 flex justify-between items-center">
             <div className="w-4" /> {/* Spacer */}
-            <h4 className="text-xs font-bold text-white font-sans text-center">Atividade concluída</h4>
+            <h4 className="text-xs font-bold text-white font-sans text-center">{t('Atividade concluída')}</h4>
             <span className="text-xs text-neutral-400 shrink-0">🎉</span>
           </div>
 
@@ -196,21 +198,21 @@ export function PhoneMockups() {
           <div className="grid grid-cols-3 gap-1 bg-[#16181E] border border-neutral-800/40 rounded-xl p-2.5 mt-3 text-center shrink-0">
             <div>
               <span className="text-[10px] font-black text-white font-sans block">45min</span>
-              <span className="text-[7px] text-neutral-500 dark:text-neutral-400 font-medium uppercase block tracking-wider mt-0.5">duração</span>
+              <span className="text-[7px] text-neutral-500 dark:text-neutral-400 font-medium uppercase block tracking-wider mt-0.5">{t('duração')}</span>
             </div>
             <div className="border-x border-neutral-800">
               <span className="text-[10px] font-bold text-[#958CE8] font-sans block">8.7</span>
-              <span className="text-[7px] text-neutral-500 dark:text-neutral-400 font-medium uppercase block tracking-wider mt-0.5">sua nota</span>
+              <span className="text-[7px] text-neutral-500 dark:text-neutral-400 font-medium uppercase block tracking-wider mt-0.5">{t('sua nota')}</span>
             </div>
             <div>
-              <span className="text-[10px] font-black text-white font-sans block">1 saída</span>
-              <span className="text-[7px] text-neutral-500 dark:text-neutral-400 font-medium uppercase block tracking-wider mt-0.5">distrações</span>
+              <span className="text-[10px] font-black text-white font-sans block">{t('1 saída')}</span>
+              <span className="text-[7px] text-neutral-500 dark:text-neutral-400 font-medium uppercase block tracking-wider mt-0.5">{t('distrações')}</span>
             </div>
           </div>
 
           {/* Large Grade Card */}
           <div className="bg-[#16181E] border border-neutral-800/60 rounded-2xl p-3.5 mt-3 text-center flex flex-col items-center">
-            <span className="text-[8px] text-neutral-500 dark:text-neutral-400 uppercase font-bold tracking-wider mb-0.5">sua nota</span>
+            <span className="text-[8px] text-neutral-500 dark:text-neutral-400 uppercase font-bold tracking-wider mb-0.5">{t('sua nota')}</span>
             <span className="text-3xl font-extrabold text-white tracking-tighter">8.7</span>
             <p className="text-[9px] text-neutral-300 font-medium leading-relaxed mt-2.5">
               Você cumpriu o planejado e saiu apenas uma vez. Consistência assim vira resultado.

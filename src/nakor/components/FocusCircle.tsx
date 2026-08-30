@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useT } from '../lib/i18n';
 
 interface FocusCircleProps {
   todaySeconds: number;
@@ -20,6 +21,7 @@ export function FocusCircle({
   size = 256,
   variant = 'mobile',
 }: FocusCircleProps) {
+  const t = useT();
   const isMobile = variant === 'mobile';
   const isEmpty = todaySeconds === 0;
   const isComplete = progressPercent >= 1;
@@ -254,7 +256,7 @@ export function FocusCircle({
             isEmpty ? 'text-[#34117E]/40 dark:text-[#C4B5FD]/60' : 'text-neutral-400 dark:text-neutral-400'
           }`}
         >
-          Tempo Focado Hoje
+          {t('Tempo Focado Hoje')}
         </span>
 
         <div className="flex items-baseline space-x-2 mb-1">
@@ -271,7 +273,7 @@ export function FocusCircle({
         {isEmpty ? (
           <div className="mt-4 flex flex-col items-center gap-2">
             <p className={`${ctaSize} font-semibold tracking-wider text-[#8B5CF6] dark:text-[#C4B5FD] uppercase text-center max-w-[140px] leading-relaxed`}>
-              Comece sua primeira sessão
+              {t('Comece sua primeira sessão')}
             </p>
             <div className="mt-4 w-12 h-1.5 bg-[#34117E]/10 dark:bg-white/10 rounded-full overflow-hidden">
               <div className="h-full bg-[#34117E] dark:bg-[#C4B5FD] w-1/3 rounded-full animate-pulse" />
@@ -281,17 +283,17 @@ export function FocusCircle({
           <div className="mt-4 flex flex-col items-center gap-2">
             <div className="flex items-center gap-1.5 text-xs font-semibold bg-[#34117E]/15 dark:bg-[#A78BFA]/20 border border-[#34117E]/30 dark:border-[#A78BFA]/40 text-[#34117E] dark:text-[#C4B5FD] px-3 py-1.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] dark:bg-[#C4B5FD] animate-pulse" />
-              Meta de hoje alcançada
+              {t('Meta de hoje alcançada')}
             </div>
             <p className="text-[#34117E]/70 dark:text-[#C4B5FD]/80 text-xs font-medium mt-1">
-              Nota média:{' '}
+              {t('Nota média')}:{' '}
               <strong className="text-[#34117E] dark:text-[#C4B5FD] font-mono">{avgToday}</strong>
             </p>
           </div>
         ) : (
           <div className="mt-4 flex items-center gap-1.5 text-xs font-medium bg-[#34117E]/10 dark:bg-[#A78BFA]/15 border border-[#34117E]/20 dark:border-[#A78BFA]/30 px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300">
             <span className="w-1.5 h-1.5 rounded-full bg-[#34117E] dark:bg-[#C4B5FD]" />
-            Nota média:{' '}
+            {t('Nota média')}:{' '}
             <strong className="text-[#34117E] dark:text-[#C4B5FD] font-mono">{avgToday}</strong>
           </div>
         )}
