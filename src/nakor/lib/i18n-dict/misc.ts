@@ -25,6 +25,9 @@ export const miscDict: Dict = {
     es: 'Todas las próximas actividades usan automáticamente este estilo y color.',
   },
 
+  'Sessões': { en: 'Sessions', es: 'Sesiones' },
+  'Dias ativos ': { en: 'Active days ', es: 'Días activos ' },
+
   // History / sharing
   'Copiado!': { en: 'Copied!', es: '¡Copiado!' },
   'Copiar card': { en: 'Copy card', es: 'Copiar tarjeta' },
