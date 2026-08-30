@@ -1,6 +1,8 @@
+import { useT } from '../lib/i18n';
 import { Lock, Check, ChevronRight, ArrowLeft, Pencil, Circle, X, Eye, Home, BarChart3, CheckSquare, User } from 'lucide-react';
 
 export function PhoneMockups() {
+  const t = useT();
   return (
     <div className="relative w-full flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12 py-12">
       
