@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebar } from './components/DesktopSidebar';
 import { AuthScreen } from './components/AuthScreen';
@@ -34,7 +34,6 @@ import {
   saveOnboarding,
   resetOnboardingCloud,
 } from './lib/cloudSync';
-import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
   CheckCircle, 
@@ -50,37 +49,15 @@ import {
   Clock,
   User,
   PieChart,
-  ShoppingBag, Loader2, Moon, Sun,
+  ShoppingBag, Moon, Sun,
   House, ListChecks, Gift, UserRound,
   Store
 } from 'lucide-react';
 
-const TAB_ORDER = ['home', 'tasks', 'new_activity', 'loja', 'profile'];
-
 export default function App() {
   const t = useT();
   const [view, setView] = useState<string>('landing');
-  const [loadingTab, setLoadingTab] = useState<string | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  // Direction of the tab change (1 = forward, -1 = backward, 0 = neutral)
-  const prevViewRef = useRef(view);
-  const navDirRef = useRef(0);
-  if (prevViewRef.current !== view) {
-    const from = TAB_ORDER.indexOf(prevViewRef.current);
-    const to = TAB_ORDER.indexOf(view);
-    navDirRef.current = from !== -1 && to !== -1 && from !== to ? (to > from ? 1 : -1) : 0;
-    prevViewRef.current = view;
-  }
-  
-
-  // Transição simples e limpa entre abas (sem efeito de "galeria de fotos")
-  const tabAnim = {
-    initial: { opacity: 0, y: 8 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -4 },
-    transition: { duration: 0.18, ease: 'easeOut' as const },
-  };
 
 
 
@@ -105,11 +82,7 @@ export default function App() {
 
   const handleNavigate = (targetView: string) => {
     if (view === targetView) return;
-    setLoadingTab(targetView);
-    setTimeout(() => {
-      setView(targetView as any);
-      setLoadingTab(null);
-    }, 400);
+    setView(targetView);
   };
 
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
@@ -263,69 +236,43 @@ export default function App() {
         </div>
 
         <div className="relative z-10 min-h-screen w-full flex flex-col">
-          <AnimatePresence mode="wait">
+          <>
             {view === 'home' && (
-              <motion.div
-                key="home"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <HomeScreen 
                   onboardingData={onboardingData}
                   onNavigate={setView}
                   onViewHistoricActivity={(act) => handleViewHistoricActivity(act, 'home')}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'new_activity' && (
-              <motion.div
-                key="new_activity"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <NewActivityScreen 
                   onNavigate={setView}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'foco' && (
-              <motion.div
-                key="foco"
-                initial={{ opacity: 0, scale: 1.02, filter: "blur(4px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.98, filter: "blur(2px)" }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <FocusScreen 
                   onNavigate={setView}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'diario-depois' && (
-              <motion.div
-                key="diario-depois"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <AfterDiaryScreen 
                   onNavigate={setView}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'resultado' && (
-              <motion.div
-                key="resultado"
-                initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.98, y: -12 }}
-                transition={{ type: "spring", stiffness: 240, damping: 26 }}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <ResultScreen 
                   onNavigate={(targetView) => {
                     if (selectedHistoricActivity) {
@@ -339,42 +286,30 @@ export default function App() {
                   }}
                   historicActivity={selectedHistoricActivity}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'history' && (
-              <motion.div
-                key="history"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <HistoryScreen 
                   onboardingData={onboardingData}
                   onNavigate={setView}
                   onViewHistoricActivity={(act) => handleViewHistoricActivity(act, 'history')}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'tasks' && (
-              <motion.div
-                key="tasks"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <TasksScreen 
                   onboardingData={onboardingData}
                   onNavigate={setView}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'profile' && (
-              <motion.div
-                key="profile"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <ProfileScreen 
                   onboardingData={onboardingData}
                   onNavigate={setView}
@@ -382,15 +317,11 @@ export default function App() {
                   theme={theme}
                   onToggleTheme={toggleTheme}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'conquistas' && (
-              <motion.div 
-                key="conquistas" 
-                {...tabAnim}
-                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
-              >
+              <div className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative">
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
                 <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
                   <div className="w-full flex justify-center">
@@ -399,29 +330,21 @@ export default function App() {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
             
             {view === 'loja' && (
-              <motion.div
-                key="loja"
-                {...tabAnim}
-                className="w-full flex-1 flex flex-col"
-              >
+              <div className="w-full flex-1 flex flex-col">
                 <LojaScreen 
                   onboardingData={onboardingData}
                   onNavigate={setView}
                   onProductDetailToggle={setIsLojaDrawerOpen}
                 />
-              </motion.div>
+              </div>
             )}
             
             {view === 'notifications' && (
-              <motion.div 
-                key="notifications" 
-                {...tabAnim}
-                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
-              >
+              <div className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative">
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
                 <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
                   <div className="w-full flex justify-center">
@@ -430,15 +353,11 @@ export default function App() {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
             
             {view === 'account' && (
-              <motion.div 
-                key="account" 
-                {...tabAnim}
-                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
-              >
+              <div className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative">
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
                 <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
                   <div className="w-full flex justify-center">
@@ -447,15 +366,11 @@ export default function App() {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
             
             {view === 'focus_time' && (
-              <motion.div 
-                key="focus_time" 
-                {...tabAnim}
-                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
-              >
+              <div className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative">
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
                 <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
                   <div className="w-full flex justify-center">
@@ -464,15 +379,11 @@ export default function App() {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
             
             {view === 'card_colors' && (
-              <motion.div 
-                key="card_colors" 
-                {...tabAnim}
-                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
-              >
+              <div className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative">
                 <DesktopSidebar currentView="profile" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
                 <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
                   <div className="w-full flex justify-center">
@@ -481,14 +392,10 @@ export default function App() {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
             {view === 'progress' && (
-              <motion.div 
-                key="progress" 
-                {...tabAnim}
-                className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative"
-              >
+              <div className="w-full min-h-screen bg-transparent md:bg-[#000000] text-[#FFFFFF] font-sans flex flex-col md:flex-row relative">
                 <DesktopSidebar currentView="history" onNavigate={setView} userName={userName} userEmail={userEmail || ''} />
                 <div className="md:pl-[220px] w-full min-h-screen flex justify-center pb-32 md:pb-10 relative overflow-y-auto">
                   <div className="w-full flex justify-center">
@@ -497,9 +404,9 @@ export default function App() {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
+          </>
           
           {view !== 'home' && view !== 'new_activity' && view !== 'foco' && view !== 'diario-depois' && view !== 'resultado' && view !== 'history' && view !== 'tasks' && view !== 'profile' && view !== 'conquistas' && view !== 'loja' && view !== 'notifications' && view !== 'account' && view !== 'focus_time' && view !== 'card_colors' && view !== 'progress' && (
             <div className="min-h-screen w-full bg-transparent" />
@@ -532,7 +439,6 @@ export default function App() {
                 <div className="absolute inset-0 flex items-stretch justify-between px-1.5 z-10">
                   {tabs.map((tab) => {
                     const isActive = view === tab.id;
-                    const isLoading = loadingTab === tab.id;
                     const Icon = tab.icon;
 
                     if (tab.isCenter) {
@@ -542,16 +448,12 @@ export default function App() {
                             onClick={() => handleNavigate(tab.id)}
                             aria-label={t("Iniciar atividade")}
                             data-tour={`nav-${tab.id}`}
-                            className="absolute -top-7 flex flex-col items-center justify-center cursor-pointer outline-none select-none active:scale-95 transition-transform"
+                            className="absolute -top-7 flex flex-col items-center justify-center cursor-pointer outline-none select-none"
                           >
 
                             <span className="absolute inset-0 rounded-full bg-[#4F46E5]/35 blur-[18px]" />
                             <div className="relative w-[58px] h-[58px] rounded-full flex items-center justify-center shadow-[0_10px_24px_-4px_rgba(79,70,229,0.55)] bg-gradient-to-br from-[#6D5BF5] to-[#3A26C4] ring-[3px] ring-white dark:ring-[#161724] text-white">
-                              {isLoading ? (
-                                <Loader2 size={26} className="text-white animate-spin" />
-                              ) : (
-                                <Play size={24} className="text-white fill-white ml-0.5" />
-                              )}
+                              <Play size={24} className="text-white fill-white ml-0.5" />
                             </div>
                           </button>
                         </div>
@@ -563,34 +465,22 @@ export default function App() {
                         key={tab.id}
                         onClick={() => handleNavigate(tab.id)}
                         data-tour={`nav-${tab.id}`}
-                        className="group flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] h-full active:scale-95 transition-transform gap-1"
+                        className="group flex flex-col items-center justify-center relative cursor-pointer outline-none select-none w-[20%] h-full gap-1"
                       >
 
                         <span className="relative flex items-center justify-center w-10 h-8">
                           {isActive && (
-                            <motion.span
-                              layoutId="nav-pill"
-                              transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.6 }}
-                              className="absolute inset-0 rounded-2xl bg-[#34117E]/[0.09] dark:bg-[#C4B5FD]/[0.16] z-0"
-                            />
+                            <span className="absolute inset-0 rounded-2xl bg-[#34117E]/[0.09] dark:bg-[#C4B5FD]/[0.16] z-0" />
                           )}
-                          <motion.span
-                            className="relative z-10 flex items-center justify-center"
-                            animate={isActive ? { y: -1, scale: 1.1 } : { y: 0, scale: 1 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 24 }}
-                          >
-                            {isLoading ? (
-                              <Loader2 size={21} className="text-[#34117E] dark:text-[#C4B5FD] animate-spin" />
-                            ) : (
-                              <Icon
-                                size={21}
-                                className={`${isActive ? 'text-[#34117E] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#A0A3B1] dark:text-[#A2A5B9]'} transition-colors duration-200`}
-                                strokeWidth={isActive ? 2.4 : 1.9}
-                              />
-                            )}
-                          </motion.span>
+                          <span className="relative z-10 flex items-center justify-center">
+                            <Icon
+                              size={21}
+                              className={isActive ? 'text-[#34117E] dark:text-[#C4B5FD] dark:drop-shadow-[0_0_10px_rgba(167,139,250,0.45)]' : 'text-[#A0A3B1] dark:text-[#A2A5B9]'}
+                              strokeWidth={isActive ? 2.4 : 1.9}
+                            />
+                          </span>
                         </span>
-                        <span className={`text-[10px] leading-none tracking-[-0.01em] ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-semibold' : 'text-[#A0A3B1] dark:text-[#A2A5B9] font-medium'} transition-colors duration-200`}>{tab.label}</span>
+                        <span className={`text-[10px] leading-none tracking-[-0.01em] ${isActive ? 'text-[#21222D] dark:text-[#F8F9FA] font-semibold' : 'text-[#A0A3B1] dark:text-[#A2A5B9] font-medium'}`}>{tab.label}</span>
                       </button>
                     );
 
@@ -616,33 +506,21 @@ export default function App() {
   // 2. AUTH SCREEN VIEW
   if (view === 'auth') {
     return (
-      <motion.div
-        key="auth"
-        initial={{ opacity: 0, scale: 1.015, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 220, damping: 22 }}
-        className="w-full min-h-screen"
-      >
+      <div className="w-full min-h-screen">
         <AuthScreen 
           onAuthSuccess={handleAuthSuccess}
           onBackToLanding={() => setView('landing')}
           initialView={authInitialView}
           message={authMessage}
         />
-      </motion.div>
+      </div>
     );
   }
 
   // 3. ONBOARDING SCREEN VIEW
   if (view === 'onboarding') {
     return (
-      <motion.div
-        key="onboarding"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 22 }}
-        className="w-full min-h-screen"
-      >
+      <div className="w-full min-h-screen">
         <OnboardingScreen 
           onComplete={handleCompleteOnboarding}
           onBackToLanding={() => setView('landing')}
@@ -654,7 +532,7 @@ export default function App() {
             else document.documentElement.classList.remove('dark');
           }}
         />
-      </motion.div>
+      </div>
     );
   }
 
